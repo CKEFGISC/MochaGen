@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "MoccaGen",
+    "productName": "MochaGen",
     "version": "0.0.0"
   },
   "tauri": {
@@ -36,7 +36,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "moccagen",
+        "title": "mochagen",
         "width": 800,
         "height": 600
       }

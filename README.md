@@ -1,11 +1,11 @@
-# MoccaGen
+# MochaGen
 Auto Testcase Generator for Competitive Program with Natural Language Format Description as Input
 
 ## 暫時的get started (我也不知道怎麼用)
 
 ```sh
-git clone https://github.com/CKEFGISC/MoccaGen
-cd MoccaGen
+git clone https://github.com/CKEFGISC/MochaGen
+cd MochaGen
 npm install
 npm run tauri dev
 ```
