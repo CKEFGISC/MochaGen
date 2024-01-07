@@ -2,7 +2,7 @@ import Editor from "@monaco-editor/react";
 function CodeEditor() {
     return (
         <Editor 
-            height="100vh" 
+            height="85vh" 
             defaultValue="// Your code here."  
             language="cpp"
         />
