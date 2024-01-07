@@ -1,4 +1,4 @@
-import CodeEditor from "./CodeEditor"
+import CodeEditor from "./pages/CodeEditor"
 import "./App.css";
 
 
