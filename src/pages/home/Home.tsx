@@ -1,12 +1,23 @@
-import React from 'react';
+import React from "react";
+import { Container, Flex } from "@radix-ui/themes";
+import { Link } from "react-router-dom";
+
+function createNewProject() {
+  // TODO: Create a new project
+}
+
+function openProject() {
+  // TODO: Open a new project
+}
 
 const Home: React.FC = () => {
-    return (
-        <div>
-            <h1>Welcome to the Home Page</h1>
-            {/* Add your content here */}
-        </div>
-    );
+  return (
+    <>
+      <Container height="100%">
+        <Flex></Flex>
+      </Container>
+    </>
+  );
 };
 
 export default Home;
