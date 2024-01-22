@@ -1,5 +1,6 @@
 import Editor from "@monaco-editor/react";
-function CodeEditor() {
+
+const CodeEditor: React.FC = () => {
     return (
         <Editor 
             height="100vh" 
