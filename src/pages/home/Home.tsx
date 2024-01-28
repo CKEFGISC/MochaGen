@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Button, Grid, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
+import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
 
 function openProject() {
   // TODO: Open a new project
@@ -41,9 +42,7 @@ const Home: React.FC = () => {
         </Flex>
         <Grid columns="2" justify="center" gap="5">
           <CreateProjectDialog />
-          <Button size="3" variant="surface" onClick={() => openProject}>
-            <Text>Open Existing Project</Text>
-          </Button>
+          <OpenProjectDialog />
         </Grid>
       </Flex>
     </>
