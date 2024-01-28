@@ -17,8 +17,9 @@ async function createNewProject(name: string, basePath: string) {
   // TODO: Create a new project
   let joinedPath = await join(basePath, name);
   await createDir(joinedPath);
-  console.log("Created new project: " + name);
+  console.log("Created new project: " + joinedPath);
 }
+
 // Component
 export default function CreateProjectDialog() {
   // Hooks
