@@ -51,7 +51,7 @@ const App = () => {
           flex: "1",
           borderBottom: "0",
           backgroundImage:
-            "linear-gradient(to right top, #c2a499, #d1b3a8, #dfc2b8, #eed1c8, #fde1d8)",
+            "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
         }}
       >
         <RouterProvider router={router} />
