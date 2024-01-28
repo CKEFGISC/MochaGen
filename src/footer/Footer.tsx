@@ -27,7 +27,7 @@ const Footer = () => {
       }}
     >
       <Container>
-        <Grid columns="2" rows="1" gap="9">
+        <Grid columns="2" rows="1">
           <Box>
             <Text
               style={{ fontFamily: "Georgia", color: "var(--bronze-4)" }}

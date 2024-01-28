@@ -15,7 +15,18 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "dialog": {
+        "all": true
+      },
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": ["**/*"]
       }
+
     },
     "bundle": {
       "active": true,
