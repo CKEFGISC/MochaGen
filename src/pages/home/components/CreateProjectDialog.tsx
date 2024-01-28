@@ -61,7 +61,7 @@ export default function CreateProjectDialog() {
     const selected = await open({
       multiple: false,
       directory: true,
-      defaultPath: await documentDir(),
+      defaultPath: await homeDir(),
       recursive: true,
     });
     if (selected !== null && !Array.isArray(selected)) {
