@@ -3,10 +3,6 @@ import { Button, Grid, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
 import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
 
-function openProject() {
-  // TODO: Open a new project
-}
-
 const Home: React.FC = () => {
   return (
     <>
