@@ -1,4 +1,5 @@
-import React, {Dispatch, SetStateAction } from "react";
+import React from "react";
+import { IProps } from "../Home";
 import {
     Button,
     Flex,
@@ -8,30 +9,25 @@ import {
     IconButton,
 } from "@radix-ui/themes";
 import { FaRegFolderOpen } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { documentDir, homeDir, join } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/api/dialog";
 import { createDir } from "@tauri-apps/api/fs";
 
-interface IProps {
-    loading : boolean;
-    setLoading: Dispatch<SetStateAction<boolean>>;
-    log : string;
-    setLog : Dispatch<SetStateAction<string>>;
-};
-
-/* async function createNewProject(name: string, basePath: string) {
+// Create Directory then Call Backend API
+async function createNewProject (name: string, basePath: string) {
     // TODO: Create a new project
     let joinedPath = await join(basePath, name);
      
-    createDir(joinedPath, { recuive: false })
-    .then(() => {
-        alert("Created new project: " + joinedPath);
-    })
-    .catch(() => {
-        alert("Couldn't create new project.");
+    createDir(joinedPath, { recursive: false })
+    .catch((e) => {
+        throw(e)
     });
-} */
 
+    // For testing purpose
+    await new Promise(r => setTimeout(r, 2000));
+
+}
 // Component
 export default function CreateProjectDialog(props: IProps) {
     // Hooks
@@ -39,22 +35,9 @@ export default function CreateProjectDialog(props: IProps) {
     const [projectName, setProjectName] = React.useState<string>("");
     const [basePath, setBasePath] = React.useState<string>("");
     const [joinedPath, setJoinedPath] = React.useState<string>("");
+    const navigate = useNavigate();
 
-    // Create Directory then Call Backend API
-    async function createNewProject(name: string, basePath: string) {
-        // TODO: Create a new project
-        let joinedPath = await join(basePath, name);
-         
-        props.setLoading(true);
-        createDir(joinedPath, { recursive: false })
-        .then(() => {
-            alert("Created new project: " + joinedPath);
-            // props.setLoading(false);
-        })
-        .catch(() => {
-            alert("Couldn't create new project.");
-        });
-    }
+    
 
     const handleProjectNameChange = async (
         event: React.ChangeEvent<HTMLInputElement>
@@ -149,9 +132,20 @@ export default function CreateProjectDialog(props: IProps) {
                             Cancel
                         </Button>
                     </Dialog.Close>
-                    <Dialog.Close onClick = {() => createNewProject(projectName, basePath)
-                        .then()
-                    }>
+                    <Dialog.Close onClick = {() => {
+                        props.setLoading(true);
+                        props.setLog("Preparing your new project...");
+                        createNewProject(projectName, basePath) 
+                        .then(() => {
+                            props.setLoading(false);
+                            props.setLog("");
+                            alert("Created new project: " + joinedPath);
+                            navigate("/description");
+                        })
+                        .catch(() => {
+                            alert("Couldn't create new project.");
+                        });
+                    }}>
                         <Button>Save</Button>
                     </Dialog.Close>
                 </Flex>
