@@ -4,9 +4,7 @@ import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
 import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
 
 export interface IProps {
-    loading: boolean; 
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    log: string;
     setLog: React.Dispatch<React.SetStateAction<string>>;
 }
 
