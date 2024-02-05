@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Description: React.FC = () => {
+const Description: React.FunctionComponent = () => {
     return (
         <div>
             <h1>Welcome to the Description Page</h1>
