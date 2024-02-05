@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // import utils
 import ErrorPage from "./utils/ErrorPage";
-import Footer from "./footer/Footer";
+import Footer from "./utils/footer/Footer";
 import Loading from "./utils/Loading";
 
 // import pages
@@ -22,18 +22,19 @@ import "./App.css";
 
 
 
-const App = () => {
-    const [loading, setLoading] = React.useState(false);
-    const [log, setLog] = React.useState("");
+const App = async () => {
+    const [ loading, setLoading ] = React.useState(false);
+    const [ log, setLog ] = React.useState("");
+    const [ process, setProcess ] = React.useState("");
     const router = createBrowserRouter([
         { 
             path: "/",
-            element: <Home {...{setLoading, setLog}}/>, 
+            element: <Home {...{ setLoading, setLog }}/>, 
             errorElement: <ErrorPage /> 
         },
         {
             path: "/description",
-            element: <Description />,
+            element: <Description {...{ setLoading, setLog }}/>,
             errorElement: <ErrorPage />,
         },
         {
@@ -53,7 +54,10 @@ const App = () => {
         },
         { path: "/output", element: <Output />, errorElement: <ErrorPage /> },
     ]);
-
+    const createPage = () => {
+        return loading? <Loading log = { log }/> : <RouterProvider router={router} /> 
+    }
+    
     return (
         <div
             style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
@@ -66,7 +70,7 @@ const App = () => {
                     "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
                 }}
             >
-                { loading? <Loading log = { log }/> : <RouterProvider router={router} /> }
+                { createPage() } 
             </div>
             <Footer />
         </div>
