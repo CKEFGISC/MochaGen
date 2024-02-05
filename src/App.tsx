@@ -19,38 +19,41 @@ import Settings from "./pages/settings/Settings";
 import "./App.css";
 
 
-const [state, setState] = React.useState();
-const [loading, setLoading] = React.useState(false);
-const [log, setLog] = React.useState("");
 
-const router = createBrowserRouter([
-    { path: "/", element: <Home {...state} />, errorElement: <ErrorPage /> },
-    {
-        path: "/description",
-        element: <Description />,
-        errorElement: <ErrorPage />,
-    },
-    {
-        path: "/settings",
-        element: <Settings />,
-        errorElement: <ErrorPage />,
-    },
-    {
-        path: "/token-editor",
-        element: <TokenEditor />,
-        errorElement: <ErrorPage />,
-    },
-    {
-        path: "/code-editor",
-        element: <CodeEditor />,
-        errorElement: <ErrorPage />,
-    },
-    { path: "/output", element: <Output />, errorElement: <ErrorPage /> },
-]);
+
 
 const App = () => {
+    const [loading, setLoading] = React.useState(false);
+    const [log, setLog] = React.useState("");
+    const router = createBrowserRouter([
+        { 
+            path: "/",
+            element: <Home {...{setLoading, setLog}}/>, 
+            errorElement: <ErrorPage /> 
+        },
+        {
+            path: "/description",
+            element: <Description />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: "/settings",
+            element: <Settings />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: "/token-editor",
+            element: <TokenEditor />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: "/code-editor",
+            element: <CodeEditor />,
+            errorElement: <ErrorPage />,
+        },
+        { path: "/output", element: <Output />, errorElement: <ErrorPage /> },
+    ]);
 
-    if(loading) return <Loading log = { log }/>;
     return (
         <div
             style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
@@ -63,7 +66,7 @@ const App = () => {
                     "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
                 }}
             >
-                <RouterProvider router={router} />
+                { loading? <Loading log = { log }/> : <RouterProvider router={router} /> }
             </div>
             <Footer />
         </div>
