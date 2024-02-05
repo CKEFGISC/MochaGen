@@ -22,7 +22,7 @@ import "./App.css";
 
 
 
-const App = async () => {
+const App = () => {
     const [ loading, setLoading ] = React.useState(false);
     const [ log, setLog ] = React.useState("");
     const [ process, setProcess ] = React.useState("");
