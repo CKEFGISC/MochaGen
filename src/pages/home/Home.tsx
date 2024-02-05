@@ -1,14 +1,16 @@
-import React, { useState }  from "react";
+import React from "react";
 import { Grid, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
 import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
-import Loading from "../../utils/Loading"
 
+export interface IProps {
+    loading: boolean; 
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    log: string;
+    setLog: React.Dispatch<React.SetStateAction<string>>;
+}
 
-const Home: React.FunctionComponent = () => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [log, setLog] = useState<string>("");
-    if(loading) return <Loading/>;
+export default function Home(props: IProps) {
     return (
         <>
             <Flex
@@ -42,12 +44,10 @@ const Home: React.FunctionComponent = () => {
                     </Text>
                 </Flex>
                 <Grid columns="2" justify="center" gap="5">
-                    <CreateProjectDialog loading = { loading } setLoading = { setLoading } log = { log } setLog = { setLog }/>
-                    <OpenProjectDialog />
+                    <CreateProjectDialog { ...props }/>
+                    <OpenProjectDialog { ...props }/>
                 </Grid>
             </Flex>
         </>
     );
 };
-
-export default Home;

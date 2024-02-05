@@ -1,7 +1,10 @@
 import { Box, Flex } from "@radix-ui/themes"
 import AtomicSpinner from "atomic-spinner";
 
-function Spinner() {
+interface IProps {
+    log : string;
+}
+function Spinner(props: IProps) {
     return (
         <>
             <Flex 
@@ -20,7 +23,7 @@ function Spinner() {
                     <AtomicSpinner />
                 </Box>
                 <Box>
-                        Hello world.
+                    { props.log }
                 </Box>
             </Flex>
         </>
