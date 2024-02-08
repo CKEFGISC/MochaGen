@@ -1,10 +1,6 @@
-import React from 'react';
-import { Grid, Box, Flex, Heading, Text } from "@radix-ui/themes";
-interface IProps {
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    setLog: React.Dispatch<React.SetStateAction<string>>;
-}
-export default function Description(props: IProps) {
+import { Flex, Heading, Text } from "@radix-ui/themes";
+
+export default function Description() {
     return (
         <>
             <Flex

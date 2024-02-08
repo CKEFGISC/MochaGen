@@ -3,12 +3,7 @@ import { Grid, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
 import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
 
-export interface IProps {
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    setLog: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function Home(props: IProps) {
+export default function Home() {
     return (
         <>
             <Flex
@@ -42,8 +37,8 @@ export default function Home(props: IProps) {
                     </Text>
                 </Flex>
                 <Grid columns="2" justify="center" gap="5">
-                    <CreateProjectDialog { ...props }/>
-                    <OpenProjectDialog { ...props }/>
+                    <CreateProjectDialog />
+                    <OpenProjectDialog />
                 </Grid>
             </Flex>
         </>
