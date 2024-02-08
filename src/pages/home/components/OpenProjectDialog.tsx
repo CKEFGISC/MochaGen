@@ -1,5 +1,4 @@
 import React from "react";
-import { IProps } from "../Home";
 import {
     Button,
     Flex,
@@ -12,6 +11,7 @@ import { FaRegFolderOpen } from "react-icons/fa";
 import { homeDir } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/api/dialog";
 import { useNavigate } from "react-router-dom";
+import LoadContext from "../../../utils/loading/LoadContext";
 
 
 async function openProject(path: string) {
@@ -21,9 +21,10 @@ async function openProject(path: string) {
 
 
 // Component
-export default function OpenProjectDialog(props: IProps) {
+export default function OpenProjectDialog() {
     const [projectPath, setProjectPath] = React.useState<string>("");
     const navigate = useNavigate();
+    const { toggleLoading, setLog } = React.useContext(LoadContext);
 
 
 
@@ -92,13 +93,13 @@ export default function OpenProjectDialog(props: IProps) {
                         </Button>
                     </Dialog.Close>
                     <Dialog.Close onClick={() => {
-                        props.setLoading(true);
-                        props.setLog("Opening project...");
+                        toggleLoading();
+                        setLog("Opening project...");
                         openProject(projectPath)
                         .then(() => {
-                            props.setLoading(false);
-                            props.setLog("");
-                            navigate("/description");
+                            toggleLoading();
+                            setLog("");
+                            navigate("/project/description");
                         }).catch(() => {
                             alert("Couldn't open project");
                         });

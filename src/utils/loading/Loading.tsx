@@ -1,10 +1,10 @@
+import {useContext} from "react";
+import LoadContext from "./LoadContext";
 import { Box, Flex } from "@radix-ui/themes"
 import AtomicSpinner from "atomic-spinner";
 
-interface IProps {
-    log : string;
-}
-function Spinner(props: IProps) {
+function Spinner() {
+    const { log } = useContext(LoadContext);
     return (
         <>
             <Flex 
@@ -23,7 +23,7 @@ function Spinner(props: IProps) {
                     <AtomicSpinner />
                 </Box>
                 <Box>
-                    { props.log }
+                    { log }
                 </Box>
             </Flex>
         </>
