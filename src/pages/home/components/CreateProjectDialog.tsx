@@ -1,5 +1,4 @@
 import React from "react";
-import { IProps } from "../Home";
 import {
     Button,
     Flex,
@@ -8,9 +7,10 @@ import {
     TextField,
     IconButton,
 } from "@radix-ui/themes";
+import LoadContext from "../../../utils/loading/LoadContext";
 import { FaRegFolderOpen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { documentDir, homeDir, join } from "@tauri-apps/api/path";
+import { homeDir, join } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/api/dialog";
 import { createDir } from "@tauri-apps/api/fs";
 
@@ -29,12 +29,13 @@ async function createNewProject (name: string, basePath: string) {
 
 }
 // Component
-export default function CreateProjectDialog(props: IProps) {
+export default function CreateProjectDialog() {
     // Hooks
     const [defaultBasePath, setDefaultBasePath] = React.useState<string>("");
     const [projectName, setProjectName] = React.useState<string>("");
     const [basePath, setBasePath] = React.useState<string>("");
     const [joinedPath, setJoinedPath] = React.useState<string>("");
+    const { toggleLoading, setLog } = React.useContext(LoadContext);
     const navigate = useNavigate();
 
     
@@ -133,14 +134,14 @@ export default function CreateProjectDialog(props: IProps) {
                         </Button>
                     </Dialog.Close>
                     <Dialog.Close onClick = {() => {
-                        props.setLoading(true);
-                        props.setLog("Preparing your new project...");
+                        toggleLoading();
+                        setLog("Preparing your new project...");
                         createNewProject(projectName, basePath) 
                         .then(() => {
-                            props.setLoading(false);
-                            props.setLog("");
+                            toggleLoading();
+                            setLog("");
                             alert("Created new project: " + joinedPath);
-                            navigate("/description");
+                            navigate("/project/description");
                         })
                         .catch(() => {
                             alert("Couldn't create new project.");
