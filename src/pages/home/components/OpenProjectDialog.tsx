@@ -13,12 +13,10 @@ import { open } from "@tauri-apps/api/dialog";
 import { useNavigate } from "react-router-dom";
 import LoadContext from "../../../utils/loading/LoadContext";
 
-
 async function openProject(path: string) {
     // TODO: call backend and open project
     console.log("open project: ", path);
 }
-
 
 // Component
 export default function OpenProjectDialog() {
@@ -26,10 +24,8 @@ export default function OpenProjectDialog() {
     const navigate = useNavigate();
     const { toggleLoading, setLog } = React.useContext(LoadContext);
 
-
-
     const handleProjectPathChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         setProjectPath(event.target.value);
     };
@@ -62,8 +58,8 @@ export default function OpenProjectDialog() {
             <Dialog.Content style={{ maxWidth: 450 }}>
                 <Dialog.Title>Open Existing Project</Dialog.Title>
                 <Dialog.Description size="2" mb="4">
-                    Please select the <code>PROJECT_NAME.mochagen</code> in your project
-                    folder.
+                    Please select the <code>PROJECT_NAME.mochagen</code> in your
+                    project folder.
                 </Dialog.Description>
                 <Flex direction="column" gap="3">
                     <label>
@@ -78,7 +74,11 @@ export default function OpenProjectDialog() {
                                 disabled={true}
                             />
                             <TextField.Slot>
-                                <IconButton onClick={browseProject} size="1" variant="ghost">
+                                <IconButton
+                                    onClick={browseProject}
+                                    size="1"
+                                    variant="ghost"
+                                >
                                     <FaRegFolderOpen height="14" width="14" />
                                 </IconButton>
                             </TextField.Slot>
@@ -92,18 +92,21 @@ export default function OpenProjectDialog() {
                             Cancel
                         </Button>
                     </Dialog.Close>
-                    <Dialog.Close onClick={() => {
-                        toggleLoading();
-                        setLog("Opening project...");
-                        openProject(projectPath)
-                        .then(() => {
+                    <Dialog.Close
+                        onClick={() => {
                             toggleLoading();
-                            setLog("");
-                            navigate("/project/description");
-                        }).catch(() => {
-                            alert("Couldn't open project");
-                        });
-                    }}>
+                            setLog("Opening project...");
+                            openProject(projectPath)
+                                .then(() => {
+                                    toggleLoading();
+                                    setLog("");
+                                    navigate("/project/description");
+                                })
+                                .catch(() => {
+                                    alert("Couldn't open project");
+                                });
+                        }}
+                    >
                         <Button>Open</Button>
                     </Dialog.Close>
                 </Flex>

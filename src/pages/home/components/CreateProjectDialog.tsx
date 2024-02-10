@@ -15,18 +15,16 @@ import { open } from "@tauri-apps/api/dialog";
 import { createDir } from "@tauri-apps/api/fs";
 
 // Create Directory then Call Backend API
-async function createNewProject (name: string, basePath: string) {
+async function createNewProject(name: string, basePath: string) {
     // TODO: Create a new project
     let joinedPath = await join(basePath, name);
-     
-    createDir(joinedPath, { recursive: false })
-    .catch((e) => {
-        throw(e)
+
+    createDir(joinedPath, { recursive: false }).catch((e) => {
+        throw e;
     });
 
     // For testing purpose
-    await new Promise(r => setTimeout(r, 2000));
-
+    await new Promise((r) => setTimeout(r, 2000));
 }
 // Component
 export default function CreateProjectDialog() {
@@ -38,16 +36,14 @@ export default function CreateProjectDialog() {
     const { toggleLoading, setLog } = React.useContext(LoadContext);
     const navigate = useNavigate();
 
-    
-
     const handleProjectNameChange = async (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         setProjectName(event.target.value);
     };
 
     const handleBasePathChange = async (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         setBasePath(event.target.value);
     };
@@ -119,7 +115,11 @@ export default function CreateProjectDialog() {
                                 disabled={true}
                             />
                             <TextField.Slot>
-                                <IconButton onClick={browseBasePath} size="1" variant="ghost">
+                                <IconButton
+                                    onClick={browseBasePath}
+                                    size="1"
+                                    variant="ghost"
+                                >
                                     <FaRegFolderOpen height="14" width="14" />
                                 </IconButton>
                             </TextField.Slot>
@@ -133,20 +133,22 @@ export default function CreateProjectDialog() {
                             Cancel
                         </Button>
                     </Dialog.Close>
-                    <Dialog.Close onClick = {() => {
-                        toggleLoading();
-                        setLog("Preparing your new project...");
-                        createNewProject(projectName, basePath) 
-                        .then(() => {
+                    <Dialog.Close
+                        onClick={() => {
                             toggleLoading();
-                            setLog("");
-                            alert("Created new project: " + joinedPath);
-                            navigate("/project/description");
-                        })
-                        .catch(() => {
-                            alert("Couldn't create new project.");
-                        });
-                    }}>
+                            setLog("Preparing your new project...");
+                            createNewProject(projectName, basePath)
+                                .then(() => {
+                                    toggleLoading();
+                                    setLog("");
+                                    alert("Created new project: " + joinedPath);
+                                    navigate("/project/description");
+                                })
+                                .catch(() => {
+                                    alert("Couldn't create new project.");
+                                });
+                        }}
+                    >
                         <Button>Save</Button>
                     </Dialog.Close>
                 </Flex>

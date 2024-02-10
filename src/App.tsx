@@ -20,18 +20,14 @@ import Settings from "./pages/project/settings/Settings";
 // import styles
 import "./App.css";
 
-
-
-
-
 const App: React.FC = () => {
     const { isLoading } = useContext(LoadContext);
     // const [ process, setProcess ] = React.useState("");
     const router = createBrowserRouter([
-        { 
+        {
             path: "/",
             element: <Home />,
-            errorElement: <ErrorPage /> 
+            errorElement: <ErrorPage />,
         },
         {
             path: "/project",
@@ -57,28 +53,36 @@ const App: React.FC = () => {
                     element: <CodeEditor />,
                     errorElement: <ErrorPage />,
                 },
-                { path: "/project/output", element: <Output />, errorElement: <ErrorPage /> },
-            ]
+                {
+                    path: "/project/output",
+                    element: <Output />,
+                    errorElement: <ErrorPage />,
+                },
+            ],
         },
     ]);
 
     const createPage = () => {
-        return isLoading? <Loading /> : <RouterProvider router={router} /> 
-    } 
+        return isLoading ? <Loading /> : <RouterProvider router={router} />;
+    };
 
     return (
         <div
-            style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+            style={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+            }}
         >
             <div
                 style={{
                     flex: "1",
                     borderBottom: "0",
                     backgroundImage:
-                    "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
+                        "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
                 }}
             >
-                { createPage() } 
+                {createPage()}
             </div>
             <Footer />
         </div>
