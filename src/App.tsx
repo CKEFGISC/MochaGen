@@ -37,26 +37,26 @@ const App: React.FC = () => {
             errorElement: <ErrorPage />,
             children: [
                 {
-                    path: "/project/description",
+                    path: "description",
                     element: <Description />,
                 },
                 {
-                    path: "/project/settings",
+                    path: "settings",
                     element: <Settings />,
                     errorElement: <ErrorPage />,
                 },
                 {
-                    path: "/project/token-editor",
+                    path: "token-editor",
                     element: <TokenEditor />,
                     errorElement: <ErrorPage />,
                 },
                 {
-                    path: "/project/code-editor",
+                    path: "code-editor",
                     element: <CodeEditor />,
                     errorElement: <ErrorPage />,
                 },
                 {
-                    path: "/project/output",
+                    path: "output",
                     element: <Output />,
                     errorElement: <ErrorPage />,
                 },
