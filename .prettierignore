@@ -1,0 +1,7 @@
+# Ignore artifacts:
+build
+node_modules
+npm-debug.log
+dist
+dist-ssr
+src-tauri/target

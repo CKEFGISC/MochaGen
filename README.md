@@ -1,4 +1,5 @@
 # MochaGen
+
 Auto Testcase Generator for Competitive Program with Natural Language Format Description as Input
 
 ## Getting-started
@@ -6,6 +7,7 @@ Auto Testcase Generator for Competitive Program with Natural Language Format Des
 First, install the [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites/) for Tauri.
 
 Then, clone the repository to your computer:
+
 ```sh
 git clone https://github.com/CKEFGISC/MochaGen
 cd MochaGen

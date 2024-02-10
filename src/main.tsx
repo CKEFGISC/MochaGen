@@ -4,7 +4,6 @@ import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LoadContextProvider } from "./utils/loading/LoadContext";
 
-
 // import main style
 import "./index.css";
 import "@radix-ui/themes/styles.css";
@@ -14,17 +13,17 @@ import App from "./App";
 import { Theme } from "@radix-ui/themes";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <Theme
-      appearance="light"
-      accentColor="bronze"
-      grayColor="sand"
-      radius="full"
-      scaling="110%"
-    >
-        <LoadContextProvider>
-            <App />
-        </LoadContextProvider>
-    </Theme>
-  </React.StrictMode>
+    <React.StrictMode>
+        <Theme
+            appearance="light"
+            accentColor="bronze"
+            grayColor="sand"
+            radius="full"
+            scaling="110%"
+        >
+            <LoadContextProvider>
+                <App />
+            </LoadContextProvider>
+        </Theme>
+    </React.StrictMode>,
 );

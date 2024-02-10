@@ -13,16 +13,16 @@ const LoadContext = React.createContext<ILoadContext>({
     setLog: () => {},
 });
 export const LoadContextProvider = ({ children }: any) => {
-    const [ isLoading, toggleLoading ] = React.useReducer((state:boolean) => {
+    const [isLoading, toggleLoading] = React.useReducer((state: boolean) => {
         return !state;
     }, false);
-    const [ log, setLog ] = React.useReducer((_prev:string, next:string) => {
-       return next;
+    const [log, setLog] = React.useReducer((_prev: string, next: string) => {
+        return next;
     }, "");
     return (
-        <LoadContext.Provider value = {{ isLoading, toggleLoading, log, setLog }}>
-            { children }
+        <LoadContext.Provider value={{ isLoading, toggleLoading, log, setLog }}>
+            {children}
         </LoadContext.Provider>
     );
-}
+};
 export default LoadContext;
