@@ -2,7 +2,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { LoadContextProvider } from "./utils/loading/LoadContext";
+
+// import context providers
+import AppContextProvider from "./utils/AppContextProvider";
+
 
 // import main style
 import "./index.css";
@@ -21,9 +24,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             radius="full"
             scaling="110%"
         >
-            <LoadContextProvider>
+            <AppContextProvider>
                 <App />
-            </LoadContextProvider>
+            </AppContextProvider>
         </Theme>
     </React.StrictMode>,
 );
