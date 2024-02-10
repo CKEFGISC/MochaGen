@@ -2,9 +2,11 @@
 import React, { useContext } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+// import layout
+import Layout from "./Layout";
+
 // import utils
 import ErrorPage from "./utils/ErrorPage";
-import Footer from "./utils/footer/Footer";
 import Loading from "./utils/loading/Loading";
 import LoadContext from "./utils/loading/LoadContext";
 
@@ -67,25 +69,9 @@ const App: React.FC = () => {
     };
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
-            <div
-                style={{
-                    flex: "1",
-                    borderBottom: "0",
-                    backgroundImage:
-                        "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
-                }}
-            >
-                {createPage()}
-            </div>
-            <Footer />
-        </div>
+        <Layout>
+            {createPage()}
+        </Layout>
     );
 };
 
