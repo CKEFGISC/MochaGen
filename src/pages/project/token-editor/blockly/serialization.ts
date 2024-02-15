@@ -13,8 +13,8 @@ const storageKey = "mainWorkspace";
  * @param workspace Blockly workspace to save.
  */
 export const save = function (workspace: Blockly.Workspace) {
-    const data = Blockly.serialization.workspaces.save(workspace);
-    window.localStorage?.setItem(storageKey, JSON.stringify(data));
+  const data = Blockly.serialization.workspaces.save(workspace);
+  window.localStorage?.setItem(storageKey, JSON.stringify(data));
 };
 
 /**
@@ -22,15 +22,11 @@ export const save = function (workspace: Blockly.Workspace) {
  * @param workspace Blockly workspace to load into.
  */
 export const load = function (workspace: Blockly.Workspace) {
-    const data = window.localStorage?.getItem(storageKey);
-    if (!data) return;
+  const data = window.localStorage?.getItem(storageKey);
+  if (!data) return;
 
-    // Don't emit events during loading.
-    Blockly.Events.disable();
-    Blockly.serialization.workspaces.load(
-        JSON.parse(data),
-        workspace,
-        undefined,
-    );
-    Blockly.Events.enable();
+  // Don't emit events during loading.
+  Blockly.Events.disable();
+  Blockly.serialization.workspaces.load(JSON.parse(data), workspace, undefined);
+  Blockly.Events.enable();
 };

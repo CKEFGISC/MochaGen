@@ -1,40 +1,38 @@
 import React from "react";
 import Footer from "./utils/footer/Footer";
 interface IProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 const Layout = ({ children }: IProps) => {
-    return (
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          flex: "1",
+          borderBottom: "0",
+          backgroundImage: "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
+        }}
+      >
         <div
-            style={{
-                minHeight: "100vh",
-                display: "flex",
-                flexDirection: "column",
-            }}
+          style={{
+            marginTop: "2vh",
+            marginLeft: "2vw",
+            marginRight: "2vw",
+            marginBottom: "2vh",
+          }}
         >
-            <div
-                style={{
-                    flex: "1",
-                    borderBottom: "0",
-                    backgroundImage:
-                        "radial-gradient(circle, #fdf7f5, #fcf5f2, #faf2ee, #f8f0eb, #f6eee7)",
-
-                }}
-            >
-                <div
-                    style={{
-                        marginTop: "2vh",
-                        marginLeft: "2vw",
-                        marginRight: "2vw",
-                        marginBottom: "2vh",
-                    }}
-                >
-                    {children}
-                </div>
-            </div>
-            <Footer />
+          {children}
         </div>
-    );
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default Layout;
