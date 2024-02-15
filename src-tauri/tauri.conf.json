@@ -1,55 +1,49 @@
 {
-    "build": {
-        "beforeDevCommand": "npm run dev",
-        "beforeBuildCommand": "npm run build",
-        "devPath": "http://localhost:1420",
-        "distDir": "../dist"
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "MochaGen",
+    "version": "0.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "dialog": {
+        "all": true
+      },
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": ["**/*"]
+      }
     },
-    "package": {
-        "productName": "MochaGen",
-        "version": "0.0.0"
+    "bundle": {
+      "active": true,
+      "targets": ["deb", "nsis", "msi", "app", "dmg", "updater"],
+      "identifier": "com.MochaGen.dev",
+      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"]
     },
-    "tauri": {
-        "allowlist": {
-            "all": false,
-            "shell": {
-                "all": false,
-                "open": true
-            },
-            "dialog": {
-                "all": true
-            },
-            "path": {
-                "all": true
-            },
-            "fs": {
-                "all": true,
-                "scope": ["**/*"]
-            }
-        },
-        "bundle": {
-            "active": true,
-            "targets": ["deb", "nsis", "msi", "app", "dmg", "updater"],
-            "identifier": "com.MochaGen.dev",
-            "icon": [
-                "icons/32x32.png",
-                "icons/128x128.png",
-                "icons/128x128@2x.png",
-                "icons/icon.icns",
-                "icons/icon.ico"
-            ]
-        },
-        "security": {
-            "csp": null
-        },
-        "windows": [
-            {
-                "fullscreen": false,
-                "resizable": true,
-                "title": "mochagen",
-                "width": 800,
-                "height": 600
-            }
-        ]
-    }
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "mochagen",
+        "width": 800,
+        "height": 600
+      }
+    ]
+  }
 }
