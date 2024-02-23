@@ -84,13 +84,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     message1: "Range: Min: %1 Max: %2 %3 %4 is odd? %5 %6 is prime? %7",
     args1: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "range_left",
         value: 0,
         precision: 1,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "range_right",
         value: 0,
         precision: 1,
@@ -137,12 +137,12 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     message1: "Range: Min: %1 Max: %2",
     args1: [
       {
-        type: "field_number",
+        type: "input_value",
         name: "range_left",
         value: 0,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "range_right",
         value: 0,
       },
@@ -163,7 +163,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         type: "input_end_row",
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "length",
         value: 0,
       },
@@ -189,13 +189,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         type: "input_end_row",
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "range_left",
         value: 0,
         precision: 1,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "range_right",
         value: 0,
         precision: 1,
@@ -221,7 +221,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         type: "input_end_row",
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "length",
         value: 0,
       },
@@ -262,12 +262,12 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         type: "input_end_row",
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "vertex_count",
         value: 0,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "edge_count",
         value: 0,
       },
@@ -281,12 +281,12 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         checked: true,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "vertex_weights_range_left",
         value: 0,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "vertex_weights_range_right",
         value: 0,
       },
@@ -300,12 +300,12 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         checked: true,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "edge_weights_range_left",
         value: 0,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "edge_weights_range_right",
         value: 0,
       },
@@ -373,7 +373,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         type: "input_end_row",
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "vertex_count",
         value: 0,
       },
@@ -387,12 +387,12 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         checked: true,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "vertex_weights_range_left",
         value: 0,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "vertex_weights_range_right",
         value: 0,
       },
@@ -406,12 +406,12 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         checked: true,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "edge_weights_range_left",
         value: 0,
       },
       {
-        type: "field_number",
+        type: "input_value",
         name: "edge_weights_range_right",
         value: 0,
       },
