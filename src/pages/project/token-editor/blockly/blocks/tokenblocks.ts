@@ -47,6 +47,27 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       {
         type: "input_value",
         name: "object",
+        check: ["tokenobject", "id"],
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    colour: "#AB9B96",
+    tooltip: "",
+    helpUrl: "",
+  },
+  {
+    type: "set_id_to_const_number",
+    message0: "Set ID %1 to const number: %2",
+    args0: [
+      {
+        type: "field_input",
+        name: "ID",
+        text: "default",
+      },
+      {
+        type: "field_number",
+        name: "object",
       },
     ],
     previousStatement: null,
@@ -65,7 +86,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
     ],
     extensions: ["dynamic_menu_extension"],
-    output: null,
+    output: "id",
     colour: "#AB9B96",
     tooltip: "",
     helpUrl: "",
@@ -85,14 +106,14 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     args1: [
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
         name: "range_left",
         value: 0,
         precision: 1,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
         name: "range_right",
         value: 0,
         precision: 1,
@@ -120,7 +141,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         align: "RIGHT",
       },
     ],
-    output: null,
+    output: "tokenobject",
     colour: "#ea4f5e",
     tooltip: "",
     helpUrl: "",
@@ -140,25 +161,27 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     args1: [
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "range_left",
         value: 0,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "range_right",
         value: 0,
       },
     ],
-    output: null,
+    output: "tokenobject",
     colour: "#ed6e84",
     tooltip: "",
     helpUrl: "",
   },
   {
     type: "array",
-    message0: "Array %1 attributes: %2 length: %3 %4 content: %5",
+    message0: "Array %1 attributes: %2 length: %3 %4 element: %5",
     args0: [
       {
         type: "input_end_row",
@@ -168,7 +191,8 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "length",
         value: 0,
       },
@@ -178,11 +202,12 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
-        name: "content",
+        check: ["id", "Number", "tokenobject"],
+
+        name: "element",
       },
     ],
-    output: null,
+    output: "tokenobject",
     colour: "#ee6147",
     tooltip: "",
     helpUrl: "",
@@ -196,14 +221,16 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "range_left",
         value: 0,
         precision: 1,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "range_right",
         value: 0,
         precision: 1,
@@ -214,7 +241,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
     ],
     colour: "#ee6147",
-    output: null,
+    output: "tokenobject",
     tooltip: "",
     helpUrl: "",
   },
@@ -230,7 +257,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
         name: "length",
         value: 0,
       },
@@ -248,13 +275,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       {
         type: "field_input",
         name: "pattern",
-        text: "default",
+        text: "",
       },
       {
         type: "input_end_row",
       },
     ],
-    output: null,
+    output: "tokenobject",
     colour: "#f6c348",
     tooltip: "",
     helpUrl: "",
@@ -272,13 +299,14 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
         name: "vertex_count",
         value: 0,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "edge_count",
         value: 0,
       },
@@ -293,13 +321,15 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "vertex_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "vertex_weights_range_right",
         value: 0,
       },
@@ -314,13 +344,15 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "edge_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "edge_weights_range_right",
         value: 0,
       },
@@ -371,7 +403,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         align: "RIGHT",
       },
     ],
-    output: null,
+    output: "tokenobject",
     colour: "#40e7b9",
     tooltip: "",
     helpUrl: "",
@@ -389,7 +421,8 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "vertex_count",
         value: 0,
       },
@@ -404,13 +437,15 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "vertex_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "vertex_weights_range_right",
         value: 0,
       },
@@ -425,13 +460,15 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "edge_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
-        check: ["get_id", "Number"],
+        check: ["id", "Number"],
+
         name: "edge_weights_range_right",
         value: 0,
       },
@@ -449,7 +486,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         align: "RIGHT",
       },
     ],
-    output: null,
+    output: "tokenobject",
     colour: "#009E60",
     tooltip: "",
     helpUrl: "",

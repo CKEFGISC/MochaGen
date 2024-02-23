@@ -26,6 +26,10 @@ export const toolbox = {
     },
     {
       kind: "block",
+      type: "set_id_to_const_number",
+    },
+    {
+      kind: "block",
       type: "get_id",
     },
     {

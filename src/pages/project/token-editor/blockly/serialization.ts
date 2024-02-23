@@ -14,7 +14,7 @@ const storageKey = (Math.random() + 1).toString(36).substring(7);
  */
 export const save = function (workspace: Blockly.Workspace) {
   const data = Blockly.serialization.workspaces.save(workspace);
-  window.localStorage?.setItem(storageKey, JSON.stringify(data));
+  window.sessionStorage?.setItem(storageKey, JSON.stringify(data));
 };
 
 /**
@@ -22,7 +22,7 @@ export const save = function (workspace: Blockly.Workspace) {
  * @param workspace Blockly workspace to load into.
  */
 export const load = function (workspace: Blockly.Workspace) {
-  const data = window.localStorage?.getItem(storageKey);
+  const data = window.sessionStorage?.getItem(storageKey);
   if (!data) return;
 
   // Don't emit events during loading.
