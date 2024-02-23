@@ -6,15 +6,11 @@ const Order = {
 
 class MyCodeGenerator extends Blockly.Generator {
   protected scrub_(_block: Blockly.Block, code: string, _opt_thisOnly?: boolean | undefined): string {
-    console.log("scrub_ called");
     const nextBlock = _block.nextConnection && _block.nextConnection.targetBlock();
-    let codeJson = JSON.parse(code);
     if (nextBlock && !_opt_thisOnly) {
-      let nextBlockJson = JSON.parse(String(this.blockToCode(nextBlock)));
-      nextBlockJson.unshift(codeJson);
-      return JSON.stringify(nextBlockJson, null, 2);
+      return code + ",\n" + this.blockToCode(nextBlock);
     }
-    return JSON.stringify([codeJson], null, 2);
+    return code;
   }
 }
 export const tokenGenerator = new MyCodeGenerator("TOKEN");
@@ -22,7 +18,7 @@ export const tokenGenerator = new MyCodeGenerator("TOKEN");
 tokenGenerator.forBlock["generator"] = function (block, generator) {
   const subtask_id = block.getFieldValue("subtask_id");
   const testdata_count = 1; // TODO: Finish Subtask Mode
-  const tokens = JSON.parse(String(generator.statementToCode(block, "token_section")));
+  const tokens = JSON.parse("[" + String(generator.statementToCode(block, "token_section")) + "]");
   const code = {
     subtask_id: subtask_id,
     testdata_count: testdata_count,
