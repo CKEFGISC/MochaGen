@@ -6,7 +6,7 @@
 
 import * as Blockly from "blockly/core";
 
-const storageKey = "mainWorkspace2";
+const storageKey = (Math.random() + 1).toString(36).substring(7);
 
 /**
  * Saves the state of the workspace to browser's local storage.

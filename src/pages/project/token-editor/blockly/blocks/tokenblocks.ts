@@ -85,12 +85,14 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     args1: [
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "range_left",
         value: 0,
         precision: 1,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "range_right",
         value: 0,
         precision: 1,
@@ -138,11 +140,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     args1: [
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "range_left",
         value: 0,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "range_right",
         value: 0,
       },
@@ -164,6 +168,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "length",
         value: 0,
       },
@@ -173,6 +178,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "content",
       },
     ],
@@ -190,12 +196,14 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "range_left",
         value: 0,
         precision: 1,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "range_right",
         value: 0,
         precision: 1,
@@ -222,6 +230,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "length",
         value: 0,
       },
@@ -263,11 +272,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "vertex_count",
         value: 0,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "edge_count",
         value: 0,
       },
@@ -282,11 +293,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "vertex_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "vertex_weights_range_right",
         value: 0,
       },
@@ -301,11 +314,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "edge_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "edge_weights_range_right",
         value: 0,
       },
@@ -374,6 +389,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "vertex_count",
         value: 0,
       },
@@ -388,11 +404,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "vertex_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "vertex_weights_range_right",
         value: 0,
       },
@@ -407,11 +425,13 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "edge_weights_range_left",
         value: 0,
       },
       {
         type: "input_value",
+        check: ["get_id", "Number"],
         name: "edge_weights_range_right",
         value: 0,
       },
@@ -440,10 +460,10 @@ Blockly.Extensions.register("dynamic_menu_extension", function (this: Blockly.Bl
   if (input_dummy)
     input_dummy.appendField(
       new Blockly.FieldDropdown(function () {
-        let dropdownOptions: [string, string][] = [];
+        let dropdownOptions: [string, string][] = [["default", "default"]];
         let workspace = Blockly.getMainWorkspace();
         if (!workspace) {
-          return [["", ""]];
+          return [["default", "default"]];
         }
         let allBlocks = workspace.getAllBlocks();
 
@@ -454,7 +474,7 @@ Blockly.Extensions.register("dynamic_menu_extension", function (this: Blockly.Bl
           }
         });
         return dropdownOptions;
-      }) as Blockly.Field<string>,
+      }) as Blockly.Field,
       "object_id",
     );
 });
