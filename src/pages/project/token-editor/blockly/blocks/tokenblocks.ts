@@ -435,24 +435,26 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     helpUrl: "",
   },
 ]);
-Blockly.Extensions.register("dynamic_menu_extension", function () {
-  this.getInput("INPUT").appendField(
-    new Blockly.FieldDropdown(function () {
-      let dropdownOptions = [];
-      let workspace = Blockly.getMainWorkspace();
-      if (!workspace) {
-        return [["", ""]];
-      }
-      let allBlocks = workspace.getAllBlocks();
-
-      allBlocks.forEach(function (block) {
-        var idFieldValue = block.getFieldValue("ID");
-        if (idFieldValue) {
-          dropdownOptions.push([idFieldValue, idFieldValue]);
+Blockly.Extensions.register("dynamic_menu_extension", function (this: Blockly.Block) {
+  const input_dummy = this.getInput("INPUT");
+  if (input_dummy)
+    input_dummy.appendField(
+      new Blockly.FieldDropdown(function () {
+        let dropdownOptions: [string, string][] = [];
+        let workspace = Blockly.getMainWorkspace();
+        if (!workspace) {
+          return [["", ""]];
         }
-      });
-      return dropdownOptions;
-    }),
-    "object_id",
-  );
+        let allBlocks = workspace.getAllBlocks();
+
+        allBlocks.forEach(function (block) {
+          var idFieldValue = block.getFieldValue("ID");
+          if (idFieldValue) {
+            dropdownOptions.push([idFieldValue, idFieldValue]);
+          }
+        });
+        return dropdownOptions;
+      }) as Blockly.Field<string>,
+      "object_id",
+    );
 });
