@@ -57,13 +57,6 @@ export default function BlocklyEditor() {
           <code ref={codeDivRef}></code>
         </pre>
       </div>
-      <button
-        onClick={() => {
-          if (workspaceRef.current) runCode(workspaceRef.current);
-        }}
-      >
-        RUN
-      </button>
     </div>
   );
 }
