@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as Blockly from "blockly";
 import { blocks } from "./blocks/tokenblocks";
 import { CrossTabCopyPaste } from "@blockly/plugin-cross-tab-copy-paste";
