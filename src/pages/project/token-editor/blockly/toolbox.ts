@@ -37,6 +37,14 @@ export const toolbox = {
     },
     {
       kind: "block",
+      type: "print",
+    },
+    {
+      kind: "block",
+      type: "printwords",
+    },
+    {
+      kind: "block",
       type: "integer",
     },
     {
