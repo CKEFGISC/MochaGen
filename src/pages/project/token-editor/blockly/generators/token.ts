@@ -19,10 +19,12 @@ tokenGenerator.forBlock["generator"] = function (block, generator) {
   const subtask_id = block.getFieldValue("subtask_id");
   const testdata_count = 1; // TODO: Finish Subtask Mode
   const tokens = JSON.parse("[" + String(generator.statementToCode(block, "token_section")) + "]");
+  const output = JSON.parse("[" + String(generator.statementToCode(block, "print_section")) + "]");
   const code = {
     subtask_id: subtask_id,
     testdata_count: testdata_count,
     tokens: tokens,
+    output: output,
   };
   return JSON.stringify(code, null, 2);
 };
@@ -55,6 +57,39 @@ tokenGenerator.forBlock["set_id_to_const_number"] = function (block) {
 tokenGenerator.forBlock["get_id"] = function (block) {
   const id: string = "_" + block.getFieldValue("ID");
   return [id, Order.ATOMIC];
+};
+
+tokenGenerator.forBlock["print"] = function (block, generator) {
+  const inputid: string = generator.valueToCode(block, "inputid", Order.ATOMIC);
+  const endwith: string = block.getFieldValue("endwith");
+  let end = "";
+  if (endwith === "newline") {
+    end = "\n";
+  } else if (endwith === "space") {
+    end = " ";
+  } else if (endwith === "tab") {
+    end = "\t";
+  } else if (endwith === "comma") {
+    end = ",";
+  } else if (endwith === "semicolon") {
+    end = ";";
+  }
+  let code = {
+    category: "print",
+    class: "print",
+    id: inputid,
+    end: end,
+  };
+  return JSON.stringify(code, null, 2);
+};
+tokenGenerator.forBlock["printwords"] = function (block) {
+  const words: string = block.getFieldValue("words");
+  const code = {
+    category: "print",
+    class: "printwords",
+    words: words,
+  };
+  return JSON.stringify(code, null, 2);
 };
 
 tokenGenerator.forBlock["integer"] = function (block, generator) {

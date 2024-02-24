@@ -38,6 +38,20 @@
             }
           }
         }
+      ],
+      "output": [
+        {
+          "category": "print",
+          "class": "print",
+          "id": "n",
+          "end": " "
+        },
+        {
+          "category": "print",
+          "class": "print",
+          "id": "m",
+          "end": "\n"
+        }
       ]
     }
   ]

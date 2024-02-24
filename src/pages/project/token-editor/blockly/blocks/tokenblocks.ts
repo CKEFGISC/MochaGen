@@ -495,6 +495,48 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
     tooltip: "",
     helpUrl: "",
   },
+  {
+    type: "print",
+    message0: "Print ID: %1 End with: %2",
+    args0: [
+      {
+        type: "input_value",
+        name: "inputid",
+        check: "id",
+      },
+      {
+        type: "field_dropdown",
+        name: "endwith",
+        options: [
+          ["space", "space"],
+          ["\\n", "newline"],
+          ["tab", "tab"],
+          [",", "comma"],
+          [";", "semicolon"],
+        ],
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    colour: "#d4a373",
+    tooltip: "",
+    helpUrl: "",
+  },
+  {
+    type: "printwords",
+    message0: "Print words: %1",
+    args0: [
+      {
+        type: "field_input",
+        name: "words",
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    colour: "#d4a373",
+    tooltip: "",
+    helpUrl: "",
+  },
 ]);
 Blockly.Extensions.register("dynamic_menu_extension", function (this: Blockly.Block) {
   const input_dummy = this.getInput("INPUT");
