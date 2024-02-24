@@ -1,11 +1,11 @@
-// Example token editor page
+import BlocklyEditor from "./blockly/BlocklyEditor";
+
 const TokenEditor: React.FC = () => {
-    return (
-        <div>
-            <h1>Welcome to the Home Page</h1>
-            {/* Add your content here */}
-        </div>
-    );
+  return (
+    <div>
+      <BlocklyEditor />
+    </div>
+  );
 };
 
 export default TokenEditor;
