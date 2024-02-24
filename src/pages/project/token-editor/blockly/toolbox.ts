@@ -11,7 +11,6 @@ You probably don't need every single block, and should consider either rewriting
 your toolbox from scratch, or carefully choosing whether you need each block
 listed here.
 */
-import * as Blockly from "blockly";
 
 export const toolbox = {
   kind: "flyoutToolbox",
