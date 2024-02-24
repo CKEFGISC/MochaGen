@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as Blockly from "blockly";
 import { blocks } from "./blocks/tokenblocks";
+import { CrossTabCopyPaste } from "@blockly/plugin-cross-tab-copy-paste";
 import { tokenGenerator } from "./generators/token";
 import { save, load } from "./serialization";
 import { toolbox } from "./toolbox";
@@ -17,12 +18,37 @@ export default function BlocklyEditor() {
   useEffect(() => {
     const blocklyDiv = blocklyDivRef.current;
     if (blocklyDiv && !workspaceRef.current) {
-      const workspace = Blockly.inject("blocklyDiv", { toolbox });
+      const workspace = Blockly.inject("blocklyDiv", {
+        toolbox: toolbox,
+        zoom: {
+          controls: true,
+          // wheel: true,
+          startScale: 0.8,
+          maxScale: 3,
+          minScale: 0.1,
+          scaleSpeed: 1.0,
+          pinch: true,
+        },
+        move: {
+          scrollbars: {
+            horizontal: true,
+            vertical: true,
+          },
+          drag: true,
+          wheel: false,
+        },
+        trashcan: true,
+      });
       workspaceRef.current = workspace;
 
-      workspace.registerButtonCallback("createNewIdPressed", () => {
-        Blockly.Variables.createVariableButtonHandler(workspace, () => {}, "panda");
-      });
+      const options = {
+        contextMenu: true,
+        shortcut: true,
+      };
+
+      // Initialize plugin.
+      const plugin = new CrossTabCopyPaste();
+      plugin.init(options);
 
       // Load the initial state from storage and run the code.
       load(workspace);
