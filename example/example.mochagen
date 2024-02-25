@@ -1,0 +1,17 @@
+{
+  "project-name": "example",
+  "description": "An example project",
+  "version": "0.0.1",
+  "cpp-compile-command": "g++",
+  "cpp-compile-flags": [
+    "-std=c++17",
+    "-Wall",
+    "-O3"
+  ],
+  "token-path": "token.json",
+  "build-dir": "build",
+  "problem-dir": "problem",
+  "testcase-dir": "testcase",
+  "solution-cpp": "problem/solution.cpp",
+  "_comment": "blockly 的存擋可能要直接存在這個專案檔裡面，檔案才不會太多"
+}
