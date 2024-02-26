@@ -8,12 +8,14 @@
 import { invoke } from '@tauri-apps/api/tauri'
 invoke('parse_token', { projectDirectory: "/Users/jimtsai/ytp/test" });
 */
+
 use serde_json;
 use std::io;
 
 const TOKEN_POSITION: &str = "token.json";
 const GENERATOR_FORMAT: &str = "gen.cpp";
 const GENERATOR_POSITION: &str = "gen";
+const TEMPORARY_TOKEN: &str = "/Users/jimtsai/ytp/test";
 const CPP_TEMPLATE_HEAD: &str = "
 #include<bits/stdc++.h>
 using namespace std;
@@ -31,7 +33,8 @@ use std::io::{Write};
 
 #[tauri::command]
 fn parse_token(project_directory: &str) -> Result<String, String> {
-    let token_path = format!("{}/{}", project_directory, TOKEN_POSITION);
+
+    let token_path = format!("{}/{}", TEMPORARY_TOKEN, TOKEN_POSITION);
     let contents = match std::fs::read_to_string(&token_path) {
         Ok(contents) => contents,
         Err(e) => return Err(format!("Failed to read file: {}", e)),
@@ -44,7 +47,13 @@ fn parse_token(project_directory: &str) -> Result<String, String> {
             if let Some(tokens_subtasks) = parsed_json["subtasks"].as_array() {
                 for tokens in tokens_subtasks {
                     let subtask_id = tokens["subtask_id"].as_str().unwrap_or_default();
-                    let file_name = format!("{}/gen/sub{}_gen.cpp",project_directory,subtask_id);
+                    let gen_dir = format!("{}/gen", project_directory);
+                    if !std::path::Path::new(&gen_dir).exists() {
+                        if let Err(e) = std::fs::create_dir(&gen_dir) {
+                            return Err(format!("Failed to create directory '{}': {}", gen_dir, e));
+                        }
+                    }
+                    let file_name = format!("{}/sub{}_gen.cpp", gen_dir, subtask_id);
                     let mut file = match std::fs::File::create(&file_name) {
                         Ok(file) => file,
                         Err(e) => return Err(format!("Failed to create file '{}': {}", file_name, e)),
