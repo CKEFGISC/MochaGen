@@ -21,10 +21,12 @@ const Layout = ({ children }: IProps) => {
       >
         <div
           style={{
+            minHeight: "calc(96vh - 40px)",
             marginTop: "2vh",
             marginLeft: "2vw",
             marginRight: "2vw",
             marginBottom: "2vh",
+            padding: "0",
           }}
         >
           {children}

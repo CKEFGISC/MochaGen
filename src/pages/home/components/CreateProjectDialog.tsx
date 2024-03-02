@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Flex, Text, Dialog, TextField, IconButton } from "@radix-ui/themes";
 import LoadContext from "../../../utils/loading/LoadContext";
+import ProcessContext from "../../../utils/navbar/ProcessContext";
 import { FaRegFolderOpen } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { homeDir, join } from "@tauri-apps/api/path";
@@ -27,6 +28,7 @@ export default function CreateProjectDialog() {
   const [basePath, setBasePath] = React.useState<string>("");
   const [joinedPath, setJoinedPath] = React.useState<string>("");
   const { toggleLoading, setLog } = React.useContext(LoadContext);
+  const { setProcess } = React.useContext(ProcessContext);
   const navigate = useNavigate();
 
   const handleProjectNameChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +129,7 @@ export default function CreateProjectDialog() {
                   toggleLoading();
                   setLog("");
                   alert("Created new project: " + joinedPath);
-                  navigate("/project/description");
+                  setProcess({ type: "set", payload: 1 });
                 })
                 .catch(() => {
                   alert("Couldn't create new project.");

@@ -1,6 +1,7 @@
 import { Flex, Heading, Text } from "@radix-ui/themes";
-
+import Editor, { loader } from "@monaco-editor/react";
 export default function Description() {
+  loader.config({ paths: { vs: "/node_modules/monaco-editor/min/vs" } });
   return (
     <>
       <Flex
@@ -11,7 +12,7 @@ export default function Description() {
         wrap="wrap"
         gap="4"
         style={{
-          height: "90vh",
+          height: "max-content",
           flex: "1",
         }}
       >
@@ -19,10 +20,18 @@ export default function Description() {
           <Heading size="8" align="center">
             Description <br />
           </Heading>
+
           <Text align="center">
-            Add your description here. <br />
-            (Only Markdown Syntax is available for now.) <br />
+            Get your description ready. <br />
           </Text>
+
+          <Editor
+            height="70vh"
+            width="80vw"
+            theme="vs"
+            defaultLanguage="markdown"
+            defaultValue="Add your description here. (Only markdown syntax is available for now)"
+          />
         </Flex>
         {/* Add your content here */}
       </Flex>

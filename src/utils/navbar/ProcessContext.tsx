@@ -4,11 +4,15 @@ export interface IProcessContext {
   process: number;
   setProcess: Dispatch<any>;
 }
-const ProcessContext = React.createContext<IProcessContext | null>(null);
+const ProcessContext = React.createContext<IProcessContext>({
+  process: 0,
+  setProcess: () => {},
+});
 
 interface IProps {
   children: React.ReactNode;
 }
+
 export const ProcessContextProvider = ({ children }: IProps) => {
   const [process, setProcess] = React.useReducer((state: number, action: any) => {
     switch (action.type) {

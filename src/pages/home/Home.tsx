@@ -14,7 +14,6 @@ export default function Home() {
         wrap="wrap"
         gap="4"
         style={{
-          height: "90vh",
           flex: "1",
         }}
       >
