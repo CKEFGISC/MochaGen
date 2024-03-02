@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // import layout
 import Layout from "./Layout";
+// import Navigator
+import Navigator from "./Navigator";
 
 // import utils
 import ErrorPage from "./utils/ErrorPage";
@@ -23,52 +25,57 @@ import Settings from "./pages/project/settings/Settings";
 import "./App.css";
 
 const App: React.FC = () => {
-    const { isLoading } = useContext(LoadContext);
-    // const [ process, setProcess ] = React.useState("");
-    const router = createBrowserRouter([
+  const { isLoading } = useContext(LoadContext);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Navigator />,
+      errorElement: <ErrorPage />,
+      children: [
         {
-            path: "/",
-            element: <Home />,
-            errorElement: <ErrorPage />,
+          path: "/",
+          element: <Home />,
         },
         {
-            path: "/project",
-            element: <ProjectLayout />,
-            errorElement: <ErrorPage />,
-            children: [
-                {
-                    path: "description",
-                    element: <Description />,
-                },
-                {
-                    path: "settings",
-                    element: <Settings />,
-                    errorElement: <ErrorPage />,
-                },
-                {
-                    path: "token-editor",
-                    element: <TokenEditor />,
-                    errorElement: <ErrorPage />,
-                },
-                {
-                    path: "code-editor",
-                    element: <CodeEditor />,
-                    errorElement: <ErrorPage />,
-                },
-                {
-                    path: "output",
-                    element: <Output />,
-                    errorElement: <ErrorPage />,
-                },
-            ],
+          path: "project",
+          element: <ProjectLayout />,
+          errorElement: <ErrorPage />,
+          children: [
+            {
+              path: "description",
+              element: <Description />,
+            },
+            {
+              path: "settings",
+              element: <Settings />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "token-editor",
+              element: <TokenEditor />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "code-editor",
+              element: <CodeEditor />,
+              errorElement: <ErrorPage />,
+            },
+            {
+              path: "output",
+              element: <Output />,
+              errorElement: <ErrorPage />,
+            },
+          ],
         },
-    ]);
+      ],
+    },
+  ]);
 
-    const createPage = () => {
-        return isLoading ? <Loading /> : <RouterProvider router={router} />;
-    };
+  const createPage = () => {
+    return isLoading ? <Loading /> : <RouterProvider router={router} />;
+  };
 
-    return <Layout>{createPage()}</Layout>;
+  return <Layout>{createPage()}</Layout>;
 };
 
 export default App;
