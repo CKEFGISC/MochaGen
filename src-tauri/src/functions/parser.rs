@@ -15,7 +15,6 @@ fn printable<T: std::fmt::Display>(t: &T) -> String {
   t.to_string().replace("\"", "")
 }
 const TOKEN_POSITION: &str = "token.json";
-
 const GENERATOR_FORMAT: &str = "gen.cpp";
 const GENERATOR_POSITION: &str = "gen";
 const TEMPORARY_TOKEN: &str = "/Users/jimtsai/ytp/test";
@@ -131,8 +130,6 @@ pub fn parse_token(project_directory: &str) -> Result<String, String> {
 
 #[tauri::command]
 pub fn run_parser(project_path: &str) -> Result<String, String> {
-  let project_config = json::get_mcg_with_project_directory(project_path);
-  let config = json::parse(project_config);
   Ok("success".to_string())
 }
 
