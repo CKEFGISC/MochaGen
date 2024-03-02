@@ -6,36 +6,38 @@ import ProcessControl from "../../utils/navbar/ProcessControls";
 
 const Layout: React.FC = () => {
   return (
-    <Flex
-      display="flex"
-      direction="column"
-      align="center"
-      justify="center"
-      gap="4"
-      style={{
-        height: "100%",
-        width: "100%",
-        flex: "1",
-      }}
-    >
+    <div style={{ height: "100%" }}>
       <Flex
         display="flex"
-        direction="row"
+        direction="column"
         align="center"
         justify="center"
         gap="4"
         style={{
+          height: "100%",
           width: "100%",
           flex: "1",
         }}
       >
-        <Navbar />
-        <Outlet />
+        <Flex
+          display="flex"
+          direction="row"
+          align="center"
+          justify="center"
+          gap="4"
+          style={{
+            width: "100%",
+            flex: "1",
+          }}
+        >
+          <Navbar />
+          <Outlet />
+        </Flex>
+        <Flex align="center" width="100%">
+          <ProcessControl />
+        </Flex>
       </Flex>
-      <Flex align="center" width="100%">
-        <ProcessControl />
-      </Flex>
-    </Flex>
+    </div>
   );
 };
 export default Layout;
