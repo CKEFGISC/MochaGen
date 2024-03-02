@@ -7,7 +7,7 @@ export default function Navigator() {
 
   const navigate = useNavigate();
 
-  const paths = ["/home", "/project/description"];
+  const paths = ["/", "/project/description"];
 
   useEffect(() => {
     navigate(paths[process]);
