@@ -1,0 +1,45 @@
+
+{
+  "project_name": "example",
+  "subtask_count": 1,
+  "subtasks": [
+    {
+      "subtask_id": "1",
+      "testdata_count": "5",
+      "tokens": [
+        {
+          "id": "n",
+          "object": {
+            "category": "number",
+            "class": "integer",
+            "attr": {
+              "range": {
+                "left": "0",
+                "right": "10"
+              },
+              "parity": {
+                "is_odd": "1"
+              },
+              "is_prime": {
+                "is_prime": "0"
+              }
+            }
+          }
+        },
+        {
+          "id": "m",
+          "object": {
+            "category": "number",
+            "class": "float",
+            "attr": {
+              "range": {
+                "left": "3",
+                "right": "5"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
