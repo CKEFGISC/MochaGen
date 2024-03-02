@@ -71,11 +71,11 @@ const App: React.FC = () => {
     },
   ]);
 
-  const createPage = () => {
-    return isLoading ? <Loading /> : <RouterProvider router={router} />;
-  };
+    const createPage = () => {
+        return isLoading ? <Loading /> : <RouterProvider router={router} />;
+    };
 
-  return <Layout>{createPage()}</Layout>;
+    return <Layout>{createPage()}</Layout>;
 };
 
 export default App;
