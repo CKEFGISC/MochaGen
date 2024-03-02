@@ -7,17 +7,15 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You haven't been greeted from Rust!", name)
 }
 
-
-
 fn main() {
     use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-    let close = CustomMenuItem::new("close".to_string(), "Close");
-    let submenu = Submenu::new("File", Menu::new().add_item(quit).add_item(close));
+    // let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+    // let close = CustomMenuItem::new("close".to_string(), "Close");
+    let submenu = Submenu::new("MochaGen", Menu::new());
     let menu = Menu::new()
-       .add_native_item(MenuItem::Copy)
-       .add_item(CustomMenuItem::new("hide", "Hide"))
-       .add_submenu(submenu);
+        .add_native_item(MenuItem::Copy)
+        // .add_item(CustomMenuItem::new("hide", "Hide"))
+        .add_submenu(submenu);
 
     tauri::Builder::default()
         .menu(menu)
