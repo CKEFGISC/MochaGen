@@ -49,7 +49,7 @@ export default function OpenProjectDialog() {
       <Dialog.Content style={{ maxWidth: 450 }}>
         <Dialog.Title>Open Existing Project</Dialog.Title>
         <Dialog.Description size="2" mb="4">
-          Please select the <code>PROJECT_NAME.mochagen</code> in your project folder.
+          Please select the <code>PROJECT_NAME.mcg</code> in your project folder.
         </Dialog.Description>
         <Flex direction="column" gap="3">
           <label>
