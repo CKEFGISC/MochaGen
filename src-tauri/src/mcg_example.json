@@ -1,0 +1,35 @@
+{
+  "project-name": "example",
+  "description": "An example project",
+  "version": "0.0.1",
+  "cpp-compile-command": "g++",
+  "cpp-compile-flags": [
+    "-std=c++17",
+    "-Wall",
+    "-O3"
+  ],
+  "subtask-count": 2,
+  "subtasks": [
+    {
+      "name": "subtask1",
+      "testcase-count": 5,
+      "generator": "subtasks/1/generator.cpp",
+      "checker": "subtasks/1/checker.cpp",
+      "token": "subtasks/1/token.json",
+      "blockly": "subtasks/1/blockly.json"
+    },
+    {
+      "name": "subtask2",
+      "testcase-count": 5,
+      "generator": "subtasks/2/generator.cpp",
+      "checker": "subtasks/2/checker.cpp",
+      "token": "subtasks/2/token.json",
+      "blockly": "subtasks/2/blockly.json"
+    }
+  ],
+  "build-dir": "build",
+  "problem-dir": "problem",
+  "solution-cpp": "problem/solution.cpp",
+  "testcase-dir": "testcase",
+  "_comment": "範例檔案"
+}
