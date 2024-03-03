@@ -18,7 +18,7 @@ import ProjectLayout from "./pages/project/Layout";
 import Description from "./pages/project/description/Description";
 import TokenEditor from "./pages/project/token-editor/TokenEditor";
 import CodeEditor from "./pages/project/code-editor/CodeEditor";
-import Output from "./pages/project/output/Output";
+import Result from "./pages/project/result/Result";
 import Settings from "./pages/project/settings/Settings";
 
 // import styles
@@ -48,22 +48,18 @@ const App: React.FC = () => {
             {
               path: "settings",
               element: <Settings />,
-              errorElement: <ErrorPage />,
             },
             {
               path: "token-editor",
               element: <TokenEditor />,
-              errorElement: <ErrorPage />,
             },
             {
               path: "code-editor",
               element: <CodeEditor />,
-              errorElement: <ErrorPage />,
             },
             {
-              path: "output",
-              element: <Output />,
-              errorElement: <ErrorPage />,
+              path: "result",
+              element: <Result />,
             },
           ],
         },
