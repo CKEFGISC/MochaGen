@@ -18,20 +18,10 @@ export default function Home() {
           flex: "1",
         }}
       >
-        <Box>
-          <image>
-            <img
-              src="https://raw.githubusercontent.com/CKEFGISC/MochaGen/main/assets/logo.png"
-              alt="MochaGen Logo"
-              width="600"
-              height="100"
-            />
-          </image>
-        </Box>
         <Flex direction="column">
-          <Heading size="9" align="center">
-            MochaGen <br />
-          </Heading>
+          <image>
+            <img src="/banner.png" alt="MochaGen Logo" width="600" />
+          </image>
           <Text align="center">A simple, fast, and easy-to-use testcase generator.</Text>
         </Flex>
         <Grid columns="2" justify="center" gap="5">
