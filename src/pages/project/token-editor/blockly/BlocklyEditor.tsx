@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import { blocks } from "./blocks/tokenblocks";
 import { CrossTabCopyPaste } from "@blockly/plugin-cross-tab-copy-paste";
@@ -7,22 +7,34 @@ import { save, load } from "./serialization";
 import { toolbox } from "./toolbox";
 import "./blockly.css";
 
-export default function BlocklyEditor() {
+export default function BlocklyEditor(props: any) {
   const blocklyDivRef = useRef<HTMLDivElement | null>(null);
   const codeDivRef = useRef<HTMLPreElement | null>(null);
   const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
+  const [storageKey, setStorageKey] = useState<string>(props.subtask_key);
 
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
 
   useEffect(() => {
+    // 當 props.subtask_key 改變時，更新 blocklyDiv 的 id
+    if (workspaceRef.current) {
+      save(workspaceRef.current, storageKey);
+      setStorageKey(props.subtask_key);
+      workspaceRef.current.clear();
+      load(workspaceRef.current, storageKey);
+    }
+  }, [props.subtask_key]);
+
+  useEffect(() => {
     const blocklyDiv = blocklyDivRef.current;
     if (blocklyDiv && !workspaceRef.current) {
+      console.log("Creating new workspace");
       const workspace = Blockly.inject("blocklyDiv", {
         toolbox: toolbox,
         zoom: {
           controls: true,
-          // wheel: true,
+          wheel: true,
           startScale: 0.8,
           maxScale: 3,
           minScale: 0.1,
@@ -47,17 +59,17 @@ export default function BlocklyEditor() {
       };
 
       // Initialize plugin.
-      const plugin = new CrossTabCopyPaste();
-      plugin.init(options);
+      // const plugin = new CrossTabCopyPaste();
+      // plugin.init(options);
 
       // Load the initial state from storage and run the code.
-      load(workspace);
+      load(workspace, storageKey, props.subtask_content);
       runCode(workspace);
 
       // Every time the workspace changes state, save the changes to storage.
       workspace.addChangeListener((e) => {
         if (e.isUiEvent) return;
-        if (workspace) save(workspace);
+        if (workspace) save(workspace, storageKey, props.subtask_content);
       });
 
       // Whenever the workspace changes meaningfully, run the code again.
