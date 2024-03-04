@@ -1,7 +1,9 @@
-import React, { useEffect, useContext } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { Flex } from "@radix-ui/themes";
 import Navbar from "../../utils/navbar/Navbar";
+import "react-toastify/dist/ReactToastify.css";
+
 import ProcessControl from "../../utils/navbar/ProcessControls";
 
 const Layout: React.FC = () => {
