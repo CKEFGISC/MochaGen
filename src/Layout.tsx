@@ -1,5 +1,7 @@
 import React from "react";
 import Footer from "./utils/footer/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface IProps {
   children: React.ReactNode;
 }
@@ -29,6 +31,16 @@ const Layout = ({ children }: IProps) => {
             // padding: "0",
           }}
         >
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            style={{ transition: "Bounce" }}
+          />
           {children}
         </div>
       </div>
