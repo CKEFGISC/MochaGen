@@ -4,10 +4,10 @@ import LoadContext from "../../../utils/loading/LoadContext";
 import ProcessContext from "../../../utils/navbar/ProcessContext";
 import { toast } from "react-toastify";
 import { FaRegFolderOpen } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { homeDir, join } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/api/dialog";
 import { createDir } from "@tauri-apps/api/fs";
+import { invoke } from "@tauri-apps/api/tauri";
 
 // Create Directory then Call Backend API
 async function createNewProject(name: string, basePath: string) {
@@ -19,7 +19,8 @@ async function createNewProject(name: string, basePath: string) {
   });
 
   // For testing purpose
-  await new Promise((r) => setTimeout(r, 2000));
+  // await new Promise((r) => setTimeout(r, 2000));
+  await invoke("create_project", { projectName: name, projectPath: joinedPath });
 }
 // Component
 export default function CreateProjectDialog() {
@@ -132,6 +133,7 @@ export default function CreateProjectDialog() {
                   toast.success("Created new project: " + joinedPath);
                 })
                 .catch(() => {
+                  toggleLoading();
                   toast.error("Couldn't create new project. Please try again.");
                 });
             }}
