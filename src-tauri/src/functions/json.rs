@@ -29,16 +29,19 @@ pub fn get_mcg_with_project_directory(project_directory: &str) -> String {
     "error".to_string()
   }
 }
-pub fn write_json_to_file(json_data: &serde_json::Value, file_path: &str) -> Result<(), std::io::Error> {
+pub fn write_json_to_file(
+  json_data: &serde_json::Value,
+  file_path: &str,
+) -> Result<(), std::io::Error> {
   // Serialize the JSON data to a string
-  let json_string = serde_json::to_string(json_data)?;
+  let json_string = serde_json::to_string_pretty(json_data)?;
 
   // Open the file for writing and truncate it (overwrite its contents)
   let mut file = std::fs::OpenOptions::new()
-     .write(true)
-     .create(true)
-     .truncate(true)
-     .open(file_path)?;
+    .write(true)
+    .create(true)
+    .truncate(true)
+    .open(file_path)?;
 
   println!("Mcg_setting: {}", json_string);
   // Write the JSON string to the file
