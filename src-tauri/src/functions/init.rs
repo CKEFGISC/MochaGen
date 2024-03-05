@@ -48,8 +48,10 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<String, 
         testcase_dir: String::from("testcase"),
         _comment: String::from(""),
     };
-    crate::functions::json::write_json_to_file(&json!(project), project_path).expect("Problem creating project file.");
-    Ok("success".to_string())
+    let json = json!(project);
+    let config_path = format!("{}/config.mcg", project_path);
+    crate::functions::json::write_json_to_file(&json, &config_path).expect("Problem creating project file.".into());
+    Ok("success".into())
 }
 #[tauri::command]
 pub fn load_project(project_path: &str) -> Result<String, String>{
