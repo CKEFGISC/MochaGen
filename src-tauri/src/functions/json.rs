@@ -35,10 +35,12 @@ pub fn write_json_to_file(json_data: &serde_json::Value, file_path: &str) -> Res
 
   // Open the file for writing and truncate it (overwrite its contents)
   let mut file = std::fs::OpenOptions::new()
-    .write(true)
-    .truncate(true)
-    .open(file_path)?;
+     .write(true)
+     .create(true)
+     .truncate(true)
+     .open(file_path)?;
 
+  println!("Mcg_setting: {}", json_string);
   // Write the JSON string to the file
   file.write_all(json_string.as_bytes())?;
 
