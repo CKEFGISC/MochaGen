@@ -84,7 +84,6 @@ export default function CreateProjectDialog() {
               Project Name
             </Text>
             <TextField.Input
-              defaultValue=""
               value={projectName}
               onChange={handleProjectNameChange}
               placeholder="Enter your project name"
