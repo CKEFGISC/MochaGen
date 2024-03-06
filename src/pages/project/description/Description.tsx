@@ -16,24 +16,11 @@ export default function Description() {
           flex: "1",
         }}
       >
-        <Flex direction="column">
-          <Heading size="8" align="center">
-            Description <br />
-          </Heading>
-
-          <Text align="center">
-            Get your description ready. <br />
-          </Text>
-
-          <Editor
-            height="70vh"
-            width="80vw"
-            theme="vs"
-            defaultLanguage="markdown"
-            defaultValue="Add your description here. (Only markdown syntax is available for now)"
-          />
-        </Flex>
-        {/* Add your content here */}
+        <Heading size="8" align="center">
+          Description
+        </Heading>
+        <Text align="center">Get your description ready! (Markdown syntax only)</Text>
+        <Editor height="70vh" width="80vw" theme="vs" defaultLanguage="markdown" />
       </Flex>
     </>
   );
