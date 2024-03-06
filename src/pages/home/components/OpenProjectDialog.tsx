@@ -36,7 +36,7 @@ export default function OpenProjectDialog() {
       filters: [
         {
           name: "MochaGen Config File",
-          extensions: ["mochagen", "json", "config"],
+          extensions: ["mcg"],
         },
       ],
       defaultPath: await homeDir(),
