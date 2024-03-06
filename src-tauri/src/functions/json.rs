@@ -36,6 +36,7 @@ pub fn write_json_to_file(
   // Serialize the JSON data to a string
   let json_string = serde_json::to_string_pretty(json_data)?;
 
+
   // Open the file for writing and truncate it (overwrite its contents)
   let mut file = std::fs::OpenOptions::new()
     .write(true)
@@ -44,6 +45,7 @@ pub fn write_json_to_file(
     .open(file_path)?;
 
   println!("Mcg_setting: {}", json_string);
+
   // Write the JSON string to the file
   file.write_all(json_string.as_bytes())?;
 
