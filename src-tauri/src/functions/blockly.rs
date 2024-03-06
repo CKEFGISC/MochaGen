@@ -26,6 +26,8 @@ pub fn save_blockly(
   for subtask in subtasks {
     if subtask["name"].as_str().unwrap() == subtask_json["name"].as_str().unwrap() {
       let blockly_path = Path::new(&dir_path).join(subtask["blockly"].as_str().unwrap());
+      println!("{}", blockly_path.to_str().unwrap());
+
       let blockly_status = match serde_json::from_str(blockly_status) {
         Ok(json) => json,
         Err(e) => return Err(e.to_string()),
@@ -60,6 +62,7 @@ pub fn load_blockly(config_path: &str, subtask_content: &str) -> Result<String, 
   for subtask in subtasks {
     if subtask["name"].as_str().unwrap() == subtask_json["name"].as_str().unwrap() {
       let blockly_path = Path::new(&dir_path).join(subtask["blockly"].as_str().unwrap());
+      println!("{}", blockly_path.to_str().unwrap());
       let blockly_status = match parse(&blockly_path.to_str().unwrap()) {
         Ok(json) => json,
         Err(e) => return Err(e),
@@ -91,6 +94,7 @@ pub fn save_token(config_path: &str, subtask_content: &str, token: &str) -> Resu
   for subtask in subtasks {
     if subtask["name"].as_str().unwrap() == subtask_json["name"].as_str().unwrap() {
       let token_path = Path::new(&dir_path).join(subtask["token"].as_str().unwrap());
+      println!("{}", token_path.to_str().unwrap());
       return match std::fs::write(token_path, token) {
         Ok(_) => Ok("success".to_string()),
         Err(e) => Err(e.to_string()),
