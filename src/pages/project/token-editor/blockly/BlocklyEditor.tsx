@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import { blocks } from "./blocks/tokenblocks";
