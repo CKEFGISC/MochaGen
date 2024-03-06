@@ -61,7 +61,7 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<String, 
 
 #[tauri::command]
 pub fn load_project(project_path: &str) -> Result<String, String> {
-  let config_path = crate::functions::json::get_mcg_with_project_directory(project_path);
-   
+  // crate::functions::json::get_mcg_with_project_directory(project_path);
+
   Ok("success".to_string())
 }
