@@ -3,7 +3,7 @@ use serde_json;
 use std::fs::{File, OpenOptions};
 use std::io;
 use std::io::Write;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub fn parse(json_path: String) -> Result<serde_json::Value, String> {
   let contents = match std::fs::read_to_string(&json_path) {
@@ -17,18 +17,40 @@ pub fn parse(json_path: String) -> Result<serde_json::Value, String> {
   }
 }
 
-pub fn get_mcg_with_project_directory(project_directory: &str) -> String {
-  let path = Path::new(project_directory);
-  if let Some(folder_name) = path.file_name() {
-    if let Some(folder_str) = folder_name.to_str() {
-      folder_str.to_string()
-    } else {
-      "error".to_string()
-    }
-  } else {
-    "error".to_string()
+pub fn get_project_directory_with_config_file(config_path: &str) -> String {
+  let config_path = Path::new(config_path);
+
+  // If the provided path is a file, get its parent directory
+  if config_path.is_file() {
+    return config_path
+      .parent()
+      .map_or_else(|| String::new(), |p| p.to_string_lossy().to_string());
   }
+
+  // If the provided path is a directory, return it
+  if config_path.is_dir() {
+    return config_path.to_string_lossy().to_string();
+  }
+
+  // Otherwise, try to find the config file by searching up the directory tree
+  let mut current_dir = Path::new(".")
+    .canonicalize()
+    .ok()
+    .unwrap_or_else(|| PathBuf::from("."));
+  while current_dir != Path::new("/") {
+    let file_path = current_dir.join(config_path);
+    if file_path.is_file() {
+      return current_dir.to_string_lossy().to_string();
+    }
+    current_dir = match current_dir.parent() {
+      Some(parent) => parent.to_path_buf(),
+      None => break,
+    };
+  }
+
+  String::new()
 }
+
 pub fn write_json_to_file(
   json_data: &serde_json::Value,
   file_path: &str,
