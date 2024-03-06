@@ -32,7 +32,7 @@ const Layout: React.FC = () => {
         }}
       >
         <Navbar />
-        <Container>
+        <Container size="4" m="4" mb="0">
           <Outlet />
         </Container>
       </Flex>

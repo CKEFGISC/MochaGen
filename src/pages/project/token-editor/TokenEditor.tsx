@@ -1,6 +1,6 @@
 import BlocklyEditor, { replaceToken } from "./blockly/BlocklyEditor";
 import React from "react";
-import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog } from "@radix-ui/themes";
+import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog, Container } from "@radix-ui/themes";
 
 // TODO: Replace with real data
 const subtasks = [
@@ -66,7 +66,6 @@ const TokenEditor: React.FC = () => {
     <Flex direction="column" gap="2">
       <Heading
         size="5"
-        mt="6"
         style={{
           textAlign: "center",
         }}
