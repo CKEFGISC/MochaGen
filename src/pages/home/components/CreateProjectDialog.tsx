@@ -129,6 +129,7 @@ export default function CreateProjectDialog() {
                 })
                 .catch((e) => {
                   toggleLoading();
+                  setLog("");
                   toast.error("Couldn't create new project: " + e);
                 });
             }}
