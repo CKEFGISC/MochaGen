@@ -3,6 +3,9 @@ import { Grid, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
 import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
 
+// TEMPORARY: Navbar
+// import Navbar from "../../utils/navbar/Navbar.tsx";
+
 export default function Home() {
   return (
     <>
@@ -28,6 +31,7 @@ export default function Home() {
           <CreateProjectDialog />
           <OpenProjectDialog />
         </Grid>
+        {/* <Navbar /> */}
       </Flex>
     </>
   );

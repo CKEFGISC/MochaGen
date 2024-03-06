@@ -1,6 +1,6 @@
 import BlocklyEditor from "./blockly/BlocklyEditor";
 import React from "react";
-import { Tabs, Text, Box } from "@radix-ui/themes";
+import { Grid, Tabs, Text, Box, Flex } from "@radix-ui/themes";
 
 // TODO: Replace with real data
 const subtasks = [
@@ -24,7 +24,7 @@ const subtasks = [
 
 const TokenEditor: React.FC = () => {
   return (
-    <Tabs.Root defaultValue="account">
+    <Tabs.Root defaultValue="subtask0">
       <Tabs.List>
         {subtasks.map((subtaskContent, subtaskIndex) => (
           <Tabs.Trigger value={"subtask" + subtaskIndex.toString()}> {subtaskContent.name}</Tabs.Trigger>
@@ -34,8 +34,10 @@ const TokenEditor: React.FC = () => {
       <Box>
         {subtasks.map((subtaskContent, subtaskIndex) => (
           <Tabs.Content value={"subtask" + subtaskIndex.toString()}>
-            <Text size="2">Subtask {subtaskContent.name}</Text>
-            <BlocklyEditor subtask_key={"subtask" + subtaskIndex.toString()} subtask_json={subtaskContent} />
+            <Flex direction="column" width="100%" align="start" justify="start" gap="4" m="4">
+              <Text size="2">Subtask {subtaskContent.name}</Text>
+              <BlocklyEditor subtask_key={"subtask" + subtaskIndex.toString()} subtask_json={subtaskContent} />
+            </Flex>
           </Tabs.Content>
         ))}
       </Box>

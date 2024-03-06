@@ -3,7 +3,7 @@ import * as Blockly from "blockly";
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   {
     type: "generator",
-    message0: "%1 Subtask %2 %3 %4 Tokens: %5 Output Format: %6",
+    message0: "%1 %2 %3 %4 Tokens: %5 Output Format: %6",
     args0: [
       {
         type: "field_label_serializable",
@@ -12,8 +12,8 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "field_label_serializable",
-        name: "subtask_id",
-        text: "1",
+        name: "dummy",
+        text: "",
       },
       {
         type: "input_end_row",
