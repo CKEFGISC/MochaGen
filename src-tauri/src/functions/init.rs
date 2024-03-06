@@ -1,4 +1,7 @@
 use serde::{Deserialize, Serialize};
+use::std::path::Path;
+use serde_json::json;
+use crate::functions::json;
 
 #[derive(Serialize, Deserialize)]
 struct Subtask {
@@ -27,8 +30,15 @@ struct Project {
 }
 
 #[tauri::command]
-pub fn create_project(project_name: &str, project_path: &str) -> Result<String, String> {
-  use serde_json::json;
+pub fn create_project(project_name: &str, project_path: &str) -> Result<(), String> {
+  // Convert to project path
+  let project_path: &Path = Path::new(project_path);
+  println!("project_path: {:?}", project_path);
+
+  // Get config file path
+  let config_path = project_path.join("config.mcg");
+
+  // Default project settings
   let project: Project = Project {
     project_name: String::from(project_name),
     description: String::from(""),
@@ -47,16 +57,25 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<String, 
     testcase_dir: String::from("testcase"),
     _comment: String::from(""),
   };
+  
+  // Convert to json and write it to file
   let json = json!(project);
-  let config_path = format!("{}/config.mcg", project_path);
-  crate::functions::json::write_json_to_file(&json, &config_path)
-    .expect("Problem creating project file.".into());
-  Ok("success".into())
+  let status = json::write_json_to_file(&json, config_path.to_str().unwrap());
+  match status {
+    Ok(_) => Ok(()),
+    Err(e) => Err(e.to_string().into()),
+  }
 }
 
 #[tauri::command]
-pub fn load_project(project_path: &str) -> Result<String, String> {
-  // crate::functions::json::get_mcg_with_project_directory(project_path);
-
-  Ok("success".to_string())
+pub fn load_project(path: &str) -> Result<String, String> {
+  // Fuzzy search for project directory
+  let project_directory: String = json::get_project_directory_with_config_file(&path);
+  
+  // Get config file path
+  let project_path: &Path = Path::new(project_directory.as_str());
+  let config_path: &Path = &project_path.join("config.mcg");
+  
+  // Parse the config file
+  Ok(json::parse(config_path.to_str().unwrap())?.to_string())
 }

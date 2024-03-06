@@ -3,19 +3,27 @@ import { Button, Flex, Text, Dialog, TextField, IconButton } from "@radix-ui/the
 import { FaRegFolderOpen } from "react-icons/fa";
 import { homeDir } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/api/dialog";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { invoke } from "@tauri-apps/api/tauri";
+import ProcessContext from "../../../utils/navbar/ProcessContext";
 import LoadContext from "../../../utils/loading/LoadContext";
+import { setConfigPath } from "../../../utils/ConfigPathKeeper";
 
 async function openProject(path: string) {
-  // TODO: call backend and open project
-  console.log("open project: ", path);
+  // Call backend and try to load json
+  await invoke("load_project", { path: path }).catch((e) => {
+    throw e;
+  });
+
+  // Set the path to the config path keeper
+  setConfigPath(path);
 }
 
 // Component
 export default function OpenProjectDialog() {
   const [projectPath, setProjectPath] = React.useState<string>("");
-  const navigate = useNavigate();
   const { toggleLoading, setLog } = React.useContext(LoadContext);
+  const { setProcess } = React.useContext(ProcessContext);
 
   const handleProjectPathChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProjectPath(event.target.value);
@@ -28,7 +36,7 @@ export default function OpenProjectDialog() {
       filters: [
         {
           name: "MochaGen Config File",
-          extensions: ["mochagen", "json", "config"],
+          extensions: ["mcg"],
         },
       ],
       defaultPath: await homeDir(),
@@ -81,15 +89,18 @@ export default function OpenProjectDialog() {
           <Dialog.Close
             onClick={() => {
               toggleLoading();
-              setLog("Opening project...");
+              setLog("Loading your project...");
               openProject(projectPath)
                 .then(() => {
                   toggleLoading();
                   setLog("");
-                  navigate("/project/description");
+                  setProcess({ type: "set", payload: 1 });
+                  toast.success("Project opened successfully!");
                 })
-                .catch(() => {
-                  alert("Couldn't open project");
+                .catch((e) => {
+                  toggleLoading();
+                  setLog("");
+                  toast.error("Couldn't open project: " + e);
                 });
             }}
           >
