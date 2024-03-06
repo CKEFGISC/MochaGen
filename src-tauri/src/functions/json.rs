@@ -5,8 +5,8 @@ use std::io;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-pub fn parse(json_path: String) -> Result<serde_json::Value, String> {
-  let contents = match std::fs::read_to_string(&json_path) {
+pub fn parse(json_path: &str) -> Result<serde_json::Value, String> {
+  let contents = match std::fs::read_to_string(&(json_path.as_str())) {
     Ok(contents) => contents,
     Err(e) => return Err(format!("Failed to read file: {}", e)),
   }; // 讀取json file
