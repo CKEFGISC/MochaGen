@@ -1,4 +1,4 @@
-use super::json;
+use super::{json, parser::parse_token};
 use serde_json;
 use std::process::Command;
 use tauri::utils::config::parse::parse_json;
@@ -6,7 +6,7 @@ use tauri::utils::config::parse::parse_json;
 #[tauri::command]
 pub fn generate_testdata(path: &str) -> Result<String, String> {
   let project_path = json::get_project_directory_with_config_file(path);
-  let config = json::parse(path.to_string()).unwrap();
+  let config = json::parse(path).unwrap();
   // Check if config is an array
   if let Some(subtasks) = config["subtasks"].as_array() {
     for subtask in subtasks {
