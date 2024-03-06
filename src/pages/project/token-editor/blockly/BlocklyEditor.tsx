@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import { blocks } from "./blocks/tokenblocks";
@@ -19,10 +20,10 @@ export default function BlocklyEditor(props: any) {
   useEffect(() => {
     // 當 props.subtask_key 改變時，更新 blocklyDiv 的 id
     if (workspaceRef.current) {
-      save(workspaceRef.current, storageKey);
+      save(workspaceRef.current, storageKey, props.subtask_content);
       setStorageKey(props.subtask_key);
       workspaceRef.current.clear();
-      load(workspaceRef.current, storageKey);
+      load(workspaceRef.current, storageKey, props.subtask_content);
     }
   }, [props.subtask_key]);
 
