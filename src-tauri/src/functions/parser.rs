@@ -33,12 +33,10 @@ signed main(){
 #[tauri::command]
 pub fn parse_token(token_path: &str, gen_path: &str, subtask_name: &str) -> Result<String, String> {
   //let token_path = format!("{}/{}", TEMPORARY_TOKEN, TOKEN_POSITION); //路徑 因為還沒創好先用我存在本地的
-  println!("{}", token_path);
   let contents = match std::fs::read_to_string(&token_path) {
     Ok(contents) => contents,
     Err(e) => return Err(format!("Failed to read {}: {}", token_path, e)),
   }; // 讀取json file
-  println!("{}", token_path);
   let tokens_all: serde_json::Result<serde_json::Value> = serde_json::from_str(&contents); //parse json
   match tokens_all {
     //chatgpt 跟我說這樣編譯才會過 好像是因為parse的結果會有一個status code，成功或失敗都要接住，畢竟rust不能出錯嘛
@@ -77,7 +75,6 @@ pub fn parse_token(token_path: &str, gen_path: &str, subtask_name: &str) -> Resu
             } else {
               code = format!("{}.{}(", code, key);
             }
-            println!("{}", printable(value));
             if let Some(attributes_array) = value.as_object() {
               for (i, attribute) in attributes_array.iter() {
                 if (code.ends_with('(')) {
@@ -116,11 +113,10 @@ pub fn parse_token(token_path: &str, gen_path: &str, subtask_name: &str) -> Resu
 }
 // /Users/jimtsai/ytp/test/subtask1/token.json
 #[tauri::command]
-pub fn run_parser(mcg_path: &str) -> Result<String, String> {
-  let project_path = json::get_project_directory_with_config_file(mcg_path);
-  let config = json::parse(mcg_path.to_string()).unwrap();
+pub fn run_parser(path: &str) -> Result<String, String> {
+  let project_path = json::get_project_directory_with_config_file(path);
+  let config = json::parse(path.to_string()).unwrap();
   // Check if config is an array
-  println!("{}", config);
   if let Some(subtasks) = config["subtasks"].as_array() {
     for subtask in subtasks {
       // Construct paths for token, generator, and subtask
@@ -139,17 +135,9 @@ pub fn run_parser(mcg_path: &str) -> Result<String, String> {
         project_path,
         subtask["name"].as_str().unwrap_or("")
       );
-      println!(
-        "{} {} {} {}",
-        token_path, project_path, subtask_path, gen_path
-      );
 
       // Parse token for each subtask
-      let res = parse_token(&token_path, &gen_path, &subtask_path);
-      match res {
-        Ok(goo) => println!("Success, {}", goo),
-        Err(goo) => println!("Success, {}", goo),
-      }
+      parse_token(&token_path, &gen_path, &subtask_path);
     }
   } else {
     return Err("Project configuration is not an array".to_string());
