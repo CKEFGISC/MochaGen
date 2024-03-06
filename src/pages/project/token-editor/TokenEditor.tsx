@@ -101,7 +101,7 @@ const TokenEditor: React.FC = () => {
                   </Flex>
                 </Grid>
 
-                <BlocklyEditor subtask_key={"subtask" + subtaskIndex.toString()} subtask_json={subtaskContent} />
+                <BlocklyEditor subtask_key={"subtask" + subtaskIndex.toString()} subtask_content={subtaskContent} />
               </Flex>
             </Tabs.Content>
           ))}

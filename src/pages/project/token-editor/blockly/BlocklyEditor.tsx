@@ -3,7 +3,7 @@ import * as Blockly from "blockly";
 import { blocks } from "./blocks/tokenblocks";
 import { CrossTabCopyPaste } from "@blockly/plugin-cross-tab-copy-paste";
 import { tokenGenerator } from "./generators/token";
-import { save, load } from "./serialization";
+import { save, load, saveCode } from "./serialization";
 import { toolbox } from "./toolbox";
 import "./blockly.css";
 
@@ -95,6 +95,7 @@ export default function BlocklyEditor(props: any) {
   const runCode = (workspace: Blockly.WorkspaceSvg) => {
     try {
       const code = tokenGenerator.workspaceToCode(workspace);
+      saveCode(props.subtask_content, code);
       if (codeDivRef.current) codeDivRef.current.textContent = code;
     } catch (e) {
       console.error(e);
