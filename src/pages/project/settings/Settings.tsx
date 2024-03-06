@@ -23,7 +23,7 @@ const Settings: React.FC = () => {
   }
 
   const [subtaskAmount, setSubtaskAmount] = React.useState<number>(1);
-  const [subtaskFields, setSubtaskFields] = React.useState<SubtaskField[]>([{ name: "", testcaseCounts: 0 }]);
+  const [subtaskFields, setSubtaskFields] = React.useState<SubtaskField[]>([{ name: "", testcaseCounts: 1 }]);
 
   const handleSubtaskAmountsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubtaskAmount(parseInt(e.target.value));
@@ -197,7 +197,9 @@ const Settings: React.FC = () => {
                       </Form.Control>
                       <Form.Message className="FormMessage" match="patternMismatch">
                         <code>
-                          <pre style={{ margin: "0px" }}> {"Name must only contain A-Z, a-z, 0-9, or _"}</pre>
+                          <pre style={{ margin: "0px", whiteSpace: "pre-wrap" }}>
+                            {"Name must only contain A-Z, a-z, 0-9, or underline."}
+                          </pre>
                         </code>
                       </Form.Message>
                     </Form.FormField>
@@ -227,7 +229,7 @@ const Settings: React.FC = () => {
                       </Form.Message>
                       <Form.Message className="FormMessage" match="rangeUnderflow">
                         <code>
-                          <pre style={{ margin: "0px" }}> {"require positive interger"}</pre>
+                          <pre style={{ margin: "0px", whiteSpace: "pre-wrap" }}> {"require positive interger"}</pre>
                         </code>
                       </Form.Message>
                     </Form.FormField>
