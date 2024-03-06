@@ -63,7 +63,7 @@ function CopyTokens(props: any) {
 
 const TokenEditor: React.FC = () => {
   return (
-    <Flex direction="column" gap="2">
+    <Flex direction="column" gap="0" justify="start">
       <Heading
         size="5"
         style={{
