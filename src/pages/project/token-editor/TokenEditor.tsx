@@ -1,6 +1,6 @@
-import BlocklyEditor from "./blockly/BlocklyEditor";
+import BlocklyEditor, { replaceToken } from "./blockly/BlocklyEditor";
 import React from "react";
-import { Grid, Tabs, Text, Box, Flex } from "@radix-ui/themes";
+import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog } from "@radix-ui/themes";
 
 // TODO: Replace with real data
 const subtasks = [
@@ -22,26 +22,92 @@ const subtasks = [
   },
 ];
 
+function CopyTokens(props: any) {
+  if (props.currentSubtaskIndex == 0) {
+    return <div />;
+  }
+  return (
+    <AlertDialog.Root>
+      <AlertDialog.Trigger>
+        <Button radius="large"> Copy tokens from {props.firstSubtaskContent.name}</Button>
+      </AlertDialog.Trigger>
+      <AlertDialog.Content style={{ maxWidth: 450 }}>
+        <AlertDialog.Title>Copy tokens from {props.firstSubtaskContent.name}</AlertDialog.Title>
+        <AlertDialog.Description size="2">
+          Are you sure? Tokens of current subtask ({props.currentSubtaskContent.name}) will be replaced by{" "}
+          {props.firstSubtaskContent.name}'s tokens .
+        </AlertDialog.Description>
+
+        <Flex gap="3" mt="4" justify="end">
+          <AlertDialog.Cancel>
+            <Button variant="soft" color="gray">
+              Cancel
+            </Button>
+          </AlertDialog.Cancel>
+          <AlertDialog.Action>
+            <Button
+              variant="solid"
+              color="red"
+              onClick={() => {
+                replaceToken(props.currentSubtaskIndex, props.currentSubtaskContent, props.firstSubtaskContent);
+              }}
+            >
+              Replace and Copy
+            </Button>
+          </AlertDialog.Action>
+        </Flex>
+      </AlertDialog.Content>
+    </AlertDialog.Root>
+  );
+}
+
 const TokenEditor: React.FC = () => {
   return (
-    <Tabs.Root defaultValue="subtask0">
-      <Tabs.List>
-        {subtasks.map((subtaskContent, subtaskIndex) => (
-          <Tabs.Trigger value={"subtask" + subtaskIndex.toString()}> {subtaskContent.name}</Tabs.Trigger>
-        ))}
-      </Tabs.List>
+    <Flex direction="column" gap="2">
+      <Heading
+        size="5"
+        mt="6"
+        style={{
+          textAlign: "center",
+        }}
+      >
+        Token Editor
+      </Heading>
 
-      <Box>
-        {subtasks.map((subtaskContent, subtaskIndex) => (
-          <Tabs.Content value={"subtask" + subtaskIndex.toString()}>
-            <Flex direction="column" width="100%" align="start" justify="start" gap="4" m="4">
-              <Text size="2">Subtask {subtaskContent.name}</Text>
-              <BlocklyEditor subtask_key={"subtask" + subtaskIndex.toString()} subtask_json={subtaskContent} />
-            </Flex>
-          </Tabs.Content>
-        ))}
-      </Box>
-    </Tabs.Root>
+      <Tabs.Root defaultValue="subtask0">
+        <Tabs.List>
+          {subtasks.map((subtaskContent, subtaskIndex) => (
+            <Tabs.Trigger value={"subtask" + subtaskIndex.toString()}> {subtaskContent.name}</Tabs.Trigger>
+          ))}
+        </Tabs.List>
+
+        <Box>
+          {subtasks.map((subtaskContent, subtaskIndex) => (
+            <Tabs.Content value={"subtask" + subtaskIndex.toString()}>
+              <Flex direction="column" width="100%" align="start" justify="start" gap="4" m="4">
+                <Grid columns="2" rows="1" width="100%">
+                  <div>
+                    <Text size="2">
+                      Drag the blocks to edit tokens of {subtaskContent.name}. <br />
+                    </Text>
+                    <Text size="2">Tokens will be transform into generator.cpp later.</Text>
+                  </div>
+                  <Flex direction="row-reverse">
+                    <CopyTokens
+                      currentSubtaskIndex={subtaskIndex}
+                      currentSubtaskContent={subtaskContent}
+                      firstSubtaskContent={subtasks[0]}
+                    />
+                  </Flex>
+                </Grid>
+
+                <BlocklyEditor subtask_key={"subtask" + subtaskIndex.toString()} subtask_json={subtaskContent} />
+              </Flex>
+            </Tabs.Content>
+          ))}
+        </Box>
+      </Tabs.Root>
+    </Flex>
   );
 };
 

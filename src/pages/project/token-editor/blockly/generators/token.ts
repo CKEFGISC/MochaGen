@@ -15,9 +15,18 @@ class MyCodeGenerator extends Blockly.Generator {
 }
 export const tokenGenerator = new MyCodeGenerator("TOKEN");
 
+function saveParser(str: string) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    console.error(e);
+    return {};
+  }
+}
+
 tokenGenerator.forBlock["generator"] = function (block, generator) {
-  const tokens = JSON.parse("[" + String(generator.statementToCode(block, "token_section")) + "]");
-  const output = JSON.parse("[" + String(generator.statementToCode(block, "print_section")) + "]");
+  const tokens = saveParser("[" + String(generator.statementToCode(block, "token_section")) + "]");
+  const output = saveParser("[" + String(generator.statementToCode(block, "print_section")) + "]");
   const code = {
     tokens: tokens,
     output: output,
@@ -32,7 +41,7 @@ tokenGenerator.forBlock["math_number"] = function (block) {
 
 tokenGenerator.forBlock["set_id"] = function (block, generator) {
   const id: string = "_" + block.getFieldValue("ID");
-  const object: JSON = JSON.parse(String(generator.valueToCode(block, "object", Order.ATOMIC)));
+  const object: JSON = saveParser(String(generator.valueToCode(block, "object", Order.ATOMIC)));
   let code = {
     id: id,
     object: object,

@@ -7,6 +7,12 @@ import { save, load } from "./serialization";
 import { toolbox } from "./toolbox";
 import "./blockly.css";
 
+export function replaceToken(currentSubtaskIndex: number, currentSubtaskContent: JSON, firstSubtaskContent: JSON) {
+  console.log("Replace and Copy");
+  load(Blockly.getMainWorkspace(), "subtask0", firstSubtaskContent);
+  save(Blockly.getMainWorkspace(), "subtask" + currentSubtaskIndex, currentSubtaskContent);
+}
+
 export default function BlocklyEditor(props: any) {
   const blocklyDivRef = useRef<HTMLDivElement | null>(null);
   const codeDivRef = useRef<HTMLPreElement | null>(null);
@@ -87,8 +93,12 @@ export default function BlocklyEditor(props: any) {
   }, [blocklyDivRef]);
 
   const runCode = (workspace: Blockly.WorkspaceSvg) => {
-    const code = tokenGenerator.workspaceToCode(workspace);
-    if (codeDivRef.current) codeDivRef.current.textContent = code;
+    try {
+      const code = tokenGenerator.workspaceToCode(workspace);
+      if (codeDivRef.current) codeDivRef.current.textContent = code;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
