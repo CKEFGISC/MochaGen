@@ -14,13 +14,15 @@ async function createNewProject(name: string, basePath: string) {
   // TODO: Create a new project
   let joinedPath = await join(basePath, name);
 
-  createDir(joinedPath, { recursive: false }).catch((e) => {
+  await createDir(joinedPath, { recursive: true }).catch((e) => {
     throw e;
   });
 
   // For testing purpose
   // await new Promise((r) => setTimeout(r, 2000));
-  await invoke("create_project", { projectName: name, projectPath: joinedPath });
+  await invoke("create_project", { projectName: name, projectPath: joinedPath }).catch((e) => {
+    throw e;
+  });
 }
 // Component
 export default function CreateProjectDialog() {
@@ -132,9 +134,9 @@ export default function CreateProjectDialog() {
                   setProcess({ type: "set", payload: 1 });
                   toast.success("Created new project: " + joinedPath);
                 })
-                .catch(() => {
+                .catch((e) => {
                   toggleLoading();
-                  toast.error("Couldn't create new project. Please try again.");
+                  toast.error("Couldn't create new project: " + e);
                 });
             }}
           >

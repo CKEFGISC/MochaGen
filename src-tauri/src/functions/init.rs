@@ -29,6 +29,12 @@ struct Project {
 #[tauri::command]
 pub fn create_project(project_name: &str, project_path: &str) -> Result<String, String> {
   use serde_json::json;
+  use std::path::Path;
+  let project_path = Path::new(project_path);
+  if !project_path.is_dir() {
+    return Err("Project path is not a directory.".into());
+  }
+  let config_path = project_path.join("config.mcg");
   let project: Project = Project {
     project_name: String::from(project_name),
     description: String::from(""),
@@ -48,15 +54,14 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<String, 
     _comment: String::from(""),
   };
   let json = json!(project);
-  let config_path = format!("{}/config.mcg", project_path);
-  crate::functions::json::write_json_to_file(&json, &config_path)
+  crate::functions::json::write_json_to_file(&json, config_path.to_str().unwrap())
     .expect("Problem creating project file.".into());
   Ok("success".into())
 }
 
 #[tauri::command]
 pub fn load_project(project_path: &str) -> Result<String, String> {
-  crate::functions::json::get_mcg_with_project_directory(project_path);
-
+  let config_path = crate::functions::json::get_mcg_with_project_directory(project_path);
+   
   Ok("success".to_string())
 }
