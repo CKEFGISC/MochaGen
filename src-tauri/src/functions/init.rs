@@ -1,4 +1,7 @@
 use serde::{Deserialize, Serialize};
+use::std::path::Path;
+use serde_json::json;
+use crate::functions::json;
 
 #[derive(Serialize, Deserialize)]
 struct Subtask {
@@ -28,9 +31,7 @@ struct Project {
 
 #[tauri::command]
 pub fn create_project(project_name: &str, project_path: &str) -> Result<String, String> {
-  use serde_json::json;
-  use std::path::Path;
-  let project_path = Path::new(project_path);
+  let project_path: &Path = Path::new(project_path);
   if !project_path.is_dir() {
     return Err("Project path is not a directory.".into());
   }
@@ -54,14 +55,25 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<String, 
     _comment: String::from(""),
   };
   let json = json!(project);
-  crate::functions::json::write_json_to_file(&json, config_path.to_str().unwrap())
+  json::write_json_to_file(&json, config_path.to_str().unwrap())
     .expect("Problem creating project file.".into());
   Ok("success".into())
 }
 
 #[tauri::command]
-pub fn load_project(project_path: &str) -> Result<String, String> {
-  let config_path = crate::functions::json::get_mcg_with_project_directory(project_path);
-   
-  Ok("success".to_string())
+pub fn load_project(path: &str) -> Result<String, String> {
+  // Fuzzy search for project directory
+  let project_directory: String = json::get_project_directory_with_config_file(&path);
+  
+  // Get config file path
+  let project_path: &Path = Path::new(project_directory.as_str());
+  let config_path: &Path = &project_path.join("config.mcg");
+  
+  // Parse the config file
+  let content = json::parse(config_path.to_str().unwrap());
+  
+  match content {
+    Ok(parsed_json) => Ok(parsed_json.to_string()),
+    Err(e) => Err(e)
+  } 
 }
