@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Flex } from "@radix-ui/themes";
+import { Container, Flex } from "@radix-ui/themes";
 import Navbar from "../../utils/navbar/Navbar";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,7 +24,7 @@ const Layout: React.FC = () => {
         display="flex"
         direction="row"
         align="center"
-        justify="center"
+        justify="start"
         gap="4"
         style={{
           width: "100%",
@@ -32,7 +32,9 @@ const Layout: React.FC = () => {
         }}
       >
         <Navbar />
-        <Outlet />
+        <Container>
+          <Outlet />
+        </Container>
       </Flex>
       <Flex align="center" width="100%">
         <ProcessControl />

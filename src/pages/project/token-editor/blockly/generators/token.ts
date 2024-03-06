@@ -16,13 +16,9 @@ class MyCodeGenerator extends Blockly.Generator {
 export const tokenGenerator = new MyCodeGenerator("TOKEN");
 
 tokenGenerator.forBlock["generator"] = function (block, generator) {
-  const subtask_id = block.getFieldValue("subtask_id");
-  const testdata_count = 1; // TODO: Finish Subtask Mode
   const tokens = JSON.parse("[" + String(generator.statementToCode(block, "token_section")) + "]");
   const output = JSON.parse("[" + String(generator.statementToCode(block, "print_section")) + "]");
   const code = {
-    subtask_id: subtask_id,
-    testdata_count: testdata_count,
     tokens: tokens,
     output: output,
   };

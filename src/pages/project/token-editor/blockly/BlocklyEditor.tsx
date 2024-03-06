@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useRef, useState } from "react";
 import * as Blockly from "blockly";
 import { blocks } from "./blocks/tokenblocks";
@@ -16,6 +15,16 @@ export default function BlocklyEditor(props: any) {
 
   // Register the blocks and generator with Blockly
   Blockly.common.defineBlocks(blocks);
+
+  const options = {
+    contextMenu: true,
+    shortcut: true,
+  };
+
+  if (!Blockly.ContextMenuRegistry.registry.getItem("blockCopyToStorage")) {
+    const plugin = new CrossTabCopyPaste();
+    plugin.init(options);
+  }
 
   useEffect(() => {
     // 當 props.subtask_key 改變時，更新 blocklyDiv 的 id
@@ -42,6 +51,7 @@ export default function BlocklyEditor(props: any) {
           scaleSpeed: 1.0,
           pinch: true,
         },
+        disable: true,
         move: {
           scrollbars: {
             horizontal: true,
@@ -54,15 +64,6 @@ export default function BlocklyEditor(props: any) {
       });
       workspaceRef.current = workspace;
 
-      const options = {
-        contextMenu: true,
-        shortcut: true,
-      };
-
-      // Initialize plugin.
-      // const plugin = new CrossTabCopyPaste();
-      // plugin.init(options);
-
       // Load the initial state from storage and run the code.
       load(workspace, storageKey, props.subtask_content);
       runCode(workspace);
@@ -72,6 +73,8 @@ export default function BlocklyEditor(props: any) {
         if (e.isUiEvent) return;
         if (workspace) save(workspace, storageKey, props.subtask_content);
       });
+
+      workspace.addChangeListener(Blockly.Events.disableOrphans);
 
       // Whenever the workspace changes meaningfully, run the code again.
       workspace.addChangeListener((e) => {
