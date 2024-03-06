@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
-use::std::path::Path;
-use serde_json::json;
 use crate::functions::json;
+use ::std::path::Path;
+use serde::{Deserialize, Serialize};
+use serde_json::json;
 
 #[derive(Serialize, Deserialize)]
 struct Subtask {
@@ -57,7 +57,7 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<(), Stri
     testcase_dir: String::from("testcase"),
     _comment: String::from(""),
   };
-  
+
   // Convert to json and write it to file
   let json = json!(project);
   let status = json::write_json_to_file(&json, config_path.to_str().unwrap());
@@ -71,11 +71,11 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<(), Stri
 pub fn load_project(path: &str) -> Result<String, String> {
   // Fuzzy search for project directory
   let project_directory: String = json::get_project_directory_with_config_file(&path);
-  
+
   // Get config file path
   let project_path: &Path = Path::new(project_directory.as_str());
   let config_path: &Path = &project_path.join("config.mcg");
-  
+
   // Parse the config file
   Ok(json::parse(config_path.to_str().unwrap())?.to_string())
 }
