@@ -30,12 +30,15 @@ struct Project {
 }
 
 #[tauri::command]
-pub fn create_project(project_name: &str, project_path: &str) -> Result<String, String> {
+pub fn create_project(project_name: &str, project_path: &str) -> Result<(), String> {
+  // Convert to project path
   let project_path: &Path = Path::new(project_path);
-  if !project_path.is_dir() {
-    return Err("Project path is not a directory.".into());
-  }
+  println!("project_path: {:?}", project_path);
+
+  // Get config file path
   let config_path = project_path.join("config.mcg");
+
+  // Default project settings
   let project: Project = Project {
     project_name: String::from(project_name),
     description: String::from(""),
@@ -54,10 +57,14 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<String, 
     testcase_dir: String::from("testcase"),
     _comment: String::from(""),
   };
+  
+  // Convert to json and write it to file
   let json = json!(project);
-  json::write_json_to_file(&json, config_path.to_str().unwrap())
-    .expect("Problem creating project file.".into());
-  Ok("success".into())
+  let status = json::write_json_to_file(&json, config_path.to_str().unwrap());
+  match status {
+    Ok(_) => Ok(()),
+    Err(e) => Err(e.to_string().into()),
+  }
 }
 
 #[tauri::command]
@@ -70,10 +77,5 @@ pub fn load_project(path: &str) -> Result<String, String> {
   let config_path: &Path = &project_path.join("config.mcg");
   
   // Parse the config file
-  let content = json::parse(config_path.to_str().unwrap());
-  
-  match content {
-    Ok(parsed_json) => Ok(parsed_json.to_string()),
-    Err(e) => Err(e)
-  } 
+  Ok(json::parse(config_path.to_str().unwrap())?.to_string())
 }
