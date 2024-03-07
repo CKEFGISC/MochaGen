@@ -16,7 +16,7 @@ async function openProject(path: string) {
   });
 
   // Set the path to the config path keeper
-  setConfigPath(path);
+  await setConfigPath(path);
 }
 
 // Component
