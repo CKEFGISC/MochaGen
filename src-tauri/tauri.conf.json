@@ -31,8 +31,8 @@
       "active": true,
       "targets": ["deb", "nsis", "msi", "app", "dmg", "updater"],
       "identifier": "com.MochaGen.dev",
-      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
-      "resources": ["../assembler/lib"]
+      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"]
+      //"resources": ["../assembler/lib"]
     },
 
     "security": {
