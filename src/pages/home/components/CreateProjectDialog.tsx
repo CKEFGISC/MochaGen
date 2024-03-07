@@ -7,6 +7,7 @@ import { FaRegFolderOpen } from "react-icons/fa";
 import { homeDir, join } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/api/dialog";
 import { invoke } from "@tauri-apps/api/tauri";
+import { setConfigPath } from "../../../utils/ConfigPathKeeper";
 
 // Create Directory then Call Backend API
 async function createNewProject(name: string, basePath: string) {
@@ -16,6 +17,9 @@ async function createNewProject(name: string, basePath: string) {
   await invoke("create_project", { projectName: name, projectPath: joinedPath }).catch((e) => {
     throw e;
   });
+
+  // Set the path to the config path keeper
+  setConfigPath(joinedPath);
 }
 // Component
 export default function CreateProjectDialog() {
