@@ -34,6 +34,7 @@ export default function CodeEditor() {
         gap="4"
         style={{
           height: "max-content",
+          width: "100%",
           flex: "1",
         }}
       >
