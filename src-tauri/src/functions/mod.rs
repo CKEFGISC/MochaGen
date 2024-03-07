@@ -5,3 +5,4 @@ pub mod init;
 pub mod json;
 pub mod parser;
 pub mod settings;
+pub mod subtask;
