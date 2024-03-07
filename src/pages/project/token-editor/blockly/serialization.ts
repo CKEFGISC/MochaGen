@@ -6,7 +6,7 @@
 
 import * as Blockly from "blockly/core";
 import { invoke } from "@tauri-apps/api/tauri";
-import { getConfigPath, setConfigPath } from "../../../../utils/ConfigPathKeeper";
+import { getConfigPath } from "../../../../utils/ConfigPathKeeper";
 
 const storageKey = (Math.random() + 1).toString(36).substring(7);
 

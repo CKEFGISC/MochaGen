@@ -1,10 +1,13 @@
 import { Flex, Heading, Text, Tabs } from "@radix-ui/themes";
 import Editor, { loader } from "@monaco-editor/react";
+import { invoke } from "@tauri-apps/api/tauri";
+import { getConfigPath } from "../../../utils/ConfigPathKeeper";
+
 export default function CodeEditor() {
   loader.config({ paths: { vs: "/node_modules/monaco-editor/min/vs" } });
 
   // TODO: Get subtasks from backend
-  const subtasks = [
+  let subtasks = [
     {
       name: "subtask1",
       testcase_count: 5,
@@ -22,6 +25,17 @@ export default function CodeEditor() {
       blockly: "subtasks/2/blockly.json",
     },
   ];
+
+  // Get subtasks from backend
+  invoke("get_subtasks", { config_path: getConfigPath() })
+    .then((result: string) => {
+      console.log(result);
+      subtasks = JSON.parse(result);
+    })
+    .catch((e: string) => {
+      console.error("API call failed:", e);
+      return;
+    });
 
   return (
     <>

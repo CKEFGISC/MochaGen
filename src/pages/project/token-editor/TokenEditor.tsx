@@ -1,26 +1,8 @@
 import BlocklyEditor, { replaceToken } from "./blockly/BlocklyEditor";
 import React from "react";
 import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog, Container } from "@radix-ui/themes";
-
-// TODO: Replace with real data
-const subtasks = [
-  {
-    name: "subtask1",
-    testcase_count: 5,
-    generator: "subtasks/1/generator.cpp",
-    checker: "subtasks/1/checker.cpp",
-    token: "subtasks/1/token.json",
-    blockly: "subtasks/1/blockly.json",
-  },
-  {
-    name: "subtask2",
-    testcase_count: 5,
-    generator: "subtasks/2/generator.cpp",
-    checker: "subtasks/2/checker.cpp",
-    token: "subtasks/2/token.json",
-    blockly: "subtasks/2/blockly.json",
-  },
-];
+import { invoke } from "@tauri-apps/api/tauri";
+import { getConfigPath } from "../../../utils/ConfigPathKeeper";
 
 function CopyTokens(props: any) {
   if (props.currentSubtaskIndex == 0) {
@@ -62,6 +44,37 @@ function CopyTokens(props: any) {
 }
 
 const TokenEditor: React.FC = () => {
+  // TODO: Replace with real data
+  let subtasks = [
+    {
+      name: "subtask1",
+      testcase_count: 5,
+      generator: "subtasks/1/generator.cpp",
+      checker: "subtasks/1/checker.cpp",
+      token: "subtasks/1/token.json",
+      blockly: "subtasks/1/blockly.json",
+    },
+    {
+      name: "subtask2",
+      testcase_count: 5,
+      generator: "subtasks/2/generator.cpp",
+      checker: "subtasks/2/checker.cpp",
+      token: "subtasks/2/token.json",
+      blockly: "subtasks/2/blockly.json",
+    },
+  ];
+
+  // Get subtasks from backend
+  invoke("get_subtasks", { config_path: getConfigPath() })
+    .then((result: string) => {
+      console.log(result);
+      subtasks = JSON.parse(result);
+    })
+    .catch((e: string) => {
+      console.error("API call failed:", e);
+      return;
+    });
+
   return (
     <Flex direction="column" gap="0" justify="start">
       <Heading
