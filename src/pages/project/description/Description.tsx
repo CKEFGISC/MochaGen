@@ -16,10 +16,17 @@ export default function Description() {
           flex: "1",
         }}
       >
-        <Heading size="8" align="center">
-          Description
-        </Heading>
-        <Text align="center">Get your description ready! (Markdown syntax only)</Text>
+        <Flex direction="column" gap="2" align="center" width="100%" height="max-content">
+          <Heading
+            size="5"
+            style={{
+              textAlign: "center",
+            }}
+          >
+            Project Settings
+          </Heading>
+          <Text align="center">Get your description ready! (Markdown syntax only)</Text>
+        </Flex>
         <Editor height="70vh" width="80vw" theme="vs" defaultLanguage="markdown" />
       </Flex>
     </>
