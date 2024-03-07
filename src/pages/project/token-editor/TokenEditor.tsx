@@ -1,6 +1,6 @@
 import BlocklyEditor, { replaceToken } from "./blockly/BlocklyEditor";
 import React from "react";
-import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog, Container } from "@radix-ui/themes";
+import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog } from "@radix-ui/themes";
 import { invoke } from "@tauri-apps/api/tauri";
 import { getConfigPath } from "../../../utils/ConfigPathKeeper";
 
@@ -65,7 +65,7 @@ const TokenEditor: React.FC = () => {
   ];
 
   // Get subtasks from backend
-  invoke("get_subtasks", { config_path: getConfigPath() })
+  invoke("get_subtasks", { configPath: getConfigPath() })
     .then((result: string) => {
       console.log(result);
       subtasks = JSON.parse(result);
@@ -112,7 +112,6 @@ const TokenEditor: React.FC = () => {
                     />
                   </Flex>
                 </Grid>
-
                 <BlocklyEditor subtask_key={"subtask" + subtaskIndex.toString()} subtask_content={subtaskContent} />
               </Flex>
             </Tabs.Content>

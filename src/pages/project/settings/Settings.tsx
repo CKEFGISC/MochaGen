@@ -1,7 +1,7 @@
-import { TextField, Grid, Button, TextArea, Box, Flex, Heading, Text } from "@radix-ui/themes";
+import { TextField, Button, TextArea, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
 import * as React from "react";
-import { platform } from "@tauri-apps/api/os";
+// import { platform } from "@tauri-apps/api/os";
 
 // async function checkGppPath() {
 //   const commandName = (await platform()) === "win32" ? "where" : "which";

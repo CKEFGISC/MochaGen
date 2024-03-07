@@ -1,5 +1,4 @@
-import React from "react";
-import { Grid, Box, Flex, Heading, Text } from "@radix-ui/themes";
+import { Grid, Flex, Text } from "@radix-ui/themes";
 import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
 import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
 

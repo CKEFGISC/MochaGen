@@ -35,10 +35,10 @@ export default function BlocklyEditor(props: any) {
   useEffect(() => {
     // 當 props.subtask_key 改變時，更新 blocklyDiv 的 id
     if (workspaceRef.current) {
-      save(workspaceRef.current, storageKey, props.subtask_content);
-      setStorageKey(props.subtask_key);
       workspaceRef.current.clear();
-      load(workspaceRef.current, storageKey, props.subtask_content);
+      setStorageKey(props.subtask_key);
+      console.error("load1", props.subtask_key);
+      load(workspaceRef.current, props.subtask_key, props.subtask_content);
     }
   }, [props.subtask_key]);
 
@@ -71,13 +71,18 @@ export default function BlocklyEditor(props: any) {
       workspaceRef.current = workspace;
 
       // Load the initial state from storage and run the code.
+      // console.error("load2", storageKey);
       load(workspace, storageKey, props.subtask_content);
       runCode(workspace);
 
       // Every time the workspace changes state, save the changes to storage.
       workspace.addChangeListener((e) => {
         if (e.isUiEvent) return;
-        if (workspace) save(workspace, storageKey, props.subtask_content);
+
+        if (workspace) {
+          console.error("save2", storageKey);
+          save(workspace, storageKey, props.subtask_content);
+        }
       });
 
       workspace.addChangeListener(Blockly.Events.disableOrphans);

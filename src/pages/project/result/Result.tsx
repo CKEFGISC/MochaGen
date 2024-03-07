@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Flex, Heading, Text, Table, HoverCard } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text, Table } from "@radix-ui/themes";
 
 const Result: React.FC = () => {
   return (

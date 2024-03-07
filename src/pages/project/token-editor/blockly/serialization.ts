@@ -18,14 +18,13 @@ const storageKey = (Math.random() + 1).toString(36).substring(7);
  */
 export const save = function (workspace: Blockly.Workspace, subtask_key: string, subtask_content: JSON) {
   const data = Blockly.serialization.workspaces.save(workspace);
-  console.log("GGG", JSON.stringify(subtask_content));
-
+  // console.error("save", subtask_key);
   invoke("save_blockly", {
     configPath: getConfigPath(),
     subtaskContent: JSON.stringify(subtask_content),
     blocklyStatus: JSON.stringify(data),
   });
-  // window.sessionStorage?.setItem(storageKey + subtask_key, JSON.stringify(data));
+  window.sessionStorage?.setItem(storageKey + subtask_key, JSON.stringify(data));
 };
 
 /**
@@ -34,7 +33,7 @@ export const save = function (workspace: Blockly.Workspace, subtask_key: string,
  * @param subtask_key The key of the subtask to save. format: "subtask0", "subtask1", ...
  * @param token The token from code generation of the subtask to save.
  */
-export const saveCode = function (subtask_content: JSON, token: string) {
+export const saveCode = async function (subtask_content: JSON, token: string) {
   invoke("save_token", {
     configPath: getConfigPath(),
     subtaskContent: JSON.stringify(subtask_content),
@@ -46,16 +45,25 @@ export const saveCode = function (subtask_content: JSON, token: string) {
  * Loads saved state from local storage into the given workspace.
  * @param workspace Blockly workspace to load into.
  */
-export const load = function (workspace: Blockly.Workspace, subtask_key: string, subtask_content: JSON) {
+export const load = async function (workspace: Blockly.Workspace, subtask_key: string, subtask_content: JSON) {
   // const data = window.sessionStorage?.getItem(storageKey + subtask_key);
+  // if (!data) return;
+
+  // // Don't emit events during loading.
+  // Blockly.Events.disable();
+  // Blockly.serialization.workspaces.load(JSON.parse(data as string), workspace, undefined);
+  // Blockly.Events.enable();
+  // return;
 
   invoke("load_blockly", {
     configPath: getConfigPath(),
     subtaskContent: JSON.stringify(subtask_content),
   })
     .then((data: string) => {
-      if (!data) return;
-
+      if (!data) {
+        return;
+      }
+      console.error("data", data);
       // Don't emit events during loading.
       Blockly.Events.disable();
       Blockly.serialization.workspaces.load(JSON.parse(data as string), workspace, undefined);

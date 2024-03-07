@@ -82,6 +82,7 @@ export default function CodeEditor() {
                   <Editor height="60dvh" width="40vw" theme="vs" defaultLanguage="cpp" />
                 </Flex>
               </Flex>
+              <text display={"none"}>{subtaskContent.token}</text>
             </Tabs.Content>
           ))}
         </Tabs.Root>

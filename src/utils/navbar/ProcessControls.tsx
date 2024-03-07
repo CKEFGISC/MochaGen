@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, IconButton, Box, Container, Flex } from "@radix-ui/themes";
+import { Grid, IconButton, Flex } from "@radix-ui/themes";
 import { ThickArrowRightIcon, ThickArrowLeftIcon } from "@radix-ui/react-icons";
 import ProcessContext from "./ProcessContext";
 
