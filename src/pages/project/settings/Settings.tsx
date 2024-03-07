@@ -12,15 +12,15 @@ import { platform } from "@tauri-apps/api/os";
 // checkGppPath();
 
 const Settings: React.FC = () => {
-  // @lemonilemon
-  // TODO: handle form submission
-  // TODO: handle form validation
-  // TODO: handle form change
-
   interface SubtaskField {
     name: string;
     testcaseCounts: number;
   }
+
+  const [projectDescription, setProjectDescription] = React.useState<string>("");
+  const [solutionCpp, setSolutionCpp] = React.useState<string>("");
+  const [cppCompileCommand, setCppCompileCommand] = React.useState<string>("g++");
+  const [cppCompileFlags, setCppCompileFlags] = React.useState<string>("-std=c++17 -Wall -O3");
 
   const [subtaskAmount, setSubtaskAmount] = React.useState<number>(1);
   const [subtaskFields, setSubtaskFields] = React.useState<SubtaskField[]>([{ name: "", testcaseCounts: 1 }]);
@@ -40,6 +40,7 @@ const Settings: React.FC = () => {
     }
     setSubtaskFields(fields);
   };
+
   const handleSubtaskFieldChange = (index: number, field: string, value: string) => {
     // 更新表单字段的值
     const updatedFields = [...subtaskFields];
@@ -50,6 +51,13 @@ const Settings: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
+    console.log("Form submitted");
+    console.log("Project Description: ", projectDescription);
+    console.log("Solution C++: ", solutionCpp);
+    console.log("C++ Compile Command: ", cppCompileCommand);
+    console.log("C++ Compile Flags: ", cppCompileFlags);
+    console.log("Subtask Amount: ", subtaskAmount);
+    console.log("Subtask Fields: ", subtaskFields);
   };
 
   return (
@@ -77,6 +85,7 @@ const Settings: React.FC = () => {
               variant="soft"
               size="2"
               radius="large"
+              type="text"
               defaultValue="TODO: find Project Name from js"
               required
             />
@@ -85,20 +94,35 @@ const Settings: React.FC = () => {
                 <Form.Label>Project Description (optional)</Form.Label>
               </div>
               <Form.Control asChild>
-                <TextArea variant="soft" size="2" placeholder="Input your simple description for this project" />
+                <TextArea
+                  variant="soft"
+                  size="3"
+                  value={projectDescription}
+                  onChange={(e) => {
+                    setProjectDescription(e.target.value);
+                  }}
+                  placeholder="Input your simple description for this project"
+                />
               </Form.Control>
             </Form.FormField>
-            <Form.FormField className="FormField" name="solutionCpp">
+            <Form.FormField className="FormField" name="solution">
               <div style={{ margin: "5px", display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
                 <Form.Label>Solution C++ File</Form.Label>
                 <Form.Message className="FormMessage" match="valueMissing">
-                  Please enter the name of your solution file.
+                  Please enter your C++ solution code.
                 </Form.Message>
               </div>
               <Form.Control asChild>
-                <div>
-                  <input type="file" required />
-                </div>
+                <TextArea
+                  variant="soft"
+                  size="3"
+                  value={solutionCpp}
+                  onChange={(e) => {
+                    setSolutionCpp(e.target.value);
+                  }}
+                  placeholder="Input your solution code here."
+                  required
+                />
               </Form.Control>
             </Form.FormField>
             <Heading mt="5" mb="2" size="3">
@@ -112,7 +136,16 @@ const Settings: React.FC = () => {
                 </Form.Message>
               </div>
               <Form.Control asChild>
-                <TextField.Input variant="soft" size="2" radius="large" defaultValue="g++" required />
+                <TextField.Input
+                  variant="soft"
+                  size="2"
+                  radius="large"
+                  value={cppCompileCommand}
+                  onChange={(e) => {
+                    setCppCompileCommand(e.target.value);
+                  }}
+                  required
+                />
               </Form.Control>
             </Form.FormField>
             <Form.FormField className="FormField" name="cppCompileFlags">
@@ -123,7 +156,17 @@ const Settings: React.FC = () => {
                 </Form.Message>
               </div>
               <Form.Control asChild>
-                <TextField.Input variant="soft" size="2" radius="large" defaultValue="-std=c++17 -Wall -O3" required />
+                <TextField.Input
+                  variant="soft"
+                  size="2"
+                  type="text"
+                  radius="large"
+                  value={cppCompileFlags}
+                  onChange={(e) => {
+                    setCppCompileFlags(e.target.value);
+                  }}
+                  required
+                />
               </Form.Control>
             </Form.FormField>
             <Heading mt="5" mb="2" size="3">
