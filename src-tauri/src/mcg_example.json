@@ -3,7 +3,7 @@
   "description": "An example project",
   "version": "0.0.1",
   "cpp_compile_command": "g++",
-  "cpp_compile_flags": ["-std=c++17", "-Wall", "-O3"],
+  "cpp_compile_flags": "-std=c++17 -Wall -O3",
   "subtask_count": 2,
   "subtasks": [
     {

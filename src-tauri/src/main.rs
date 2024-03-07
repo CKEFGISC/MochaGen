@@ -26,8 +26,14 @@ fn main() {
     .add_native_item(MenuItem::Copy)
     // .add_item(CustomMenuItem::new("hide", "Hide"))
     .add_submenu(submenu);
-
   tauri::Builder::default()
+    .setup(|app| {
+      let mut resource_path = app
+        .path_resolver()
+        .resolve_resource("../../assembler/lib")
+        .expect("failed to resolve path");
+      Ok(())
+    })
     .menu(menu)
     .invoke_handler(tauri::generate_handler![
       init::create_project,
