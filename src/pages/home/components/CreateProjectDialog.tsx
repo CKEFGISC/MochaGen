@@ -19,7 +19,7 @@ async function createNewProject(name: string, basePath: string) {
   });
 
   // Set the path to the config path keeper
-  setConfigPath(joinedPath);
+  setConfigPath(await join(joinedPath, "config.mcg"));
 }
 // Component
 export default function CreateProjectDialog() {
