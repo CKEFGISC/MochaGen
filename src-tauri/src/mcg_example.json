@@ -23,6 +23,7 @@
       "blockly": "subtasks/subtask2/blockly.json"
     }
   ],
+  "desc_dir": "desc.md",
   "build_dir": "build",
   "problem_dir": "problem",
   "solution_cpp": "problem/solution.cpp",

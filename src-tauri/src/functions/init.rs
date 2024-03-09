@@ -24,6 +24,7 @@ struct Project {
   subtasks: Vec<Subtask>,
   build_dir: String,
   problem_dir: String,
+  desc_dir: String,
   solution_cpp: String,
   testcase_dir: String,
   _comment: String,
@@ -41,7 +42,7 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<(), Stri
   // Default project settings
   let project: Project = Project {
     project_name: String::from(project_name),
-    description: String::from("desc.md"),
+    description: String::from(""),
     version: String::from("0.0.1"),
     cpp_compile_command: String::from("g++"),
     cpp_compile_flags: vec![
@@ -53,6 +54,7 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<(), Stri
     subtasks: vec![],
     build_dir: String::from("build"),
     problem_dir: String::from("problem"),
+    desc_dir: String::from("problem/desc.md"),
     solution_cpp: String::from("problem/solution.cpp"),
     testcase_dir: String::from("testcase"),
     _comment: String::from(""),
