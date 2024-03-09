@@ -2,7 +2,6 @@ use crate::functions::json;
 use std::io::Write;
 use std::path::Path;
 use std::fs;
-use serde_json;
 
 #[tauri::command]
 pub fn load_description(config_path: &str) -> Result<String, String>{
