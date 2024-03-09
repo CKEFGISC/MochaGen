@@ -55,7 +55,7 @@ const Settings: React.FC = () => {
 
         settings.subtasks.forEach((subtask: JSON, index: number) => {
           subtaskFields[index].name = subtask["name"];
-          subtaskFields[index].testcaseCounts = subtask["testcase_count"];
+          subtaskFields[index].testcase_counts = subtask["testcase_count"];
         });
       })
       .catch((e: string) => {
@@ -276,7 +276,7 @@ const Settings: React.FC = () => {
                         size="2"
                         variant="soft"
                         radius="large"
-                        value={field.testcaseCounts}
+                        value={field.testcase_counts}
                         type="number"
                         min="1"
                         onChange={(e) => handleSubtaskFieldChange(index, "testcaseCounts", e.target.value)}

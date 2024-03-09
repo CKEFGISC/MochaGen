@@ -4,7 +4,7 @@ export function getConfigPath() {
   return JSON.parse(window.sessionStorage?.getItem(pathKey));
 }
 
-export function setConfigPath(path: String) {
+export async function setConfigPath(path: String) {
   return window.sessionStorage?.setItem(pathKey, JSON.stringify(path));
 }
 
