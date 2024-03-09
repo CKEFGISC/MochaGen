@@ -1,44 +1,46 @@
-import { useEffect, useState, useRef } from "react";
+import React from "react";
+import { useState } from "react";
 import { Flex, Heading, Text } from "@radix-ui/themes";
 import Editor, { loader } from "@monaco-editor/react";
-import { getConfigPath, getProjectPath } from "../../../utils/ConfigPathKeeper";
+import { getConfigPath } from "../../../utils/ConfigPathKeeper";
 import { invoke } from "@tauri-apps/api/tauri";
 import { toast } from "react-toastify";
+import debounce from "lodash.debounce";
+
 export default function Description() {
   const [code, setCode] = useState("");
-  const mounted = useRef(false);
-  useEffect(() => {
-    getProjectPath().then((projectPath: string) => {
-      if (mounted.current === false) {
-        mounted.current = true;
-        invoke("load_description", { projectPath: projectPath })
-          .then((res: string) => {
-            setCode(res);
-          })
-          .catch((e) => {
-            toast.error("Failed to load description: " + e);
-          });
-      } else {
-        invoke("save_description", { projectPath: projectPath, desc: code })
-          .then(() => {
-            toast.success("Description saved");
-          })
-          .catch(() => {
-            toast.error("Failed to save description");
-          });
-      }
-      return () => {
-        mounted.current = false;
-        invoke("save_description", { projectPath: projectPath, desc: code })
-          .then(() => {
-            toast.success("Description saved");
-          })
-          .catch(() => {
-            toast.error("Failed to save description");
-          });
-      };
-    });
-  }, [code]);
+  const load_with_toast = () => {
+    const configPath = getConfigPath();
+    invoke("load_description", { configPath: configPath })
+      .then((res: string) => {
+        toast.success("Description loaded");
+        setCode(res);
+      })
+      .catch((e) => {
+        toast.error("Failed to load description: " + e);
+        setCode("");
+      });
+  };
+  const save_with_toast = (value: string) => {
+    const configPath = getConfigPath();
+    invoke("save_description", { configPath: configPath, desc: value })
+      .then(() => {
+        toast.success("Description saved");
+      })
+      .catch((e) => {
+        toast.error("Failed to save description: " + e);
+      });
+  };
+
+  const debouncedSave = React.useCallback(
+    debounce((value) => save_with_toast(value), 1500),
+    [],
+  );
+
+  const save_desc = (desc: string) => {
+    setCode(desc);
+    debouncedSave(desc);
+  };
 
   loader.config({ paths: { vs: "/node_modules/monaco-editor/min/vs" } });
   const options: Object = {
@@ -94,9 +96,10 @@ export default function Description() {
           defaultLanguage="markdown"
           value={code}
           defaultValue={code}
+          onMount={load_with_toast}
           options={options}
-          onChange={(newValue) => {
-            setCode(newValue);
+          onChange={(e) => {
+            save_desc(e);
           }}
         />
       </Flex>
