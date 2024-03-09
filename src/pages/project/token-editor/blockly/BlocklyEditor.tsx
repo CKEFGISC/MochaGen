@@ -39,6 +39,7 @@ export default function BlocklyEditor(props: any) {
       setStorageKey(props.subtask_key);
       console.error("load1", props.subtask_key);
       load(workspaceRef.current, props.subtask_key, props.subtask_content);
+      runCode(workspaceRef.current);
     }
   }, [props.subtask_key]);
 

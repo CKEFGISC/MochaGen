@@ -45,7 +45,7 @@ function CopyTokens(props: any) {
 
 const TokenEditor: React.FC = () => {
   // TODO: Replace with real data
-  let subtasks = [
+  let [subtasks, setSubtasks] = React.useState([
     {
       name: "subtask1",
       testcase_count: 5,
@@ -62,13 +62,13 @@ const TokenEditor: React.FC = () => {
       token: "subtasks/2/token.json",
       blockly: "subtasks/2/blockly.json",
     },
-  ];
+  ]);
 
   // Get subtasks from backend
   invoke("get_subtasks", { configPath: getConfigPath() })
     .then((result: string) => {
-      console.log(result);
-      subtasks = JSON.parse(result);
+      console.log("TTTTT");
+      setSubtasks(JSON.parse(result));
     })
     .catch((e: string) => {
       console.error("API call failed:", e);
