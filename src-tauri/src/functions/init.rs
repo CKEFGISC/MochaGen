@@ -41,7 +41,7 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<(), Stri
   // Default project settings
   let project: Project = Project {
     project_name: String::from(project_name),
-    description: String::from(""),
+    description: String::from("desc.md"),
     version: String::from("0.0.1"),
     cpp_compile_command: String::from("g++"),
     cpp_compile_flags: vec![
