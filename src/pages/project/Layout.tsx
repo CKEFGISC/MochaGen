@@ -26,13 +26,13 @@ const Layout: React.FC = () => {
         justify="start"
         gap="4"
         style={{
-          height: "calc(91vh - 40px)",
+          height: "calc(96vh - 100px)",
           width: "100%",
           flex: "1",
         }}
       >
         <Navbar />
-        <Container size="4" mt="4" mx="4" height="100%">
+        <Container style={{ overflow: "auto" }} size="4" mt="4" mx="4" height="100%">
           <Outlet />
         </Container>
       </Flex>

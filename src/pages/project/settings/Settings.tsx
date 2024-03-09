@@ -109,7 +109,7 @@ const Settings: React.FC = () => {
         <Text align="center">This is where you can set up your project settings.</Text>
       </Flex>
       <Box height="max-content" style={{ width: "60dvw", minWidth: "400px" }}>
-        <div style={{ height: "70dvh", overflow: "auto", padding: "20px" }}>
+        <div style={{ height: "75dvh", padding: "20px" }}>
           <Form.Root className="FormRoot" onSubmit={handleSubmit}>
             <Heading mt="5" mb="2" size="3">
               Basic Settings
