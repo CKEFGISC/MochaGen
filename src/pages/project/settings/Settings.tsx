@@ -1,15 +1,6 @@
 import { TextField, Button, TextArea, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
 import * as React from "react";
-// import { platform } from "@tauri-apps/api/os";
-
-// async function checkGppPath() {
-//   const commandName = (await platform()) === "win32" ? "where" : "which";
-//   const commandArgs = (await platform()) === "win32" ? ["g++.exe"] : ["g++"];
-// }
-
-// // 呼叫函式檢查 g++ 的路徑
-// checkGppPath();
 
 const Settings: React.FC = () => {
   interface SubtaskField {
