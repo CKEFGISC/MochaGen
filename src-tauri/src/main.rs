@@ -39,6 +39,7 @@ fn main() {
       init::create_project,
       init::load_project,
       settings::load_settings,
+      settings::load_solution_cpp,
       settings::save_settings,
       description::load_description,
       description::save_description,

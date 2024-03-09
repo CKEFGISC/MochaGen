@@ -2,14 +2,30 @@ use std::{io::Write, path::Path};
 
 use serde_json::{self, Value};
 
-use super::{
-  blockly,
-  json::{get_project_directory_with_config_file, parse, write_json_to_file},
-};
+use super::json::{get_project_directory_with_config_file, parse, write_json_to_file};
 
 #[tauri::command]
 pub fn load_settings(config_path: &str) -> Result<String, String> {
-  Ok("success".to_string())
+  let config_json = match parse(&config_path) {
+    Ok(json) => json,
+    Err(e) => return Err(e),
+  };
+  Ok(config_json.to_string())
+}
+
+#[tauri::command]
+pub fn load_solution_cpp(config_path: &str) -> Result<String, String> {
+  let dir_path = get_project_directory_with_config_file(config_path);
+  let config_json = match parse(&config_path) {
+    Ok(json) => json,
+    Err(e) => return Err(e),
+  };
+  let solution_cpp_path = Path::new(&dir_path).join(config_json["solution_cpp"].as_str().unwrap());
+  let solution_cpp = match std::fs::read_to_string(&solution_cpp_path) {
+    Ok(contents) => contents,
+    Err(e) => return Err(e.to_string()),
+  };
+  Ok(solution_cpp)
 }
 
 #[tauri::command]
