@@ -54,8 +54,12 @@ const Settings: React.FC = () => {
         setSubtaskAmount(settings.subtaskAmount ? settings.subtaskAmount : 1);
 
         settings.subtasks.forEach((subtask: JSON, index: number) => {
-          subtaskFields[index].name = subtask["name"];
-          subtaskFields[index].testcase_counts = subtask["testcase_count"];
+          if (index <= subtaskFields.length) {
+            subtaskFields[index].name = subtask["name"];
+            subtaskFields[index].testcase_counts = subtask["testcase_count"];
+          } else {
+            subtaskFields.push({ name: subtask["name"], testcase_counts: subtask["testcase_count"] });
+          }
         });
       })
       .catch((e: string) => {
