@@ -1,11 +1,13 @@
 import { TextField, Button, TextArea, Box, Flex, Heading, Text } from "@radix-ui/themes";
 import * as Form from "@radix-ui/react-form";
 import * as React from "react";
+import { getConfigPath } from "../../../utils/ConfigPathKeeper";
+import { invoke } from "@tauri-apps/api/tauri";
 
 const Settings: React.FC = () => {
   interface SubtaskField {
     name: string;
-    testcaseCounts: number;
+    testcase_counts: number;
   }
 
   const [projectDescription, setProjectDescription] = React.useState<string>("");
@@ -14,7 +16,7 @@ const Settings: React.FC = () => {
   const [cppCompileFlags, setCppCompileFlags] = React.useState<string>("-std=c++17 -Wall -O3");
 
   const [subtaskAmount, setSubtaskAmount] = React.useState<number>(1);
-  const [subtaskFields, setSubtaskFields] = React.useState<SubtaskField[]>([{ name: "", testcaseCounts: 1 }]);
+  const [subtaskFields, setSubtaskFields] = React.useState<SubtaskField[]>([{ name: "", testcase_counts: 1 }]);
 
   const handleSubtaskAmountsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSubtaskAmount(parseInt(e.target.value));
@@ -26,7 +28,7 @@ const Settings: React.FC = () => {
       if (i < subtaskFields.length) {
         fields.push(subtaskFields[i]);
       } else {
-        fields.push({ name: "", testcaseCounts: 1 });
+        fields.push({ name: "", testcase_counts: 1 });
       }
     }
     setSubtaskFields(fields);
@@ -39,6 +41,36 @@ const Settings: React.FC = () => {
     setSubtaskFields(updatedFields);
   };
 
+  // load settings
+
+  React.useEffect(() => {
+    console.log("load settings");
+    invoke("load_settings", { configPath: getConfigPath() })
+      .then((result: string) => {
+        const settings = JSON.parse(result);
+        setProjectDescription(settings.description ? settings.description : "");
+        setCppCompileCommand(settings.compileCommand ? settings.compileCommand : "g++");
+        setCppCompileFlags(settings.compileFlags ? settings.compileFlags : "-std=c++17 -Wall -O3");
+        setSubtaskAmount(settings.subtaskAmount ? settings.subtaskAmount : 1);
+
+        settings.subtasks.forEach((subtask: JSON, index: number) => {
+          subtaskFields[index].name = subtask["name"];
+          subtaskFields[index].testcaseCounts = subtask["testcase_count"];
+        });
+      })
+      .catch((e: string) => {
+        console.error("API call failed:", e);
+      });
+
+    invoke("load_solution_cpp", { configPath: getConfigPath() })
+      .then((result: string) => {
+        setSolutionCpp(result);
+      })
+      .catch((e: string) => {
+        console.error("API call failed:", e);
+      });
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -49,6 +81,18 @@ const Settings: React.FC = () => {
     console.log("C++ Compile Flags: ", cppCompileFlags);
     console.log("Subtask Amount: ", subtaskAmount);
     console.log("Subtask Fields: ", subtaskFields);
+
+    invoke("save_settings", {
+      configPath: getConfigPath(),
+      description: projectDescription,
+      solutionCpp: solutionCpp,
+      cppCompileCommand: cppCompileCommand,
+      cppCompileFlags: cppCompileFlags,
+      subtaskAmount: subtaskAmount.toString(),
+      subtaskFields: JSON.stringify(subtaskFields),
+    }).catch((e: string) => {
+      console.error("API call failed:", e);
+    });
   };
 
   return (
@@ -65,8 +109,8 @@ const Settings: React.FC = () => {
         <Text align="center">This is where you can set up your project settings.</Text>
       </Flex>
       <Box height="max-content" style={{ width: "60dvw", minWidth: "400px" }}>
-        <Form.Root className="FormRoot" onSubmit={handleSubmit}>
-          <div style={{ height: "70dvh", overflow: "auto", padding: "20px" }}>
+        <div style={{ height: "70dvh", overflow: "auto", padding: "20px" }}>
+          <Form.Root className="FormRoot" onSubmit={handleSubmit}>
             <Heading mt="5" mb="2" size="3">
               Basic Settings
             </Heading>
@@ -253,13 +297,13 @@ const Settings: React.FC = () => {
                 </Flex>
               </Box>
             ))}
-          </div>
-          <Form.Submit asChild>
-            <Flex width="100%" justify="end">
-              <Button my="5">Save</Button>
-            </Flex>
-          </Form.Submit>
-        </Form.Root>
+            <Form.Submit asChild>
+              <Flex width="100%" justify="end">
+                <Button my="5">Save</Button>
+              </Flex>
+            </Form.Submit>
+          </Form.Root>
+        </div>
       </Box>
     </Flex>
   );

@@ -1,4 +1,4 @@
-use std::{io::Write, path::Path};
+use std::{fs::create_dir_all, io::Write, num::ParseIntError, path::Path};
 
 use serde_json::{self, Value};
 
@@ -28,6 +28,13 @@ pub fn load_solution_cpp(config_path: &str) -> Result<String, String> {
   Ok(solution_cpp)
 }
 
+use serde::{Deserialize, Serialize};
+#[derive(Serialize, Deserialize, Debug)]
+struct SimpleSubtask {
+  name: String,
+  testcase_counts: i32,
+}
+
 #[tauri::command]
 pub fn save_settings(
   config_path: &str,
@@ -43,38 +50,31 @@ pub fn save_settings(
     Ok(json) => json,
     Err(e) => return Err(e),
   };
-  config_json["description"] = match serde_json::from_str(description) {
-    Ok(json) => json,
-    Err(e) => return Err(e.to_string()),
-  };
-  config_json["cpp_compile_command"] = match serde_json::from_str(cpp_compile_command) {
-    Ok(json) => json,
-    Err(e) => return Err(e.to_string()),
-  };
-  config_json["cpp_compile_flags"] = match serde_json::from_str(cpp_compile_flags) {
-    Ok(json) => json,
-    Err(e) => return Err(e.to_string()),
-  };
-  config_json["subtask_amount"] = match serde_json::from_str(subtask_amount) {
-    Ok(json) => json,
-    Err(e) => return Err(e.to_string()),
-  };
+  println!("fesdfd");
 
+  config_json["description"] = description.into();
+  config_json["cpp_compile_command"] = cpp_compile_command.into();
+  config_json["cpp_compile_flags"] = cpp_compile_flags.into();
+  config_json["subtask_amount"] = subtask_amount.into();
+
+  println!("fesdfd");
   // subtask_fields is a JSON string
-  let subtask_fields_json: serde_json::Value = match serde_json::from_str(subtask_fields) {
+  let subtask_fields_json: Vec<SimpleSubtask> = match serde_json::from_str(subtask_fields) {
     Ok(json) => json,
-    Err(e) => return Err(e.to_string()),
+    Err(e) => {
+      println!("FFFFF{}", e.to_string());
+      return Err(e.to_string());
+    }
   };
 
   let mut subtasks: Vec<Value> = Vec::new();
-  for subtask in subtask_fields_json.as_array().unwrap() {
-    let name = subtask["name"].as_str().unwrap();
-    let testcase_count = subtask["testcase_count"].as_str().unwrap();
+  for subtask in subtask_fields_json {
+    let name = subtask.name;
+    let testcase_count = subtask.testcase_counts;
     let generator = format!("subtasks/{}/generator.cpp", &name);
     let validator = format!("subtasks/{}/validator.cpp", &name);
     let token = format!("subtasks/{}/token.json", &name);
     let blockly = format!("subtasks/{}/blockly.xml", &name);
-
     subtasks.push(serde_json::json!({
       "name": name,
       "testcase_count": testcase_count,
@@ -87,6 +87,11 @@ pub fn save_settings(
   config_json["subtasks"] = serde_json::json!(subtasks);
 
   let solution_cpp_path = Path::new(&dir_path).join(config_json["solution_cpp"].as_str().unwrap());
+  match create_dir_all(solution_cpp_path.parent().unwrap()) {
+    Ok(_) => (),
+    Err(e) => return Err(e.to_string()),
+  }
+
   let mut file = match std::fs::OpenOptions::new()
     .write(true)
     .create(true)
@@ -94,7 +99,10 @@ pub fn save_settings(
     .open(&solution_cpp_path)
   {
     Ok(file) => file,
-    Err(e) => return Err(e.to_string()),
+    Err(e) => {
+      println!("Error: {}", e.to_string());
+      return Err(e.to_string());
+    }
   };
 
   file.write_all(solution_cpp.as_bytes());
