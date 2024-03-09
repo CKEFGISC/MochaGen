@@ -10,7 +10,7 @@
       "name": "subtask1",
       "testcase_count": 5,
       "generator": "subtasks/subtask1/generator.cpp",
-      "checker": "subtasks/subtask1/checker.cpp",
+      "validator": "subtasks/subtask1/validator.cpp",
       "token": "subtasks/subtask1/token.json",
       "blockly": "subtasks/subtask1/blockly.json"
     },
@@ -18,7 +18,7 @@
       "name": "subtask2",
       "testcase_count": 5,
       "generator": "subtasks/subtask2/generator.cpp",
-      "checker": "subtasks/subtask2/checker.cpp",
+      "validator": "subtasks/subtask2/validator.cpp",
       "token": "subtasks/subtask2/token.json",
       "blockly": "subtasks/subtask2/blockly.json"
     }

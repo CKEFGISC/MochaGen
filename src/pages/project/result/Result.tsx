@@ -35,7 +35,7 @@ const Result: React.FC = () => {
               <Table.ColumnHeaderCell>Subtask Name</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Testcase Amonut</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Checker Status</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>validator Status</Table.ColumnHeaderCell>
             </Table.Row>
           </Table.Header>
 

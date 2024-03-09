@@ -146,7 +146,7 @@ pub fn run_parser(path: &str) -> Result<String, String> {
 }
 
 #[tauri::command]
-pub fn load_checker(project_path: &str) -> Result<String, String> {
+pub fn load_validator(project_path: &str) -> Result<String, String> {
   Ok("success".to_string())
 }
 
@@ -156,7 +156,7 @@ pub fn load_generator(project_path: &str) -> Result<String, String> {
 }
 
 #[tauri::command]
-pub fn save_checker(project_path: &str) -> Result<String, String> {
+pub fn save_validator(project_path: &str) -> Result<String, String> {
   Ok("success".to_string())
 }
 

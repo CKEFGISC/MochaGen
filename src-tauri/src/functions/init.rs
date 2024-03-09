@@ -8,7 +8,7 @@ struct Subtask {
   name: String,
   testcase_count: String,
   generator: String,
-  checker: String,
+  validator: String,
   token: String,
   blockly: String,
 }

@@ -12,7 +12,7 @@ export default function CodeEditor() {
       name: "subtask1",
       testcase_count: 5,
       generator: "subtasks/1/generator.cpp",
-      checker: "subtasks/1/checker.cpp",
+      validator: "subtasks/1/validator.cpp",
       token: "subtasks/1/token.json",
       blockly: "subtasks/1/blockly.json",
     },
@@ -20,7 +20,7 @@ export default function CodeEditor() {
       name: "subtask2",
       testcase_count: 5,
       generator: "subtasks/2/generator.cpp",
-      checker: "subtasks/2/checker.cpp",
+      validator: "subtasks/2/validator.cpp",
       token: "subtasks/2/token.json",
       blockly: "subtasks/2/blockly.json",
     },
@@ -59,9 +59,9 @@ export default function CodeEditor() {
               textAlign: "center",
             }}
           >
-            Generator and Checker Edit
+            Generator and Validator Edit
           </Heading>
-          <Text align="center">Edit generator.cpp and checker.cpp here.</Text>
+          <Text align="center">Edit generator.cpp and validator.cpp here.</Text>
         </Flex>
 
         <Tabs.Root defaultValue="subtask0">
@@ -78,7 +78,7 @@ export default function CodeEditor() {
                   <Editor height="60dvh" width="40vw" theme="vs" defaultLanguage="cpp" />
                 </Flex>
                 <Flex direction="column" gap="2" align="center" justify="center">
-                  <Text align="center">checker.cpp</Text>
+                  <Text align="center">validator.cpp</Text>
                   <Editor height="60dvh" width="40vw" theme="vs" defaultLanguage="cpp" />
                 </Flex>
               </Flex>
