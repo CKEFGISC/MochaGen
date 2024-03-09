@@ -1,7 +1,6 @@
 use std::path::Path;
 
-use serde_json::{ser, Value};
-use tauri::utils::config;
+use serde_json::Value;
 
 use super::json::{get_project_directory_with_config_file, parse, write_json_to_file};
 

@@ -1,7 +1,7 @@
-use serde::de::value::Error;
 use serde_json;
-use std::fs::{File, OpenOptions, create_dir_all};
-use std::io;
+use std::fs::create_dir_all;
+// use std::fs::{File, OpenOptions}
+// use std::io;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
@@ -57,8 +57,8 @@ pub fn write_json_to_file(
 ) -> Result<(), std::io::Error> {
   // Create the directories leading to the file if they don't exist
   let dir_path: &Path = Path::new(file_path).parent().unwrap();
-  create_dir_all(dir_path)?; 
-   
+  create_dir_all(dir_path)?;
+
   // Serialize the JSON data to a string
   let json_string = serde_json::to_string_pretty(json_data)?;
 

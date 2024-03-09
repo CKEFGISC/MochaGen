@@ -1,4 +1,4 @@
-use std::{fs::create_dir_all, io::Write, num::ParseIntError, path::Path};
+use std::{fs::create_dir_all, io::Write, path::Path};
 
 use serde_json::{self, Value};
 
@@ -105,7 +105,7 @@ pub fn save_settings(
     }
   };
 
-  file.write_all(solution_cpp.as_bytes());
+  let _ = file.write_all(solution_cpp.as_bytes());
 
   match write_json_to_file(&config_json, &config_path) {
     Ok(_) => (),
