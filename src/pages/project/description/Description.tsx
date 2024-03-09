@@ -85,7 +85,7 @@ export default function Description() {
               textAlign: "center",
             }}
           >
-            Project Settings
+            Problem Description
           </Heading>
           <Text align="center">Get your description ready! (Markdown syntax only)</Text>
         </Flex>
