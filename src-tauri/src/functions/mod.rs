@@ -1,5 +1,6 @@
 pub mod blockly;
 pub mod description;
+pub mod code;
 pub mod generator;
 pub mod init;
 pub mod json;
