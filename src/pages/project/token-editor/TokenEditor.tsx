@@ -1,5 +1,5 @@
 import BlocklyEditor, { replaceToken } from "./blockly/BlocklyEditor";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog } from "@radix-ui/themes";
 import { invoke } from "@tauri-apps/api/tauri";
 import { getConfigPath } from "../../../utils/ConfigPathKeeper";
@@ -45,7 +45,7 @@ function CopyTokens(props: any) {
 
 const TokenEditor: React.FC = () => {
   // TODO: Replace with real data
-  let [subtasks, setSubtasks] = React.useState([
+  const [subtasks, setSubtasks] = useState([
     {
       name: "subtask1",
       testcase_count: 5,
@@ -65,15 +65,23 @@ const TokenEditor: React.FC = () => {
   ]);
 
   // Get subtasks from backend
-  invoke("get_subtasks", { configPath: getConfigPath() })
-    .then((result: string) => {
-      console.log("TTTTT");
-      setSubtasks(JSON.parse(result));
-    })
-    .catch((e: string) => {
-      console.error("API call failed:", e);
-      return;
-    });
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      await invoke("get_subtasks", { configPath: getConfigPath() })
+        .then((result: string) => {
+          if (active) setSubtasks(JSON.parse(result));
+        })
+        .catch((e: string) => {
+          console.error("API call failed:", e);
+          throw e;
+        });
+    };
+    load();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <Flex direction="column" gap="0" justify="start">
