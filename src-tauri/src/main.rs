@@ -15,17 +15,18 @@ use std::fs::File;
 use std::io;
 use std::io::Write;
 
-use functions::{blockly, description, generator, init, parser, settings, subtask, code};
+use functions::{blockly, code, description, generator, init, parser, settings, subtask};
 
 fn main() {
   use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
-  // let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-  // let close = CustomMenuItem::new("close".to_string(), "Close");
   let submenu = Submenu::new("MochaGen", Menu::new());
   let menu = Menu::new()
     .add_native_item(MenuItem::Copy)
-    // .add_item(CustomMenuItem::new("hide", "Hide"))
-    .add_submenu(submenu);
+    .add_native_item(MenuItem::Paste)
+    .add_native_item(MenuItem::SelectAll)
+    .add_native_item(MenuItem::Undo)
+    .add_native_item(MenuItem::Redo);
+
   tauri::Builder::default()
     .setup(|app| {
       let mut resource_path = app

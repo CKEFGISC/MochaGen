@@ -10,6 +10,7 @@ const Settings: React.FC = () => {
     testcase_counts: number;
   }
 
+  const [projectName, setProjectName] = React.useState<string>("");
   const [projectDescription, setProjectDescription] = React.useState<string>("");
   const [solutionCpp, setSolutionCpp] = React.useState<string>("");
   const [cppCompileCommand, setCppCompileCommand] = React.useState<string>("g++");
@@ -48,6 +49,7 @@ const Settings: React.FC = () => {
     invoke("load_settings", { configPath: getConfigPath() })
       .then((result: string) => {
         const settings = JSON.parse(result);
+        setProjectName(settings.project_name);
         setProjectDescription(settings.description ? settings.description : "");
         setCppCompileCommand(settings.compileCommand ? settings.compileCommand : "g++");
         setCppCompileFlags(settings.compileFlags ? settings.compileFlags : "-std=c++17 -Wall -O3");
@@ -119,15 +121,7 @@ const Settings: React.FC = () => {
               Basic Settings
             </Heading>
             <Text style={{ margin: "5px" }}>Project Name</Text>
-            <TextField.Input
-              disabled
-              variant="soft"
-              size="2"
-              radius="large"
-              type="text"
-              defaultValue="TODO: find Project Name from js"
-              required
-            />
+            <TextField.Input disabled variant="soft" size="2" radius="large" type="text" value={projectName} required />
             <Form.FormField className="FormField" name="description">
               <div style={{ margin: "5px", display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
                 <Form.Label>Project Description (optional)</Form.Label>

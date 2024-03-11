@@ -21,9 +21,7 @@ export default function Home() {
         }}
       >
         <Flex direction="column">
-          <image>
-            <img src="/banner.png" alt="MochaGen Logo" width="600" />
-          </image>
+          <img src="/banner.png" alt="MochaGen Logo" width="600" />
           <Text align="center">A simple, fast, and easy-to-use testcase generator.</Text>
         </Flex>
         <Grid columns="2" justify="center" gap="5">
