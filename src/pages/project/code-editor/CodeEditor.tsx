@@ -1,13 +1,101 @@
+import React, { useEffect, useState } from "react";
 import { Flex, Heading, Text, Tabs } from "@radix-ui/themes";
 import Editor, { loader } from "@monaco-editor/react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { getConfigPath } from "../../../utils/ConfigPathKeeper";
+import { toast } from "react-toastify";
+import debounce from "lodash.debounce";
 
 export default function CodeEditor() {
   loader.config({ paths: { vs: "/node_modules/monaco-editor/min/vs" } });
 
-  // TODO: Get subtasks from backend
-  let subtasks = [
+  const options: Object = {
+    autoIndent: "full",
+    contextmenu: true,
+    fontFamily: "monospace",
+    fontSize: 13,
+    lineHeight: 24,
+    hideCursorInOverviewRuler: true,
+    matchBrackets: "always",
+    minimap: {
+      enabled: false,
+    },
+    scrollbar: {
+      horizontalSliderSize: 4,
+      verticalSliderSize: 18,
+    },
+    selectOnLineNumbers: true,
+    roundedSelection: false,
+    readOnly: false,
+    cursorStyle: "line",
+    automaticLayout: true,
+  };
+
+  const [genCode, setGenCode] = useState("");
+  const [validatorCode, setValidatorCode] = useState("");
+
+  const load_gen_with_toast = (subtaskIndex: number) => {
+    const configPath = getConfigPath();
+    invoke("load_gen_cpp", { configPath: configPath, subtaskIndex: subtaskIndex })
+      .then((res: string) => {
+        toast.success("generator.cpp loaded!");
+        setGenCode(res);
+      })
+      .catch((e) => {
+        toast.error("Failed to load generator.cpp: " + e);
+      });
+  };
+  const save_gen_with_toast = (subtaskIndex: number, value: string) => {
+    const configPath = getConfigPath();
+    invoke("save_gen_cpp", { configPath: configPath, subtaskIndex: subtaskIndex, genCpp: value })
+      .then(() => {
+        toast.success("generator.cpp saved!");
+      })
+      .catch((e) => {
+        toast.error("Failed to save generator.cpp: " + e);
+      });
+  };
+
+  const load_validator_with_toast = (subtaskIndex: number) => {
+    const configPath = getConfigPath();
+    invoke("load_validator_cpp", { configPath: configPath, subtaskIndex: subtaskIndex })
+      .then((res: string) => {
+        toast.success("validator.cpp loaded!");
+        setValidatorCode(res);
+      })
+      .catch((e) => {
+        toast.error("Failed to load validator.cpp: " + e);
+      });
+  };
+  const save_validator_with_toast = (subtaskIndex: number, value: string) => {
+    const configPath = getConfigPath();
+    invoke("save_validator_cpp", { configPath: configPath, subtaskIndex: subtaskIndex, validatorCpp: value })
+      .then(() => {
+        toast.success("validator.cpp saved!");
+      })
+      .catch((e) => {
+        toast.error("Failed to save validator.cpp: " + e);
+      });
+  };
+
+  const debouncedGenSave = React.useCallback(
+    debounce((value, subtask) => save_gen_with_toast(subtask, value), 1500),
+    [],
+  );
+  const save_gen = (gen: string, subtaskIndex: number) => {
+    setGenCode(gen);
+    debouncedGenSave(gen, subtaskIndex);
+  };
+  const deboundedValidatorSave = React.useCallback(
+    debounce((value, subtask) => save_validator_with_toast(subtask, value), 1500),
+    [],
+  );
+  const save_validator = (validator: string, subtaskIndex: number) => {
+    setValidatorCode(validator);
+    deboundedValidatorSave(validator, subtaskIndex);
+  };
+
+  const [subtasks, setSubtasks] = useState([
     {
       name: "subtask1",
       testcase_count: 5,
@@ -24,18 +112,26 @@ export default function CodeEditor() {
       token: "subtasks/2/token.json",
       blockly: "subtasks/2/blockly.json",
     },
-  ];
+  ]);
 
   // Get subtasks from backend
-  invoke("get_subtasks", { config_path: getConfigPath() })
-    .then((result: string) => {
-      console.log(result);
-      subtasks = JSON.parse(result);
-    })
-    .catch((e: string) => {
-      console.error("API call failed:", e);
-      return;
-    });
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      await invoke("get_subtasks", { configPath: getConfigPath() })
+        .then((result: string) => {
+          if (active) setSubtasks(JSON.parse(result));
+        })
+        .catch((e: string) => {
+          console.error("API call failed:", e);
+          throw e;
+        });
+    };
+    load();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <>
@@ -75,11 +171,31 @@ export default function CodeEditor() {
               <Flex direction="row" gap="4" m="4" align="center" justify="center">
                 <Flex direction="column" gap="2" align="center" justify="center">
                   <Text align="center">generator.cpp</Text>
-                  <Editor height="60dvh" width="40vw" theme="vs" defaultLanguage="cpp" />
+                  <Editor
+                    height="60dvh"
+                    width="40vw"
+                    theme="vs"
+                    value={genCode}
+                    defaultValue={genCode}
+                    onMount={() => load_gen_with_toast(subtaskIndex)}
+                    onChange={(e) => save_gen(e, subtaskIndex)}
+                    options={options}
+                    defaultLanguage="cpp"
+                  />
                 </Flex>
                 <Flex direction="column" gap="2" align="center" justify="center">
                   <Text align="center">validator.cpp</Text>
-                  <Editor height="60dvh" width="40vw" theme="vs" defaultLanguage="cpp" />
+                  <Editor
+                    height="60dvh"
+                    width="40vw"
+                    theme="vs"
+                    value={validatorCode}
+                    defaultValue={validatorCode}
+                    onMount={() => load_validator_with_toast(subtaskIndex)}
+                    onChange={(e) => save_validator(e, subtaskIndex)}
+                    options={options}
+                    defaultLanguage="cpp"
+                  />
                 </Flex>
               </Flex>
               <text display={"none"}>{subtaskContent.token}</text>

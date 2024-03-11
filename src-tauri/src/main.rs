@@ -15,7 +15,7 @@ use std::fs::File;
 use std::io;
 use std::io::Write;
 
-use functions::{blockly, description, generator, init, parser, settings, subtask};
+use functions::{blockly, description, generator, init, parser, settings, subtask, code};
 
 fn main() {
   use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
@@ -53,6 +53,10 @@ fn main() {
       parser::save_validator,
       parser::save_generator,
       generator::generate_testdata,
+      code::load_gen_cpp,
+      code::save_gen_cpp,
+      code::load_validator_cpp,
+      code::save_validator_cpp,
       subtask::get_subtasks,
     ])
     .run(tauri::generate_context!())
