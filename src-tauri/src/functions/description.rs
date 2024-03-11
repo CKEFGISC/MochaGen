@@ -8,6 +8,9 @@ pub fn load_description(config_path: &str) -> Result<String, String>{
   let dir_path = json::get_project_directory_with_config_file(config_path);
   let config_json = json::parse(&config_path)?; 
   let desc_path = Path::new(&dir_path).join(config_json["desc_dir"].as_str().unwrap());
+  if !desc_path.exists() {
+    return Ok("".to_string());
+  }
   let desc = match std::fs::read_to_string(&desc_path) {
     Ok(contents) => contents,
     Err(e) => return Err(e.to_string()),
