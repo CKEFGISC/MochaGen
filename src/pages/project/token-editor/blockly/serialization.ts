@@ -7,6 +7,7 @@
 import * as Blockly from "blockly/core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { getConfigPath } from "../../../../utils/ConfigPathKeeper";
+import { tokenGenerator } from "./generators/token";
 
 const storageKey = (Math.random() + 1).toString(36).substring(7);
 
@@ -63,14 +64,16 @@ export const load = function (workspace: Blockly.Workspace, subtask_key: string,
       if (!data) {
         return;
       }
-      console.error("data", data);
+      // console.error("data", data);
       // Don't emit events during loading.
       Blockly.Events.disable();
       Blockly.serialization.workspaces.load(JSON.parse(data as string), workspace, undefined);
       Blockly.Events.enable();
+      const code = tokenGenerator.workspaceToCode(workspace);
+      saveCode(subtask_content, code);
     })
     .catch((e: string) => {
-      console.error("API call failed:", e);
+      console.error(subtask_key, ", load_blockly API call failed:", e);
       return;
     });
 };
