@@ -93,7 +93,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   },
   {
     type: "integer",
-    message0: "Interger %1 attributes: %2",
+    message0: "Integer %1 attributes: %2",
     args0: [
       {
         type: "input_end_row",
