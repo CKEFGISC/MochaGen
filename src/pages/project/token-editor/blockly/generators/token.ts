@@ -108,6 +108,9 @@ tokenGenerator.forBlock["integer"] = function (block, generator) {
     category: "number",
     class: "integer",
     attr: {
+      _number:{
+        category: "integer",
+      },
       range: {
         left: range_left,
         right: range_right,
@@ -130,6 +133,9 @@ tokenGenerator.forBlock["float"] = function (block, generator) {
     category: "number",
     class: "float",
     attr: {
+      _number:{
+        category: "float",
+      },
       range: {
         left: range_left,
         right: range_right,
@@ -146,12 +152,10 @@ tokenGenerator.forBlock["array"] = function (block, generator) {
     category: "array",
     class: "array",
     attr: {
-      length: {
+      _array:{
         length: length,
-      },
-      element: {
-        element_token: element,
-      },
+        element: element,
+      }
     },
   };
   return [JSON.stringify(code, null, 2), Order.ATOMIC];
@@ -181,7 +185,7 @@ tokenGenerator.forBlock["string"] = function (block, generator) {
     category: "string",
     class: "string",
     attr: {
-      length: {
+      _string:{
         length: length,
       },
       palindrome: {
@@ -219,11 +223,9 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
     category: "graph",
     class: "graph",
     attr: {
-      vertex: {
+      _graph:{
         vertex_count: vertex_count,
-      },
-      edge: {
-        edge_token: edge_count,
+        edge_count: edge_count,
       },
       weighted_type: {
         weighted_type: weighted_type.toString(),
@@ -278,7 +280,7 @@ tokenGenerator.forBlock["tree"] = function (block, generator) {
     category: "tree",
     class: "tree",
     attr: {
-      vertex: {
+      _tree:{
         vertex_count: vertex_count,
       },
       weighted_type: {
