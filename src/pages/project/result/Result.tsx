@@ -19,6 +19,7 @@ const Result: React.FC = () => {
     setLog("Preparing your testdata and a cup of Mocha...");
     toggleLoading();
     resolveResource("../assembler/lib").then((resourcePath) => {
+      alert(resourcePath);
       for (let i = 0; i < subtasks.length; i++) {
         // invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath }).then((status) => {
         //   invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: i }).then((status) => {}).catch((e) => {
