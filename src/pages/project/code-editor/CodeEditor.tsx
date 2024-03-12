@@ -61,6 +61,21 @@ export default function CodeEditor() {
     invoke("load_validator_cpp", { configPath: configPath, subtaskIndex: subtaskIndex })
       .then((res: string) => {
         toast.success("validator.cpp loaded!");
+        if (res === "") {
+          res = `#include<iostream>
+#define AC 1
+#define WA 0
+
+int main(){
+    bool validation_passed = true;
+    // add your validation logic here
+
+    if(validation_passed) std::cout << AC;
+    else std::cout << WA;
+    // do not output anything other than the status code
+    return 0;
+}`;
+        }
         setValidatorCode(res);
       })
       .catch((e) => {
