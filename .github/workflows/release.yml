@@ -42,12 +42,18 @@ jobs:
           cache: "npm" # Set this to npm, yarn or pnpm.
 
       - name: Update Submodules
-        run: git submodule update --init --recursive
-
-      - name: Build Submodules
         run: |
-          mkdir -p assembler/build
-          cmake --build assembler/build --config Release --target install
+        git submodule update --init --recursive
+        mkdir -p assembler/build
+
+      - name: Configure Submodules
+        uses: threeal/cmake-action@v1.3.0
+        with:
+          source-dir: assembler
+          build-dir: assembler/build
+          
+      - name: Build Submodules
+        run: cmake --build assembler/build --target install
 
       - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
