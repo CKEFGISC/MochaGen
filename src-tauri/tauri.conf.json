@@ -41,11 +41,13 @@
 
     "windows": [
       {
-        "fullscreen": false,
+        "fullscreen": true,
         "resizable": true,
-        "title": "mochagen",
-        "width": 800,
-        "height": 600
+        "title": "MochaGen",
+        "width": 1000,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600
       }
     ]
   }
