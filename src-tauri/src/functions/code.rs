@@ -2,6 +2,7 @@ use crate::functions::json;
 use std::io::Write;
 use std::path::Path;
 use std::fs;
+use crate::functions::parser::run_parser;
 
 #[tauri::command]
 pub fn load_gen_cpp(config_path: &str, subtask_index: usize) -> Result<String, String>{
@@ -12,7 +13,7 @@ pub fn load_gen_cpp(config_path: &str, subtask_index: usize) -> Result<String, S
   let subtask_json = &subtasks[subtask_index];
   let gen_cpp_path = &dir_path.join(subtask_json["generator"].as_str().unwrap()); 
   if !gen_cpp_path.exists() {
-    return Ok("".to_string());
+     run_parser(config_path, subtask_index)?;
   }
   let gen_cpp = match std::fs::read_to_string(&gen_cpp_path) {
     Ok(contents) => contents,

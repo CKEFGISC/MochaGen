@@ -56,9 +56,9 @@ export default function CodeEditor() {
       });
   };
 
-  const load_validator_with_toast = (subtaskIndex: number) => {
+  const load_validator_with_toast = async (subtaskIndex: number) => {
     const configPath = getConfigPath();
-    invoke("load_validator_cpp", { configPath: configPath, subtaskIndex: subtaskIndex })
+    await invoke("load_validator_cpp", { configPath: configPath, subtaskIndex: subtaskIndex })
       .then((res: string) => {
         toast.success("validator.cpp loaded!");
         if (res === "") {
@@ -206,7 +206,9 @@ int main(){
                     theme="vs"
                     value={validatorCode}
                     defaultValue={validatorCode}
-                    onMount={() => load_validator_with_toast(subtaskIndex)}
+                    onMount={async () => {
+                      await load_validator_with_toast(subtaskIndex);
+                    }}
                     onChange={(e) => save_validator(e, subtaskIndex)}
                     options={options}
                     defaultLanguage="cpp"

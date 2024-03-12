@@ -115,56 +115,35 @@ pub fn parse_token(token_path: &str, gen_path: &str, subtask_name: &str) -> Resu
 }
 // /Users/jimtsai/ytp/test/subtask1/token.json
 #[tauri::command]
-pub fn run_parser(path: &str) -> Result<String, String> {
-  let project_path = json::get_project_directory_with_config_file(path);
-  let config = json::parse(path).unwrap();
+pub fn run_parser(config_path: &str, subtask_index: usize) -> Result<String, String> {
+  let project_path = json::get_project_directory_with_config_file(config_path);
+  let config = json::parse(config_path).unwrap();
   println!("{}", config);
   // Check if config is an array
   if let Some(subtasks) = config["subtasks"].as_array() {
     println!("{:?}", subtasks);
-    for subtask in subtasks {
+    let subtask = &subtasks[subtask_index];
       // Construct paths for token, generator, and subtask
-      let token_path = format!(
-        "{}/{}",
-        project_path,
-        subtask["token"].as_str().unwrap_or("")
-      );
-      let gen_path = format!(
-        "{}/{}",
-        project_path,
-        subtask["generator"].as_str().unwrap_or("")
-      );
-      let subtask_path = format!(
-        "{}/{}",
-        project_path,
-        subtask["name"].as_str().unwrap_or("")
-      );
+    let token_path = format!(
+      "{}/{}",
+      project_path,
+      subtask["token"].as_str().unwrap_or("")
+    );
+    let gen_path = format!(
+      "{}/{}",
+      project_path,
+      subtask["generator"].as_str().unwrap_or("")
+    );
+    let subtask_path = format!(
+      "{}/{}",
+      project_path,
+      subtask["name"].as_str().unwrap_or("")
+    );
 
-      // Parse token for each subtask
-      parse_token(&token_path, &gen_path, &subtask_path);
-    }
+    // Parse token for each subtask
+    parse_token(&token_path, &gen_path, &subtask_path)?; 
   } else {
     return Err("Project configuration is not an array".to_string());
   }
-  Ok("success".to_string())
-}
-
-#[tauri::command]
-pub fn load_validator(project_path: &str) -> Result<String, String> {
-  Ok("success".to_string())
-}
-
-#[tauri::command]
-pub fn load_generator(project_path: &str) -> Result<String, String> {
-  Ok("success".to_string())
-}
-
-#[tauri::command]
-pub fn save_validator(project_path: &str) -> Result<String, String> {
-  Ok("success".to_string())
-}
-
-#[tauri::command]
-pub fn save_generator(project_path: &str) -> Result<String, String> {
   Ok("success".to_string())
 }
