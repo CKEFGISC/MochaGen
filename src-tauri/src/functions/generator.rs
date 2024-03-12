@@ -29,7 +29,7 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   solution_executable = solution_tmp.as_str();
   let solution_cpp = format!("{}/{}", project_path, solution_cpp);
   let cmd = Command::new(&cpp_command)
-    .arg("-O2")
+    .arg("-O2 -std=c++17")
     .arg(solution_cpp)
     .arg("-o")
     .arg(solution_executable)
@@ -56,13 +56,13 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
       let executable = format!("{}/{}", build_path, subtask["name"].as_str().unwrap_or(""));
       let testcase_count = subtask["testcase_count"].as_i64().unwrap();
       let cmd = Command::new(cpp_command)
-        .arg("-O2")
+        .arg("-O2 -std=c++17")
         .arg(gen_path)
         .arg("-o")
         .arg(executable)
-        .arg(format!("-I{}", lib_path))
+        .arg(format!("-I{}",  format!("{}/../lib", lib_path)))
         .arg("-lassembler")
-        .arg(format!("-L{}", format!("{}/../lib", lib_path)))
+        .arg(format!("-L{}",lib_path))
         .output()
         .unwrap();
       //mcg example in ../mcg_example.json
