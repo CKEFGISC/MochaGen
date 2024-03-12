@@ -22,8 +22,9 @@ const GENERATOR_POSITION: &str = "gen";
 const TEMPORARY_TOKEN: &str = "/Users/jimtsai/ytp/test";
 const CPP_TEMPLATE_HEAD: &str = "
 #include<bits/stdc++.h>
-#include<assembler.h>
+#include\"assembler.hpp\"
 using namespace std;
+using namespace MochaGen;
 
 signed main(){
     ios_base::sync_with_stdio(false);cin.tie(0);
@@ -96,6 +97,7 @@ pub fn parse_token(token_path: &str, gen_path: &str, subtask_name: &str) -> Resu
           code = format!("{};\n", code);
           //end
         }
+        code.push('}');
       } else {
         return Err("Tokens array not found in JSON".to_string());
       }
@@ -116,22 +118,24 @@ pub fn parse_token(token_path: &str, gen_path: &str, subtask_name: &str) -> Resu
 pub fn run_parser(path: &str) -> Result<String, String> {
   let project_path = json::get_project_directory_with_config_file(path);
   let config = json::parse(path).unwrap();
+  println!("{}", config);
   // Check if config is an array
   if let Some(subtasks) = config["subtasks"].as_array() {
+    println!("{:?}", subtasks);
     for subtask in subtasks {
       // Construct paths for token, generator, and subtask
       let token_path = format!(
-        "{}//subtasks/{}",
+        "{}/{}",
         project_path,
         subtask["token"].as_str().unwrap_or("")
       );
       let gen_path = format!(
-        "{}/subtasks/{}",
+        "{}/{}",
         project_path,
         subtask["generator"].as_str().unwrap_or("")
       );
       let subtask_path = format!(
-        "{}/subtasks/{}",
+        "{}/{}",
         project_path,
         subtask["name"].as_str().unwrap_or("")
       );
