@@ -64,7 +64,7 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         project_path,
         subtask["name"].as_str().unwrap_or("")
       );
-      let build_path = format!("{}/{}", project_path, build_dir);
+      let build_path = format!("{}", build_dir);
       let executable = format!("{}/{}", build_path, subtask["name"].as_str().unwrap_or(""));
       println!("{}", executable);
       let testcase_count = subtask["testcase_count"].as_i64().unwrap();
