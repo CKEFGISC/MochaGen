@@ -111,7 +111,7 @@ export default function BlocklyEditor(props: any) {
   return (
     <div id="editorContainer">
       <div ref={blocklyDivRef} id="blocklyDiv"></div>
-      <div id="outputPane" style={{ overflow: "auto" }}>
+      <div id="outputPane" style={{ overflow: "auto", display: "none" }}>
         <pre id="generatedCode">
           <code ref={codeDivRef}></code>
         </pre>
