@@ -3,6 +3,7 @@ import * as Form from "@radix-ui/react-form";
 import * as React from "react";
 import { getConfigPath } from "../../../utils/ConfigPathKeeper";
 import { invoke } from "@tauri-apps/api/tauri";
+import { toast } from "react-toastify";
 
 const Settings: React.FC = () => {
   interface SubtaskField {
@@ -56,12 +57,10 @@ const Settings: React.FC = () => {
         setSubtaskAmount(settings.subtaskAmount ? settings.subtaskAmount : 1);
 
         settings.subtasks.forEach((subtask: JSON, index: number) => {
-          if (index <= subtaskFields.length) {
-            subtaskFields[index].name = subtask["name"];
-            subtaskFields[index].testcase_counts = subtask["testcase_count"];
-          } else {
-            subtaskFields.push({ name: subtask["name"], testcase_counts: subtask["testcase_count"] });
-          }
+          console.log(index, subtask["name"], subtask["testcase_count"]);
+          const fields: SubtaskField[] = [];
+          fields.push({ name: subtask["name"], testcase_counts: subtask["testcase_count"] });
+          setSubtaskFields(fields);
         });
       })
       .catch((e: string) => {
@@ -96,9 +95,14 @@ const Settings: React.FC = () => {
       cppCompileFlags: cppCompileFlags,
       subtaskAmount: subtaskAmount.toString(),
       subtaskFields: JSON.stringify(subtaskFields),
-    }).catch((e: string) => {
-      console.error("API call failed:", e);
-    });
+    })
+      .then(() => {
+        toast.success("Settings saved successfully.");
+      })
+      .catch((e: string) => {
+        console.error("API call failed:", e);
+        toast.error("Failed to save settings: " + e);
+      });
   };
 
   return (
@@ -277,7 +281,7 @@ const Settings: React.FC = () => {
                         value={field.testcase_counts}
                         type="number"
                         min="1"
-                        onChange={(e) => handleSubtaskFieldChange(index, "testcaseCounts", e.target.value)}
+                        onChange={(e) => handleSubtaskFieldChange(index, "testcase_counts", e.target.value)}
                         required
                       />
                     </Form.Control>
