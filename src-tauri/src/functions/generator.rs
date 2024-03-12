@@ -1,9 +1,10 @@
 use super::{json, parser::parse_token};
 use serde_json;
-use std::fs::{File, OpenOptions};
+use std::fs::{File, OpenOptions, create_dir_all};
 use std::io::{self, Read, Write};
 use std::process::Command;
 use std::process::Stdio;
+use std::path::Path;
 use tauri::api::path::resolve_path;
 use tauri::utils::config::parse::parse_json;
 use tauri::utils::resources;
@@ -23,11 +24,20 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   let cpp_command = config["cpp_compile_command"].as_str().unwrap();
   let cpp_flag = config["cpp_compile_flags"].as_str().unwrap();
   let build_dir = config["build_dir"].as_str().unwrap();
+  let build_dir = format!("{}/{}", project_path, build_dir);
+  match create_dir_all(&Path::new(&build_dir)) {
+    Ok(_) => (),
+    Err(e) => return Err(e.to_string()),
+  }
   let solution_cpp = config["solution_cpp"].as_str().unwrap();
   let mut solution_executable = config["build_dir"].as_str().unwrap();
   let solution_tmp = format!("{}/{}/ans.out", project_path, solution_executable);
   let testcase_dir = config["testcase_dir"].as_str().unwrap();
   let testcase_dir = format!("{}/{}", project_path, testcase_dir);
+  match create_dir_all(&Path::new(&testcase_dir)) {
+    Ok(_) => (),
+    Err(e) => return Err(e.to_string()),
+  }
   solution_executable = solution_tmp.as_str();
   let solution_cpp = format!("{}/{}", project_path, solution_cpp);
   let cmd = Command::new(&cpp_command)
