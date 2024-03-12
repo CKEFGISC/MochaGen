@@ -200,11 +200,12 @@ int main(){
                   />
                   <Button
                     onClick={() => {
-                      invoke("run_parser", { configPath: getConfigPath() })
+                      invoke("run_parser", { configPath: getConfigPath(), subtaskIndex: subtaskIndex })
                         .then(() => {
                           load_gen_with_toast(subtaskIndex);
                         })
                         .catch((e) => {
+                          toast.error("Failed to reload generator from token: " + e);
                           throw e;
                         });
                     }}
