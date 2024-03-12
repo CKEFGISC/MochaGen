@@ -1,4 +1,5 @@
 import * as Blockly from "blockly";
+import toast from "react-toastify";
 
 const Order = {
   ATOMIC: 0,
@@ -61,6 +62,7 @@ tokenGenerator.forBlock["set_id_to_const_number"] = function (block) {
 
 tokenGenerator.forBlock["get_id"] = function (block) {
   const id: string = "_" + block.getFieldValue("ID");
+  console.warn("id", id);
   return [id, Order.ATOMIC];
 };
 
@@ -259,6 +261,7 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
 
 tokenGenerator.forBlock["tree"] = function (block, generator) {
   const vertex_count: string = generator.valueToCode(block, "vertex_count", Order.ATOMIC);
+  console.warn("vertex_count", vertex_count);
 
   const is_vertex_weights: number = block.getFieldValue("is_vertex_weights") == "TRUE" ? 1 : 0;
   const is_edge_weights: number = block.getFieldValue("is_edge_weights") == "TRUE" ? 1 : 0;

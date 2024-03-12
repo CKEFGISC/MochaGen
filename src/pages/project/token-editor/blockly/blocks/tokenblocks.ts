@@ -542,7 +542,7 @@ Blockly.Extensions.register("dynamic_menu_extension", function (this: Blockly.Bl
   const input_dummy = this.getInput("INPUT");
   if (input_dummy)
     input_dummy.appendField(
-      new Blockly.FieldDropdown(function () {
+      new Blockly.FieldDropdown(() => {
         let dropdownOptions: [string, string][] = [["default", "default"]];
         let workspace = Blockly.getMainWorkspace();
         if (!workspace) {
@@ -558,6 +558,6 @@ Blockly.Extensions.register("dynamic_menu_extension", function (this: Blockly.Bl
         });
         return dropdownOptions;
       }) as Blockly.Field,
-      "object_id",
+      "ID",
     );
 });
