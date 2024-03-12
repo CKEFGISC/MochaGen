@@ -9,6 +9,19 @@ import debounce from "lodash.debounce";
 export default function CodeEditor() {
   loader.config({ paths: { vs: "/node_modules/monaco-editor/min/vs" } });
 
+  const defaultValidatorCode = `#include<iostream>
+#define AC 1
+#define WA 0
+
+int main(){
+    bool validation_passed = true;
+    // add your validation logic here
+
+    if(validation_passed) std::cout << AC;
+    else std::cout << WA;
+    // do not output anything other than the status code
+    return 0;
+}`;
   const options: Object = {
     autoIndent: "full",
     contextmenu: true,
@@ -62,19 +75,7 @@ export default function CodeEditor() {
       .then((res: string) => {
         toast.success("validator.cpp loaded!");
         if (res === "") {
-          res = `#include<iostream>
-#define AC 1
-#define WA 0
-
-int main(){
-    bool validation_passed = true;
-    // add your validation logic here
-
-    if(validation_passed) std::cout << AC;
-    else std::cout << WA;
-    // do not output anything other than the status code
-    return 0;
-}`;
+          res = defaultValidatorCode;
         }
         setValidatorCode(res);
       })
@@ -181,7 +182,7 @@ int main(){
               <Tabs.Trigger value={"subtask" + subtaskIndex.toString()}> {subtaskContent.name}</Tabs.Trigger>
             ))}
           </Tabs.List>
-          {subtasks.map((subtaskContent, subtaskIndex) => (
+          {subtasks.map((_subtaskContent, subtaskIndex) => (
             <Tabs.Content value={"subtask" + subtaskIndex.toString()}>
               <Flex direction="row" gap="4" m="4" align="center" justify="center">
                 <Flex direction="column" gap="2" align="center" justify="start">
@@ -199,7 +200,13 @@ int main(){
                   />
                   <Button
                     onClick={() => {
-                      /* @lemonilemon 你改這邊 */
+                      invoke("run_parser", { configPath: getConfigPath() })
+                        .then(() => {
+                          load_gen_with_toast(subtaskIndex);
+                        })
+                        .catch((e) => {
+                          throw e;
+                        });
                     }}
                   >
                     Reload Generator from Token
@@ -222,7 +229,7 @@ int main(){
                   />
                   <Button
                     onClick={() => {
-                      /* @lemonilemon 你改這邊 */
+                      setValidatorCode(defaultValidatorCode);
                     }}
                   >
                     Reset Validator to Default
