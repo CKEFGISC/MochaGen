@@ -81,7 +81,7 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
           // Open the output file for writing (create or truncate)
           println!("{:?}", output_data[0]);
           if (output_data[0] == 0) {
-            return Err(i.to_string() + "th testcase failed");
+            return Ok(i.to_string());
           }
           // if
         } else {
