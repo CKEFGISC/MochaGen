@@ -38,9 +38,16 @@ const Settings: React.FC = () => {
 
   const handleSubtaskFieldChange = (index: number, field: string, value: string) => {
     // 更新表单字段的值
-    const updatedFields = [...subtaskFields];
-    updatedFields[index][field] = value;
-    setSubtaskFields(updatedFields);
+    if (field === "testcase_counts") {
+      const count = parseInt(value);
+      const updatedFields = [...subtaskFields];
+      updatedFields[index][field] = count;
+      setSubtaskFields(updatedFields);
+    } else {
+      const updatedFields = [...subtaskFields];
+      updatedFields[index][field] = value;
+      setSubtaskFields(updatedFields);
+    }
   };
 
   // load settings
@@ -52,16 +59,16 @@ const Settings: React.FC = () => {
         const settings = JSON.parse(result);
         setProjectName(settings.project_name);
         setProjectDescription(settings.description ? settings.description : "");
-        setCppCompileCommand(settings.compileCommand ? settings.compileCommand : "g++");
-        setCppCompileFlags(settings.compileFlags ? settings.compileFlags : "-std=c++17 -Wall -O3");
-        setSubtaskAmount(settings.subtaskAmount ? settings.subtaskAmount : 1);
+        setCppCompileCommand(settings.cpp_compile_command ? settings.cpp_compile_command : "g++");
+        setCppCompileFlags(settings.cpp_compile_flags ? settings.cpp_compile_flags : "-std=c++17 -Wall -O3");
+        setSubtaskAmount(settings.subtask_count ? settings.subtask_count : 1);
 
+        const fields: SubtaskField[] = [];
         settings.subtasks.forEach((subtask: JSON, index: number) => {
           console.log(index, subtask["name"], subtask["testcase_count"]);
-          const fields: SubtaskField[] = [];
           fields.push({ name: subtask["name"], testcase_counts: subtask["testcase_count"] });
-          setSubtaskFields(fields);
         });
+        setSubtaskFields(fields);
       })
       .catch((e: string) => {
         console.error("API call failed:", e);
@@ -93,7 +100,7 @@ const Settings: React.FC = () => {
       solutionCpp: solutionCpp,
       cppCompileCommand: cppCompileCommand,
       cppCompileFlags: cppCompileFlags,
-      subtaskAmount: subtaskAmount.toString(),
+      subtaskCount: subtaskAmount.toString(),
       subtaskFields: JSON.stringify(subtaskFields),
     })
       .then(() => {

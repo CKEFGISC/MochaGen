@@ -42,7 +42,7 @@ pub fn save_settings(
   solution_cpp: &str,
   cpp_compile_command: &str,
   cpp_compile_flags: &str,
-  subtask_amount: &str,
+  subtask_count: &str,
   subtask_fields: &str,
 ) -> Result<String, String> {
   let dir_path = get_project_directory_with_config_file(config_path);
@@ -55,7 +55,7 @@ pub fn save_settings(
   config_json["description"] = description.into();
   config_json["cpp_compile_command"] = cpp_compile_command.into();
   config_json["cpp_compile_flags"] = cpp_compile_flags.into();
-  config_json["subtask_amount"] = subtask_amount.into();
+  config_json["subtask_count"] = subtask_count.into();
 
   println!("fesdfd");
   // subtask_fields is a JSON string
