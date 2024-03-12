@@ -202,7 +202,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       },
       {
         type: "input_value",
-        check: ["id", "Number", "tokenobject"],
+        check: ["id", "Number"],
 
         name: "element",
       },
