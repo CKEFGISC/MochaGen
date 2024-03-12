@@ -15,23 +15,6 @@ const Result: React.FC = () => {
     ],
   ]);
   const { toggleLoading, setLog } = useContext(LoadContext);
-  const generate = () => {
-    setLog("Preparing your testdata and a cup of Mocha...");
-    toggleLoading();
-    resolveResource("../assembler/lib").then((resourcePath) => {
-      alert(resourcePath);
-      for (let i = 0; i < subtasks.length; i++) {
-        // invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath }).then((status) => {
-        //   invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: i }).then((status) => {}).catch((e) => {
-        // throw e;
-        // });
-        // });
-      }
-      setLog("");
-      toggleLoading();
-    });
-  };
-
   const [subtasks, setSubtasks] = useState([
     {
       name: "subtask1",
@@ -42,6 +25,24 @@ const Result: React.FC = () => {
       blockly: "subtasks/1/blockly.json",
     },
   ]);
+  const generate = () => {
+    setLog("Preparing your testdata and a cup of Mocha...");
+    toggleLoading();
+    resolveResource(".").then((resourcePath) => {
+      alert(resourcePath);
+      for (let i: number = 0; i < subtasks.length; i++) {
+        invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath }).then((status) => {
+          invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: i })
+            .then((status) => {})
+            .catch((e) => {
+              throw e;
+            });
+        });
+      }
+      setLog("");
+      toggleLoading();
+    });
+  };
 
   // Get subtasks from backend
   useEffect(() => {
