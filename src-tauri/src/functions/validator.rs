@@ -1,20 +1,16 @@
-use super::{json, parser::parse_token};
-use serde_json;
-use std::fs::{File, OpenOptions};
-use std::io::{self, Read, Write};
+use super::json;
+use std::fs::File;
+use std::io::{Read, Write};
 // use std::os::linux::raw::stat;
 use std::process::Command;
 use std::process::Stdio;
-use tauri::api::path::resolve_path;
-use tauri::utils::config::parse::parse_json;
-use tauri::utils::resources;
-use tauri::{AppHandle, Manager};
+
 #[tauri::command]
 pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, String> {
   let project_path = json::get_project_directory_with_config_file(path);
   let config = json::parse(path).unwrap();
   let cpp_command = config["cpp_compile_command"].as_str().unwrap();
-  let cpp_flag = config["cpp_compile_flags"].as_str().unwrap();
+  let _cpp_flag = config["cpp_compile_flags"].as_str().unwrap();
   let testcase_dir = config["testcase_dir"].as_str().unwrap();
   let testcase_dir = format!("{}/{}", project_path, testcase_dir);
   let mut status_code: String = "".to_string();
@@ -29,7 +25,7 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
       project_path,
       subtask["validator"].as_str().unwrap_or("")
     );
-    let gen_path = format!(
+    let _gen_path = format!(
       "{}/{}",
       project_path,
       subtask["generator"].as_str().unwrap_or("")
@@ -83,7 +79,7 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
 
           // Open the output file for writing (create or truncate)
           println!("{:?}", output_data[0]);
-          if (output_data[0] == 0) {
+          if output_data[0] == 0 {
             status_code.push_str("0");
           } else {
             status_code.push_str("1");

@@ -10,16 +10,13 @@ invoke('parse_token', { projectDirectory: "/Users/jimtsai/ytp/test" });
 
 mod functions;
 
-use serde_json;
-use std::fs::File;
-use std::io;
-use std::io::Write;
-
-use functions::{blockly, code, description, generator, init, parser, settings, subtask, validator};
+use functions::{
+  blockly, code, description, generator, init, parser, settings, subtask, validator,
+};
 
 fn main() {
-  use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
-  let submenu = Submenu::new("MochaGen", Menu::new());
+  use tauri::{Menu, MenuItem};
+  // let submenu = Submenu::new("MochaGen", Menu::new());
   let menu = Menu::new()
     .add_native_item(MenuItem::Copy)
     .add_native_item(MenuItem::Paste)
@@ -29,7 +26,7 @@ fn main() {
 
   tauri::Builder::default()
     .setup(|app| {
-      let mut resource_path = app
+      let _resource_path = app
         .path_resolver()
         .resolve_resource("../../assembler/lib")
         .expect("failed to resolve path");

@@ -1,27 +1,24 @@
-use super::{json, parser::parse_token};
-use serde_json;
-use std::fs::{File, OpenOptions, create_dir_all};
-use std::io::{self, Read, Write};
+use super::json;
+use std::fs::{create_dir_all, File, OpenOptions};
+use std::io::{Read, Write};
+use std::path::Path;
 use std::process::Command;
 use std::process::Stdio;
-use std::path::Path;
-use tauri::api::path::resolve_path;
-use tauri::utils::config::parse::parse_json;
-use tauri::utils::resources;
-use tauri::{AppHandle, Manager};
 
+#[allow(dead_code)]
 fn printable<T: std::fmt::Display>(t: &T) -> String {
   t.to_string().replace("\"", "")
 }
 #[tauri::command]
 pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
-  let lib_path = format!("{}../../../assembler/lib",lib_path);
+  let lib_path = format!("{}../../../assembler/lib", lib_path);
   println!("{}", lib_path);
   let project_path = json::get_project_directory_with_config_file(path);
   let config = json::parse(path).unwrap();
   // Check if config is an array
   //
   let cpp_command = config["cpp_compile_command"].as_str().unwrap();
+  #[allow(unused_variables)]
   let cpp_flag = config["cpp_compile_flags"].as_str().unwrap();
   let build_dir = config["build_dir"].as_str().unwrap();
   let build_dir = format!("{}/{}", project_path, build_dir);
@@ -40,7 +37,7 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   }
   solution_executable = solution_tmp.as_str();
   let solution_cpp = format!("{}/{}", project_path, solution_cpp);
-  let cmd = Command::new(&cpp_command)
+  let _cmd = Command::new(&cpp_command)
     .arg("-std=c++17")
     .arg(solution_cpp)
     .arg("-o")
@@ -49,6 +46,7 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   if let Some(subtasks) = config["subtasks"].as_array() {
     for subtask in subtasks {
       // Construct paths for token, generator, and subtask
+      #[allow(unused_variables)]
       let token_path = format!(
         "{}/{}",
         project_path,
@@ -59,6 +57,7 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         project_path,
         subtask["generator"].as_str().unwrap_or("")
       );
+      #[allow(unused_variables)]
       let subtask_path = format!(
         "{}/subtasks/{}",
         project_path,
@@ -73,9 +72,9 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         .arg(gen_path)
         .arg("-o")
         .arg(executable)
-        .arg(format!("-I{}",  format!("{}/../src", lib_path)))
+        .arg(format!("-I{}", format!("{}/../src", lib_path)))
         .arg("-lassembler")
-        .arg(format!("-L{}",lib_path))
+        .arg(format!("-L{}", lib_path))
         .output()
         .unwrap();
       println!("{:?}", cmd);
@@ -95,9 +94,9 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         );
         let executable_2 = format!("{}/{}", build_path, subtask["name"].as_str().unwrap_or(""));
         println!("{} {}", input_path, output_path);
-        let cmd = Command::new("touch").arg(&input_path).output().unwrap();
-        let cmd = Command::new("touch").arg(&output_path).output().unwrap();
-        let mut cmd = Command::new(executable_2)
+        let _cmd = Command::new("touch").arg(&input_path).output().unwrap();
+        let _cmd = Command::new("touch").arg(&output_path).output().unwrap();
+        let cmd = Command::new(executable_2)
           .output()
           .expect("Failed to execute command");
         if cmd.status.success() {
@@ -121,7 +120,9 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
           .expect("Failed to start command");
 
         // Specify the file paths for input and output
+        #[allow(unused_variables)]
         let input_file_path = "input.txt";
+        #[allow(unused_variables)]
         let output_file_path = "output.txt";
 
         // Open the input file for reading

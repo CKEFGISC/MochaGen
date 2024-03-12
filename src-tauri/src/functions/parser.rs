@@ -1,12 +1,11 @@
 use super::json;
 use serde_json;
-use std::fs::File;
-use std::io;
+
 use std::io::Write;
-use std::path::Path;
-use tauri::utils::config::parse::parse_json;
+
 //use json::{get_mcg_with_project_directory, parse};
 //確認型別 debug用
+#[allow(dead_code)]
 fn print_type_of<T>(_: &T) {
   println!("{}", std::any::type_name::<T>())
 }
@@ -69,17 +68,17 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
           //end
 
           //處理attr
-          for (index, (key, value)) in token_params["attr"].as_object().unwrap().iter().enumerate()
+          for (_index, (key, value)) in token_params["attr"].as_object().unwrap().iter().enumerate()
           {
-            if (key.starts_with('_')) {
+            if key.starts_with('_') {
               code = format!("{}{}(", code, key);
             } else {
               code = format!("{}.{}(", code, key);
             }
             if let Some(attributes_array) = value.as_object() {
               for (i, attribute) in attributes_array.iter() {
-                if (code.ends_with('(')) {
-                  if (attribute == "integer" || attribute == "float" || i == "pattern") {
+                if code.ends_with('(') {
+                  if attribute == "integer" || attribute == "float" || i == "pattern" {
                     code = format!("{}{}", code, attribute);
                   } else {
                     code = format!("{}{}", code, printable(attribute));
@@ -149,6 +148,8 @@ pub fn run_parser(config_path: &str, subtask_index: usize) -> Result<String, Str
       project_path,
       subtask["generator"].as_str().unwrap_or("")
     );
+
+    #[allow(unused_variables)]
     let subtask_path = format!(
       "{}/{}",
       project_path,
