@@ -2,6 +2,7 @@ use super::{json, parser::parse_token};
 use serde_json;
 use std::fs::{File, OpenOptions};
 use std::io::{self, Read, Write};
+use std::os::linux::raw::stat;
 use std::process::Command;
 use std::process::Stdio;
 use tauri::api::path::resolve_path;
@@ -16,6 +17,8 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
   let cpp_flag = config["cpp_compile_flags"].as_str().unwrap();
   let testcase_dir = config["testcase_dir"].as_str().unwrap();
   let testcase_dir = format!("{}/{}", project_path, testcase_dir);
+  let mut status_code: String = "".to_string();
+
   if let Some(subtasks) = config["subtasks"].as_array() {
     println!("{:?}", subtasks);
     let subtask = &subtasks[subtask_index];
@@ -43,7 +46,6 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
       .arg("-o")
       .arg(&validator_executable)
       .output();
-    let mut status_code = "";
     for i in 0..testcase_count {
       let input_path = format!(
         "{}/{}_{}.in",
@@ -81,7 +83,9 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
           // Open the output file for writing (create or truncate)
           println!("{:?}", output_data[0]);
           if (output_data[0] == 0) {
-            return Ok(i.to_string());
+            status_code.push_str("0");
+          }else{
+            status_code.push_str("1");
           }
           // if
         } else {
@@ -97,5 +101,5 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
   } else {
     return Err("Project configuration is not an array".to_string());
   }
-  Ok("success".to_string())
+  Ok(status_code)
 }
