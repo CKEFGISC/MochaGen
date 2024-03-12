@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Heading, Text, Tabs } from "@radix-ui/themes";
+import { Flex, Heading, Text, Tabs, Button } from "@radix-ui/themes";
 import Editor, { loader } from "@monaco-editor/react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { getConfigPath } from "../../../utils/ConfigPathKeeper";
@@ -156,7 +156,7 @@ int main(){
         justify="start"
         align="center"
         wrap="wrap"
-        gap="4"
+        gap="2"
         style={{
           height: "max-content",
           width: "100%",
@@ -184,7 +184,7 @@ int main(){
           {subtasks.map((subtaskContent, subtaskIndex) => (
             <Tabs.Content value={"subtask" + subtaskIndex.toString()}>
               <Flex direction="row" gap="4" m="4" align="center" justify="center">
-                <Flex direction="column" gap="2" align="center" justify="center">
+                <Flex direction="column" gap="2" align="center" justify="start">
                   <Text align="center">generator.cpp</Text>
                   <Editor
                     height="60dvh"
@@ -197,8 +197,15 @@ int main(){
                     options={options}
                     defaultLanguage="cpp"
                   />
+                  <Button
+                    onClick={() => {
+                      /* @lemonilemon 你改這邊 */
+                    }}
+                  >
+                    Reload Generator from Token
+                  </Button>
                 </Flex>
-                <Flex direction="column" gap="2" align="center" justify="center">
+                <Flex direction="column" gap="2" align="center" justify="start">
                   <Text align="center">validator.cpp</Text>
                   <Editor
                     height="60dvh"
@@ -213,9 +220,15 @@ int main(){
                     options={options}
                     defaultLanguage="cpp"
                   />
+                  <Button
+                    onClick={() => {
+                      /* @lemonilemon 你改這邊 */
+                    }}
+                  >
+                    Reset Validator to Default
+                  </Button>
                 </Flex>
               </Flex>
-              <text display={"none"}>{subtaskContent.token}</text>
             </Tabs.Content>
           ))}
         </Tabs.Root>
