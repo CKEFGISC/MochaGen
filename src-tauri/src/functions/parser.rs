@@ -97,6 +97,18 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
       } else {
         return Err("Tokens array not found in JSON".to_string());
       }
+
+      if let Some(tokens_array) = parsed_json["output"].as_array() {
+        for token_object in tokens_array{
+          if token_object["class"] == "printwords" {
+            code = format!("{}\ncout<<{};", code, token_object["words"]);
+          }else{
+            code  = format!("{}\ncout<<{};", code, token_object["id"]);
+
+          }
+        }
+      }
+
       if let Err(e) = file.write_all(code.as_bytes()) {
         return Err(format!("Failed to write to file '{}': {}", file_name, e));
       }
