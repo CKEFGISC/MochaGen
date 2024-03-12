@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Button, Flex, Heading, Text, Table } from "@radix-ui/themes";
+import LoadContext from "../../../utils/loading/LoadContext";
 
 const Result: React.FC = () => {
+  const [isGenerated, setIsGenerated] = useState(false);
+  const { toggleLoading, setLog } = useContext(LoadContext);
+  const generate = () => {
+    setLog("Preparing your testdata and a cup of Mocha...");
+    toggleLoading();
+    new Promise((resolve) => setTimeout(resolve, 3000));
+    setIsGenerated(true);
+    setLog("");
+    toggleLoading();
+  };
   return (
     <>
       <Flex
@@ -27,8 +38,10 @@ const Result: React.FC = () => {
           </Heading>
           <Text align="center">Download the generated testdata</Text>
         </Flex>
-        <Button size="4">Generate</Button>
-        <Table.Root style={{ width: "80%" }}>
+        <Button size="4" onClick={generate}>
+          Generate
+        </Button>
+        <Table.Root style={{ width: "80%", visibility: isGenerated ? "visible" : "hidden" }}>
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeaderCell>index</Table.ColumnHeaderCell>
@@ -62,7 +75,7 @@ const Result: React.FC = () => {
             </Table.Row>
           </Table.Body>
         </Table.Root>
-        <Button m="6" size="4">
+        <Button m="6" size="4" style={{ visibility: isGenerated ? "visible" : "hidden" }}>
           Open Folder
         </Button>
       </Flex>
