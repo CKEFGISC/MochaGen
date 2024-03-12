@@ -1,18 +1,81 @@
-import React, { useState, useContext } from "react";
-import { Button, Flex, Heading, Text, Table } from "@radix-ui/themes";
+import React, { useState, useContext, useEffect } from "react";
+import { Button, Flex, Heading, Text, Table, Tabs } from "@radix-ui/themes";
 import LoadContext from "../../../utils/loading/LoadContext";
+import { getConfigPath } from "../../../utils/ConfigPathKeeper";
+import { invoke } from "@tauri-apps/api";
+import { resolveResource } from "@tauri-apps/api/path";
 
 const Result: React.FC = () => {
-  const [isGenerated, setIsGenerated] = useState(false);
+  const [status, setStatus] = useState([
+    [
+      {
+        generator: "Not Generated",
+        validator: "Not Validated",
+      },
+    ],
+  ]);
   const { toggleLoading, setLog } = useContext(LoadContext);
   const generate = () => {
     setLog("Preparing your testdata and a cup of Mocha...");
     toggleLoading();
-    new Promise((resolve) => setTimeout(resolve, 3000));
-    setIsGenerated(true);
-    setLog("");
-    toggleLoading();
+    resolveResource("../assembler/lib").then((resourcePath) => {
+      for (let i = 0; i < subtasks.length; i++) {
+        // invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath }).then((status) => {
+        //   invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: i }).then((status) => {}).catch((e) => {
+        // throw e;
+        // });
+        // });
+      }
+      setLog("");
+      toggleLoading();
+    });
   };
+
+  const [subtasks, setSubtasks] = useState([
+    {
+      name: "subtask1",
+      testcase_count: 1,
+      generator: "subtasks/1/generator.cpp",
+      validator: "subtasks/1/validator.cpp",
+      token: "subtasks/1/token.json",
+      blockly: "subtasks/1/blockly.json",
+    },
+  ]);
+
+  // Get subtasks from backend
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      await invoke("get_subtasks", { configPath: getConfigPath() })
+        .then((result: string) => {
+          if (active) {
+            let currentSubtasks = JSON.parse(result);
+            let currentStatus = [];
+            setSubtasks(currentSubtasks);
+            currentSubtasks.map((subtask: any) => {
+              let subtaskStatus = [];
+              for (let i = 0; i < subtask["testcase_count"]; ++i) {
+                subtaskStatus.push({
+                  generator: "Not Generated",
+                  validator: "Not Validated",
+                });
+              }
+              currentStatus.push(subtaskStatus);
+            });
+            setStatus(currentStatus);
+          }
+        })
+        .catch((e: string) => {
+          console.error("API call failed:", e);
+          throw e;
+        });
+    };
+    load();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <>
       <Flex
@@ -36,48 +99,49 @@ const Result: React.FC = () => {
           >
             Testdata Results
           </Heading>
-          <Text align="center">Download the generated testdata</Text>
+          <Text align="center">Time for some generated testdata!</Text>
         </Flex>
-        <Button size="4" onClick={generate}>
+        <Button size="4" onClick={() => generate()}>
           Generate
         </Button>
-        <Table.Root style={{ width: "80%", visibility: isGenerated ? "visible" : "hidden" }}>
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>index</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Subtask Name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Testcase Amount</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Validator Status</Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            <Table.Row>
-              <Table.RowHeaderCell>1</Table.RowHeaderCell>
-              <Table.Cell>subtask1</Table.Cell>
-              <Table.Cell>5</Table.Cell>
-              <Table.Cell>Not Generated</Table.Cell>
-              <Table.Cell>Not Checked</Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.RowHeaderCell>2</Table.RowHeaderCell>
-              <Table.Cell>subtask2</Table.Cell>
-              <Table.Cell>5</Table.Cell>
-              <Table.Cell>Generated</Table.Cell>
-              <Table.Cell>
-                <Flex align="center" gap="2">
-                  <Text color="green">Passed (4/5): 7, 8, 9, 10,</Text>
-                  <Text color="red">Failed (1/5): 6,</Text>
+        <Tabs.Root defaultValue="subtask0" style={{ width: "90%" }}>
+          <Tabs.List>
+            {subtasks.map((subtaskContent, subtaskIndex) => (
+              <Tabs.Trigger value={"subtask" + subtaskIndex.toString()}> {subtaskContent.name}</Tabs.Trigger>
+            ))}
+          </Tabs.List>
+          {subtasks.map((_subtaskContent, subtaskIndex) => {
+            return (
+              <Tabs.Content value={"subtask" + subtaskIndex.toString()}>
+                <Flex direction="row" gap="4" m="4" align="center" width="100%" justify="center">
+                  <Flex direction="column" gap="2" align="center" width="100%" justify="center">
+                    <Table.Root style={{ width: "100%" }}>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.ColumnHeaderCell>Index</Table.ColumnHeaderCell>
+                          <Table.ColumnHeaderCell>Generator Status</Table.ColumnHeaderCell>
+                          <Table.ColumnHeaderCell>Validator Status</Table.ColumnHeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      <Table.Body>
+                        {status[subtaskIndex].map((testcaseStatus, testcaseID) => (
+                          <Table.Row>
+                            <Table.RowHeaderCell>{testcaseID}</Table.RowHeaderCell>
+                            <Table.Cell>{testcaseStatus["generator"]}</Table.Cell>
+                            <Table.Cell>{testcaseStatus["validator"]}</Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table.Root>
+                    <Button m="6" size="4" style={{ visibility: "hidden" }}>
+                      Open Folder
+                    </Button>
+                  </Flex>
                 </Flex>
-              </Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
-        <Button m="6" size="4" style={{ visibility: isGenerated ? "visible" : "hidden" }}>
-          Open Folder
-        </Button>
+              </Tabs.Content>
+            );
+          })}
+        </Tabs.Root>
       </Flex>
     </>
   );
