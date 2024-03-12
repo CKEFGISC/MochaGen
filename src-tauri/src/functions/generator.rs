@@ -14,6 +14,8 @@ fn printable<T: std::fmt::Display>(t: &T) -> String {
 }
 #[tauri::command]
 pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
+  let lib_path = format!("{}../../../assembler/lib",lib_path);
+  println!("{}", lib_path);
   let project_path = json::get_project_directory_with_config_file(path);
   let config = json::parse(path).unwrap();
   // Check if config is an array
@@ -29,7 +31,7 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   solution_executable = solution_tmp.as_str();
   let solution_cpp = format!("{}/{}", project_path, solution_cpp);
   let cmd = Command::new(&cpp_command)
-    .arg("-O2 -std=c++17")
+    .arg("-std=c++17")
     .arg(solution_cpp)
     .arg("-o")
     .arg(solution_executable)
@@ -54,17 +56,19 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
       );
       let build_path = format!("{}/{}", project_path, build_dir);
       let executable = format!("{}/{}", build_path, subtask["name"].as_str().unwrap_or(""));
+      println!("{}", executable);
       let testcase_count = subtask["testcase_count"].as_i64().unwrap();
       let cmd = Command::new(cpp_command)
-        .arg("-O2 -std=c++17")
+        .arg("-std=c++17")
         .arg(gen_path)
         .arg("-o")
         .arg(executable)
-        .arg(format!("-I{}",  format!("{}/../lib", lib_path)))
+        .arg(format!("-I{}",  format!("{}/../src", lib_path)))
         .arg("-lassembler")
         .arg(format!("-L{}",lib_path))
         .output()
         .unwrap();
+      println!("{:?}", cmd);
       //mcg example in ../mcg_example.json
       for i in 0..testcase_count {
         let input_path = format!(

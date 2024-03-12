@@ -39,13 +39,14 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
       project_path,
       subtask["name"].as_str().unwrap_or("")
     );
-    let validator_executable = format!("{}/{}_validator", project_path, subtask_name);
+    let validator_executable = format!("{}/build/{}_validator", project_path, subtask_name);
     let cmd = Command::new(cpp_command)
       .arg("-O2")
       .arg(&validator_path)
       .arg("-o")
       .arg(&validator_executable)
       .output();
+    println!("{:?}", cmd);
     for i in 0..testcase_count {
       let input_path = format!(
         "{}/{}_{}.in",
