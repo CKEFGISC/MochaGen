@@ -15,7 +15,7 @@ use std::fs::File;
 use std::io;
 use std::io::Write;
 
-use functions::{blockly, code, description, generator, init, parser, settings, subtask};
+use functions::{blockly, code, description, generator, init, parser, settings, subtask, validator};
 
 fn main() {
   use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
@@ -37,6 +37,7 @@ fn main() {
     })
     .menu(menu)
     .invoke_handler(tauri::generate_handler![
+      validator::validate_subtask,
       init::create_project,
       init::load_project,
       settings::load_settings,
