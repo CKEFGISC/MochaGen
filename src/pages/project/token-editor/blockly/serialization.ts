@@ -35,6 +35,12 @@ export const save = function (workspace: Blockly.Workspace, subtask_key: string,
  * @param token The token from code generation of the subtask to save.
  */
 export const saveCode = function (subtask_content: JSON, token: string) {
+  if (token.length === 0) {
+    token = JSON.stringify({
+      tokens: [],
+      output: [],
+    });
+  }
   invoke("save_token", {
     configPath: getConfigPath(),
     subtaskContent: JSON.stringify(subtask_content),
