@@ -15,11 +15,7 @@ fn print_type_of<T>(_: &T) {
 fn printable<T: std::fmt::Display>(t: &T) -> String {
   t.to_string().replace("\"", "")
 }
-const TOKEN_POSITION: &str = "token.json";
 
-const GENERATOR_FORMAT: &str = "gen.cpp";
-const GENERATOR_POSITION: &str = "gen";
-const TEMPORARY_TOKEN: &str = "/Users/jimtsai/ytp/test";
 const CPP_TEMPLATE_HEAD: &str = "
 #include<bits/stdc++.h>
 #include\"assembler.hpp\"
@@ -32,7 +28,7 @@ signed main(){
 ";
 
 #[tauri::command]
-pub fn parse_token(token_path: &str, gen_path: &str, subtask_name: &str) -> Result<String, String> {
+pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
   //let token_path = format!("{}/{}", TEMPORARY_TOKEN, TOKEN_POSITION); //路徑 因為還沒創好先用我存在本地的
   let contents = match std::fs::read_to_string(&token_path) {
     Ok(contents) => contents,
@@ -141,7 +137,7 @@ pub fn run_parser(config_path: &str, subtask_index: usize) -> Result<String, Str
     );
 
     // Parse token for each subtask
-    parse_token(&token_path, &gen_path, &subtask_path)?;
+    parse_token(&token_path, &gen_path)?; 
   } else {
     return Err("Project configuration is not an array".to_string());
   }
