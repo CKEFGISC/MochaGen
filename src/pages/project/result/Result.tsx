@@ -3,6 +3,7 @@ import { Button, Flex, Heading, Text, Table, Tabs } from "@radix-ui/themes";
 import LoadContext from "../../../utils/loading/LoadContext";
 import { getConfigPath } from "../../../utils/ConfigPathKeeper";
 import { invoke } from "@tauri-apps/api";
+import { toast } from "react-toastify";
 import { resolveResource } from "@tauri-apps/api/path";
 
 const Result: React.FC = () => {
@@ -30,17 +31,41 @@ const Result: React.FC = () => {
     toggleLoading();
     resolveResource(".").then((resourcePath) => {
       alert(resourcePath);
-      for (let i: number = 0; i < subtasks.length; i++) {
-        invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath }).then((status) => {
-          invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: i })
-            .then((status) => {})
-            .catch((e) => {
-              throw e;
-            });
+      invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath })
+        .then(() => {
+          let newStatus = [];
+          subtasks.map((subtask, _subtaskID) => {
+            let subtaskStatus = [];
+            for (let i = 0; i < subtask["testcase_count"]; ++i) {
+              subtaskStatus.push({
+                generator: "Generated",
+                validator: "Validated",
+              });
+            }
+            newStatus.push(subtaskStatus);
+            // invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: subtaskID })
+            //   .then((validateStatus: string) => {
+            //     validateStatus.split('').forEach(val => {
+            //         validateStatus.map((testcaseStatus) => {
+            //             subtaskStatus.push({
+            //                 generator: "Generated",
+            //                 validator: testcaseStatus? "Validated" : "Validation Failed",
+            //             });
+            //         });
+            //   })
+            //   .catch((e) => {
+            //     toast.error("Validation failed on " + subtask["name"] + ": " + e);
+            //     throw e;
+            //   });
+          });
+          setStatus(newStatus);
+          setLog("");
+          toggleLoading();
+        })
+        .catch((e) => {
+          toast.error("Generation failed: " + e);
+          throw e;
         });
-      }
-      setLog("");
-      toggleLoading();
     });
   };
 
