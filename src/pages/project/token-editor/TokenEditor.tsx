@@ -4,7 +4,6 @@ import { Grid, Tabs, Text, Box, Flex, Heading, Button, AlertDialog } from "@radi
 import { invoke } from "@tauri-apps/api/tauri";
 import { getConfigPath } from "../../../utils/ConfigPathKeeper";
 import { toast } from "react-toastify";
-import debounce from "lodash.debounce";
 
 function CopyTokens(props: any) {
   if (props.currentSubtaskIndex == 0) {
@@ -47,24 +46,7 @@ function CopyTokens(props: any) {
 
 const TokenEditor: React.FC = () => {
   // TODO: Replace with real data
-  const [subtasks, setSubtasks] = useState([
-    {
-      name: "subtask1",
-      testcase_count: 5,
-      generator: "subtasks/1/generator.cpp",
-      validator: "subtasks/1/validator.cpp",
-      token: "subtasks/1/token.json",
-      blockly: "subtasks/1/blockly.json",
-    },
-    {
-      name: "subtask2",
-      testcase_count: 5,
-      generator: "subtasks/2/generator.cpp",
-      validator: "subtasks/2/validator.cpp",
-      token: "subtasks/2/token.json",
-      blockly: "subtasks/2/blockly.json",
-    },
-  ]);
+  const [subtasks, setSubtasks] = useState([]);
 
   // Get subtasks from backend
   useEffect(() => {
@@ -76,6 +58,7 @@ const TokenEditor: React.FC = () => {
         })
         .catch((e: string) => {
           console.error("API call failed:", e);
+          toast.error("Failed to get subtasks from backend");
           throw e;
         });
     };

@@ -41,7 +41,7 @@ export default function BlocklyEditor(props: any) {
       load(workspaceRef.current, props.subtask_key, props.subtask_content);
       runCode(workspaceRef.current);
     }
-  }, [props.subtask_key]);
+  }, [props.subtask_key, blocklyDivRef]);
 
   useEffect(() => {
     const blocklyDiv = blocklyDivRef.current;
@@ -111,7 +111,7 @@ export default function BlocklyEditor(props: any) {
   return (
     <div id="editorContainer">
       <div ref={blocklyDivRef} id="blocklyDiv"></div>
-      <div id="outputPane">
+      <div id="outputPane" style={{ overflow: "auto" }}>
         <pre id="generatedCode">
           <code ref={codeDivRef}></code>
         </pre>

@@ -197,7 +197,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         value: 0,
       },
       {
-        type: "input_dummy",
+        type: "input_end_row",
         align: "RIGHT",
       },
       {

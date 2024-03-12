@@ -197,8 +197,8 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
   const vertex_count: string = generator.valueToCode(block, "vertex_count", Order.ATOMIC);
   const edge_count: string = generator.valueToCode(block, "edge_count", Order.ATOMIC);
 
-  const is_vertex_weights: number = block.getFieldValue("is_vertex_weights");
-  const is_edge_weights: number = block.getFieldValue("is_edge_weights");
+  const is_vertex_weights: number = block.getFieldValue("is_vertex_weights") == "TRUE" ? 1 : 0;
+  const is_edge_weights: number = block.getFieldValue("is_edge_weights") == "TRUE" ? 1 : 0;
   const weighted_type = is_vertex_weights * 2 + is_edge_weights;
 
   const vertex_weights_range_left = generator.valueToCode(block, "vertex_weights_range_left", Order.ATOMIC);
@@ -224,7 +224,7 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
         edge_token: edge_count,
       },
       weighted_type: {
-        weighted_type: weighted_type,
+        weighted_type: weighted_type.toString(),
       },
       vertex_weights: {
         left: vertex_weights_range_left,
@@ -260,8 +260,8 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
 tokenGenerator.forBlock["tree"] = function (block, generator) {
   const vertex_count: string = generator.valueToCode(block, "vertex_count", Order.ATOMIC);
 
-  const is_vertex_weights: number = block.getFieldValue("is_vertex_weights");
-  const is_edge_weights: number = block.getFieldValue("is_edge_weights");
+  const is_vertex_weights: number = block.getFieldValue("is_vertex_weights") == "TRUE" ? 1 : 0;
+  const is_edge_weights: number = block.getFieldValue("is_edge_weights") == "TRUE" ? 1 : 0;
   const weighted_type = is_vertex_weights * 2 + is_edge_weights;
 
   const vertex_weights_range_left = generator.valueToCode(block, "vertex_weights_range_left", Order.ATOMIC);
@@ -279,7 +279,7 @@ tokenGenerator.forBlock["tree"] = function (block, generator) {
         vertex_count: vertex_count,
       },
       weighted_type: {
-        weighted_type: weighted_type,
+        weighted_type: weighted_type.toString(),
       },
       vertex_weights: {
         left: vertex_weights_range_left,

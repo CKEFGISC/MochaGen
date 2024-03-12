@@ -123,7 +123,7 @@ pub fn run_parser(config_path: &str, subtask_index: usize) -> Result<String, Str
   if let Some(subtasks) = config["subtasks"].as_array() {
     println!("{:?}", subtasks);
     let subtask = &subtasks[subtask_index];
-      // Construct paths for token, generator, and subtask
+    // Construct paths for token, generator, and subtask
     let token_path = format!(
       "{}/{}",
       project_path,
@@ -141,7 +141,7 @@ pub fn run_parser(config_path: &str, subtask_index: usize) -> Result<String, Str
     );
 
     // Parse token for each subtask
-    parse_token(&token_path, &gen_path, &subtask_path)?; 
+    parse_token(&token_path, &gen_path, &subtask_path)?;
   } else {
     return Err("Project configuration is not an array".to_string());
   }
