@@ -33,7 +33,7 @@ export const save = function (workspace: Blockly.Workspace, subtask_key: string,
  * @param subtask_key The key of the subtask to save. format: "subtask0", "subtask1", ...
  * @param token The token from code generation of the subtask to save.
  */
-export const saveCode = async function (subtask_content: JSON, token: string) {
+export const saveCode = function (subtask_content: JSON, token: string) {
   invoke("save_token", {
     configPath: getConfigPath(),
     subtaskContent: JSON.stringify(subtask_content),
@@ -45,7 +45,7 @@ export const saveCode = async function (subtask_content: JSON, token: string) {
  * Loads saved state from local storage into the given workspace.
  * @param workspace Blockly workspace to load into.
  */
-export const load = async function (workspace: Blockly.Workspace, subtask_key: string, subtask_content: JSON) {
+export const load = function (workspace: Blockly.Workspace, subtask_key: string, subtask_content: JSON) {
   // const data = window.sessionStorage?.getItem(storageKey + subtask_key);
   // if (!data) return;
 
