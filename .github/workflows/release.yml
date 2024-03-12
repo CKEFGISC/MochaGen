@@ -43,15 +43,15 @@ jobs:
 
       - name: Update Submodules
         run: |
-        git submodule update --init --recursive
-        mkdir -p assembler/build
+          git submodule update --init --recursive
+          mkdir -p assembler/build
 
       - name: Configure Submodules
         uses: threeal/cmake-action@v1.3.0
         with:
           source-dir: assembler
           build-dir: assembler/build
-          
+
       - name: Build Submodules
         run: cmake --build assembler/build --target install
 
