@@ -136,7 +136,7 @@ tokenGenerator.forBlock["float"] = function (block, generator) {
       _number:{
         category: "float",
       },
-      range: {
+      rangef: {
         left: range_left,
         right: range_right,
       },
