@@ -2,7 +2,7 @@ use super::{json, parser::parse_token};
 use serde_json;
 use std::fs::{File, OpenOptions};
 use std::io::{self, Read, Write};
-use std::os::linux::raw::stat;
+// use std::os::linux::raw::stat;
 use std::process::Command;
 use std::process::Stdio;
 use tauri::api::path::resolve_path;
@@ -84,7 +84,7 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
           println!("{:?}", output_data[0]);
           if (output_data[0] == 0) {
             status_code.push_str("0");
-          }else{
+          } else {
             status_code.push_str("1");
           }
           // if

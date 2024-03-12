@@ -10,6 +10,9 @@ pub fn parse(json_path: &str) -> Result<serde_json::Value, String> {
     Ok(contents) => contents,
     Err(e) => return Err(format!("Failed to read file: {}", e)),
   }; // 讀取json file
+  if contents.is_empty() {
+    return Err("File is empty".to_string());
+  }
   let json: serde_json::Result<serde_json::Value> = serde_json::from_str(&contents); //parse json
   match json {
     Ok(parsed_json) => Ok(parsed_json),

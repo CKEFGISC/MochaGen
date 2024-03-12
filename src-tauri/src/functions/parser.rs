@@ -40,7 +40,7 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
     Ok(parsed_json) => {
       //parse 過了！
       println!("{}", parsed_json);
-      let subtask_id = parsed_json["subtask_id"].as_str().unwrap_or_default();
+      let _subtask_id = parsed_json["subtask_id"].as_str().unwrap_or_default();
       let file_name = gen_path; //format!("{}/gen/{}_gen.cpp", project_directory, subtask_name);
 
       //if it exists, read it and recover it
