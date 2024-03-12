@@ -558,6 +558,6 @@ Blockly.Extensions.register("dynamic_menu_extension", function (this: Blockly.Bl
         });
         return dropdownOptions;
       }) as Blockly.Field,
-      "ID",
+      "getid",
     );
 });

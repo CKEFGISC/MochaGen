@@ -61,7 +61,7 @@ tokenGenerator.forBlock["set_id_to_const_number"] = function (block) {
 };
 
 tokenGenerator.forBlock["get_id"] = function (block) {
-  const id: string = "_" + block.getFieldValue("ID");
+  const id: string = "_" + block.getFieldValue("getid");
   console.warn("id", id);
   return [id, Order.ATOMIC];
 };
