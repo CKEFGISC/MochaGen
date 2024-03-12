@@ -24,7 +24,7 @@
       },
       "fs": {
         "all": true,
-        "scope": ["**/*"]
+        "scope": ["$RESOURCES/*"]
       }
     },
     "bundle": {
