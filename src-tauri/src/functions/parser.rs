@@ -42,11 +42,15 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
       println!("{}", parsed_json);
       let subtask_id = parsed_json["subtask_id"].as_str().unwrap_or_default();
       let file_name = gen_path; //format!("{}/gen/{}_gen.cpp", project_directory, subtask_name);
-      let mut file = match std::fs::File::create(&file_name) {
-        Ok(file) => file,
-        Err(e) => return Err(format!("Failed to create file '{}': {}", file_name, e)),
-      };
 
+      //if it exists, read it and recover it
+
+      let mut file = std::fs::OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(file_name)
+        .unwrap();
       let mut code = CPP_TEMPLATE_HEAD.to_string();
 
       if let Some(tokens_array) = parsed_json["tokens"].as_array() {
@@ -93,21 +97,24 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
           code = format!("{};\n", code);
           //end
         }
-        code.push('}');
       } else {
         return Err("Tokens array not found in JSON".to_string());
       }
 
       if let Some(tokens_array) = parsed_json["output"].as_array() {
-        for token_object in tokens_array{
-          if token_object["class"] == "printwords" {
-            code = format!("{}\ncout<<{};", code, token_object["words"]);
-          }else{
-            code  = format!("{}\ncout<<{};", code, token_object["id"]);
-
+        for token_object in tokens_array {
+          if token_object["class"].to_string() == "printwords".to_string() {
+            code = format!("{}\ncout<<{};", code, token_object["words"].to_string());
+          } else {
+            code = format!(
+              "{}\ncout<<{};",
+              code,
+              token_object["id"].to_string().replace("\"", "")
+            );
           }
         }
       }
+      code.push('}');
 
       if let Err(e) = file.write_all(code.as_bytes()) {
         return Err(format!("Failed to write to file '{}': {}", file_name, e));
@@ -149,7 +156,7 @@ pub fn run_parser(config_path: &str, subtask_index: usize) -> Result<String, Str
     );
 
     // Parse token for each subtask
-    parse_token(&token_path, &gen_path)?; 
+    parse_token(&token_path, &gen_path)?;
   } else {
     return Err("Project configuration is not an array".to_string());
   }
