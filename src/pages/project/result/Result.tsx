@@ -30,7 +30,6 @@ const Result: React.FC = () => {
     setLog("Preparing your testdata and a cup of Mocha...");
     toggleLoading();
     resolveResource(".").then((resourcePath) => {
-      alert(resourcePath);
       invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath })
         .then(() => {
           let newStatus = [];
