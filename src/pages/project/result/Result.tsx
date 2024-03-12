@@ -33,16 +33,16 @@ const Result: React.FC = () => {
             <Table.Row>
               <Table.ColumnHeaderCell>index</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Subtask Name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Testcase Amonut</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Testcase Amount</Table.ColumnHeaderCell>
               <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>validator Status</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell>Validator Status</Table.ColumnHeaderCell>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
             <Table.Row>
               <Table.RowHeaderCell>1</Table.RowHeaderCell>
-              <Table.Cell>sutask1</Table.Cell>
+              <Table.Cell>subtask1</Table.Cell>
               <Table.Cell>5</Table.Cell>
               <Table.Cell>Not Generated</Table.Cell>
               <Table.Cell>Not Checked</Table.Cell>
@@ -50,7 +50,7 @@ const Result: React.FC = () => {
 
             <Table.Row>
               <Table.RowHeaderCell>2</Table.RowHeaderCell>
-              <Table.Cell>sutask2</Table.Cell>
+              <Table.Cell>subtask2</Table.Cell>
               <Table.Cell>5</Table.Cell>
               <Table.Cell>Generated</Table.Cell>
               <Table.Cell>
