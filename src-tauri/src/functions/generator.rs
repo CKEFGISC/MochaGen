@@ -9,7 +9,7 @@ use std::process::Stdio;
 fn printable<T: std::fmt::Display>(t: &T) -> String {
   t.to_string().replace("\"", "")
 }
-#[tauri::command]
+#[tauri::command(async)]
 pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   let lib_path = format!("{}../../../assembler/lib", lib_path);
   println!("{}", lib_path);
