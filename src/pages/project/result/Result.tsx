@@ -33,29 +33,22 @@ const Result: React.FC = () => {
       invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath })
         .then(() => {
           let newStatus = [];
-          subtasks.map((subtask, _subtaskID) => {
-            let subtaskStatus = [];
-            for (let i = 0; i < subtask["testcase_count"]; ++i) {
-              subtaskStatus.push({
-                generator: "Generated",
-                validator: "Validated",
+          subtasks.map((subtask, subtaskID) => {
+            invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: subtaskID })
+              .then((validateStatus: string) => {
+                let subtaskStatus = [];
+                validateStatus.split("").forEach((val) => {
+                  subtaskStatus.push({
+                    generator: "Generated",
+                    validator: val == "1" ? "Validated" : "Validation Failed",
+                  });
+                  newStatus.push(subtaskStatus);
+                });
+              })
+              .catch((e: string) => {
+                toast.error("Validation failed on " + subtask["name"] + ": " + e);
+                throw e;
               });
-            }
-            newStatus.push(subtaskStatus);
-            // invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: subtaskID })
-            //   .then((validateStatus: string) => {
-            //     validateStatus.split('').forEach(val => {
-            //         validateStatus.map((testcaseStatus) => {
-            //             subtaskStatus.push({
-            //                 generator: "Generated",
-            //                 validator: testcaseStatus? "Validated" : "Validation Failed",
-            //             });
-            //         });
-            //   })
-            //   .catch((e) => {
-            //     toast.error("Validation failed on " + subtask["name"] + ": " + e);
-            //     throw e;
-            //   });
           });
           setStatus(newStatus);
           setLog("");
