@@ -31,8 +31,7 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
       subtask["generator"].as_str().unwrap_or("")
     );
     let subtask_name = format!(
-      "{}/{}",
-      project_path,
+      "{}",
       subtask["name"].as_str().unwrap_or("")
     );
     let validator_executable = format!("{}/build/{}_validator", project_path, subtask_name);
@@ -79,7 +78,7 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
 
           // Open the output file for writing (create or truncate)
           println!("{:?}", output_data[0]);
-          if output_data[0] == 0 {
+          if output_data[0]-48 == 0 {
             status_code.push_str("0");
           } else {
             status_code.push_str("1");
