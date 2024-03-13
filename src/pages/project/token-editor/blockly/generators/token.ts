@@ -215,6 +215,8 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
   const vertex_weights_range_right = generator.valueToCode(block, "vertex_weights_range_right", Order.ATOMIC);
   const edge_weights_range_left = generator.valueToCode(block, "edge_weights_range_left", Order.ATOMIC);
   const edge_weights_range_right = generator.valueToCode(block, "edge_weights_range_right", Order.ATOMIC);
+  const bipartite_set1_size = generator.valueToCode(block, "bipartite_set1_size", Order.ATOMIC);
+  const bipartite_set2_size = generator.valueToCode(block, "bipartite_set2_size", Order.ATOMIC);
 
   const is_acyclic = block.getFieldValue("is_acyclic");
   const is_connected = block.getFieldValue("is_connected");
@@ -231,7 +233,7 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
         vertex_count: vertex_count,
         edge_count: edge_count,
       },
-      weighted_type: {
+      weighted: {
         weighted_type: weighted_type.toString(),
       },
       vertex_weights: {
@@ -252,7 +254,8 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
         is_directed: is_directed,
       },
       bipartite: {
-        is_bipartite: is_bipartite,
+        n1: bipartite_set1_size,
+        n2: bipartite_set2_size,
       },
       allow_loops: {
         loops_allowed: loops_allowed,
@@ -262,6 +265,9 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
       },
     },
   };
+  if(!is_vertex_weights) delete code.attr.vertex_weights;
+  if(!is_edge_weights) delete code.attr.edge_weights;
+  if(is_bipartite=="FALSE") delete code.attr.bipartite;
   return [JSON.stringify(code, null, 2), Order.ATOMIC];
 };
 

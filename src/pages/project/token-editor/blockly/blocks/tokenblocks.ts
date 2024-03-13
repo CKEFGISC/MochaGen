@@ -298,8 +298,8 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
   {
     type: "graph",
     message0:
-      "Graph %1 attributes: %2 vertices: %3 edges: %4 %5 %6 with vertex weights?  Range: %7 ~ %8 %9 %10 with edge weights?  Range: %11 ~ %12 %13 %14 is acyclic?    %15 is directed?  %22   %16 is connected?   %17 is bipartite? %18 %19 self loops allowed? %23 %20  multi edge allowed? %21",
-    args0: [
+      "Graph %1 attributes: %2 vertices: %3 edges: %4 %5%6 with vertex weights?  Range: %7 ~ %8 %9 %10 with edge weights?  Range: %11 ~ %12 %13 %17 is_bipartite? first set: %24 second set: %25 %26 %14 is acyclic? %15 is directed? %22   %16 is connected? %18  %19 self loops allowed? %23 %20  multi edge allowed? %21",
+       args0: [
       {
         type: "input_end_row",
       },
@@ -414,6 +414,23 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       {
         type: "input_end_row",
         align: "RIGHT",
+      },
+      {
+        type: "input_value",
+        check: ["id", "Number"],
+
+        name: "bipartite_set1_size",
+        value: 0,
+      },
+      {
+        type: "input_value",
+        check: ["id", "Number"],
+
+        name: "bipartite_set2_size",
+        value: 0,
+      },
+      {
+        type: "input_end_row",
       },
     ],
     output: "tokenobject",

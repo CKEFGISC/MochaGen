@@ -81,10 +81,22 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
                   if attribute == "integer" || attribute == "float" || i == "pattern" {
                     code = format!("{}{}", code, attribute);
                   } else {
-                    code = format!("{}{}", code, printable(attribute));
+                    if printable(&attribute) == "TRUE" {
+                      code = format!("{}true", code);
+                    } else if printable(&attribute) == "FALSE" {
+                      code = format!("{}false", code);
+                    } else {
+                      code = format!("{}{}", code, printable(attribute));
+                    }
                   }
                 } else {
-                  code = format!("{},{}", code, printable(attribute));
+                  if printable(&attribute) == "TRUE" {
+                    code = format!("{}true", code);
+                  } else if printable(&attribute) == "FALSE" {
+                    code = format!("{}false", code);
+                  } else {
+                    code = format!("{},{}", code, printable(attribute));
+                  }
                 }
               }
             }

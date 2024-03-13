@@ -73,8 +73,8 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         .arg("-o")
         .arg(executable)
         .arg(format!("-I{}", format!("{}/../src", lib_path)))
-        .arg("-lassembler")
         .arg(format!("-L{}", lib_path))
+        .arg("-lassembler")
         .output()
         .unwrap();
       println!("{:?}", cmd);
