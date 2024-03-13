@@ -309,5 +309,7 @@ tokenGenerator.forBlock["tree"] = function (block, generator) {
       },
     },
   };
+  if(!is_vertex_weights) delete code.attr.vertex_weights;
+  if(!is_edge_weights) delete code.attr.edge_weights;
   return [JSON.stringify(code, null, 2), Order.ATOMIC];
 };
