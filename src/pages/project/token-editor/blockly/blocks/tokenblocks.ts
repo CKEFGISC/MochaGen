@@ -102,7 +102,7 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
         type: "input_end_row",
       },
     ],
-    message1: "Range: Min: %1 Max: %2 %3 %4 is odd? %5 %6 is prime? %7",
+    message1: "Range: Min: %1 Max: %2 %3 %4 is odd? %5 %6 is even? %7 %8 is prime? %9",
     args1: [
       {
         type: "input_value",
@@ -125,6 +125,15 @@ export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
       {
         type: "field_checkbox",
         name: "is_odd",
+        checked: false,
+      },
+      {
+        type: "input_end_row",
+        align: "RIGHT",
+      },
+      {
+        type: "field_checkbox",
+        name: "is_even",
         checked: false,
       },
       {

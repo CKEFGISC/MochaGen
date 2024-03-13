@@ -103,6 +103,7 @@ tokenGenerator.forBlock["integer"] = function (block, generator) {
   const range_left: string = generator.valueToCode(block, "range_left", Order.ATOMIC);
   const range_right: string = generator.valueToCode(block, "range_right", Order.ATOMIC);
   const is_odd: boolean = block.getFieldValue("is_odd") === "TRUE";
+  const is_even: boolean = block.getFieldValue("is_even") === "TRUE";
   const is_prime: boolean = block.getFieldValue("is_prime") === "TRUE";
   let code = {
     category: "number",
@@ -115,8 +116,11 @@ tokenGenerator.forBlock["integer"] = function (block, generator) {
         left: range_left,
         right: range_right,
       },
-      parity: {
+      is_odd: {
         is_odd: is_odd,
+      },
+      is_even:{
+        is_even: is_even,
       },
       prime: {
         is_prime: is_prime,
