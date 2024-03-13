@@ -38,7 +38,14 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<(), Stri
 
   // Get config file path
   let config_path = project_path.join("config.mcg");
-
+  let subtask_sample: Subtask = Subtask {
+    name: String::from(""),
+    testcase_count: String::from(""),
+    generator: String::from(""),
+    validator: String::from(""),
+    token: String::from(""),
+    blockly: String::from(""),
+  };
   // Default project settings
   let project: Project = Project {
     project_name: String::from(project_name),
@@ -47,7 +54,7 @@ pub fn create_project(project_name: &str, project_path: &str) -> Result<(), Stri
     cpp_compile_command: String::from("g++"),
     cpp_compile_flags: String::from("-std=c++17 -O3 -Wall"),
     subtask_count: 0,
-    subtasks: vec![],
+    subtasks: vec![subtask_sample],
     build_dir: String::from("build"),
     problem_dir: String::from("problem"),
     desc_dir: String::from("problem/desc.md"),
