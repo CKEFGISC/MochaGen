@@ -13,13 +13,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-20.04]
-        # platform: [macos-latest, ubuntu-20.04, windows-latest]
+        # platform: [macos-latest, ubuntu-20.04]
+        platform: [macos-latest, ubuntu-20.04, windows-latest]
     runs-on: ${{ matrix.platform }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with: 
+          submodules: recursive
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
@@ -41,21 +43,13 @@ jobs:
         with:
           node-version: "lts/*"
           cache: "npm" # Set this to npm, yarn or pnpm.
-
-      - name: Update Submodules
-        run: |
-          git submodule update --init --recursive
-          mkdir -p assembler/build
-
-      - name: Configure Submodules
-        uses: threeal/cmake-action@v1.3.0
-        with:
-          source-dir: assembler
-          build-dir: assembler/build
-
-      - name: Build Submodules
-        run: cmake --build assembler/build --target install
-
+          
+      - name: "Create build directory and run CMake"
+        run: cmake -S assembler -B assembler/build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+        
+      - name: "Build Project" 
+        run: cmake --build build --target install --config Release -- -j4 
+        
       - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: npm install # Change this to npm, yarn or pnpm.
