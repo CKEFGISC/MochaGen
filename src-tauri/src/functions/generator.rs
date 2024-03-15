@@ -12,11 +12,12 @@ fn printable<T: std::fmt::Display>(t: &T) -> String {
 #[tauri::command(async)]
 pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   let lib_path = format!("{}../../../assembler/lib", lib_path);
-  println!("{}", lib_path);
   let project_path = json::get_project_directory_with_config_file(path);
-  let config = json::parse(path).unwrap();
+  let config = match json::parse(path) {
+    Ok(config) => config,
+    Err(e) => return Err(e),
+  };
   // Check if config is an array
-  //
   let cpp_command = config["cpp_compile_command"].as_str().unwrap();
   #[allow(unused_variables)]
   let cpp_flag = config["cpp_compile_flags"].as_str().unwrap();
@@ -37,12 +38,15 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
   }
   solution_executable = solution_tmp.as_str();
   let solution_cpp = format!("{}/{}", project_path, solution_cpp);
-  let _cmd = Command::new(&cpp_command)
+  let _cmd = match Command::new(&cpp_command)
     .arg("-std=c++17")
     .arg(solution_cpp)
     .arg("-o")
     .arg(solution_executable)
-    .output();
+    .output(){
+      Ok(cmd) => cmd,
+      Err(e) => return Err(e.to_string())
+    };
   if let Some(subtasks) = config["subtasks"].as_array() {
     for subtask in subtasks {
       // Construct paths for token, generator, and subtask
@@ -65,9 +69,8 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
       );
       let build_path = format!("{}", build_dir);
       let executable = format!("{}/{}", build_path, subtask["name"].as_str().unwrap_or(""));
-      println!("{}", executable);
       let testcase_count = subtask["testcase_count"].as_i64().unwrap();
-      let cmd = Command::new(cpp_command)
+      let cmd = match Command::new(cpp_command)
         .arg("-std=c++17")
         .arg(gen_path)
         .arg("-o")
@@ -75,8 +78,10 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         .arg(format!("-I{}", format!("{}/../src", lib_path)))
         .arg(format!("-L{}", lib_path))
         .arg("-lassembler")
-        .output()
-        .unwrap();
+        .output(){
+          Ok(cmd) => cmd,
+          Err(e) => return Err(e.to_string())
+        };
       println!("{:?}", cmd);
       //mcg example in ../mcg_example.json
       for i in 0..testcase_count {
@@ -93,12 +98,13 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
           i
         );
         let executable_2 = format!("{}/{}", build_path, subtask["name"].as_str().unwrap_or(""));
-        println!("{} {}", input_path, output_path);
         let _cmd = Command::new("touch").arg(&input_path).output().unwrap();
         let _cmd = Command::new("touch").arg(&output_path).output().unwrap();
-        let cmd = Command::new(executable_2)
-          .output()
-          .expect("Failed to execute command");
+        let cmd = match Command::new(executable_2)
+          .output(){
+            Ok(cmd) => cmd,
+            Err(e) => return Err(e.to_string())
+          };
         if cmd.status.success() {
           // Print the output as a string
           let mut file =
@@ -113,12 +119,13 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
           let result = String::from_utf8_lossy(&cmd.stderr);
           eprintln!("Error: {}", result);
         }
-        let mut child_process = Command::new(solution_executable)
+        let mut child_process = match Command::new(solution_executable)
           .stdin(Stdio::piped())
           .stdout(Stdio::piped())
-          .spawn()
-          .expect("Failed to start command");
-
+          .spawn(){
+            Ok(child_process) => child_process,
+            Err(e) => return Err(e.to_string())
+          };
         // Specify the file paths for input and output
         #[allow(unused_variables)]
         let input_file_path = "input.txt";
@@ -131,48 +138,54 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
 
         // Read the contents of the input file into a buffer
         let mut input_data = Vec::new();
-        input_file
-          .read_to_end(&mut input_data)
-          .expect("Failed to read from input file");
+        match input_file
+          .read_to_end(&mut input_data){
+            Ok(_) => (),
+            Err(e) => return Err(e.to_string())
+          };
 
         // Send the input data to the child process's stdin
         if let Some(mut child_stdin) = child_process.stdin.take() {
-          child_stdin
-            .write_all(&input_data)
-            .expect("Failed to write to child process stdin");
+          match child_stdin
+            .write_all(&input_data){
+              Ok(_) => (),
+              Err(e) => return Err(e.to_string())
+            };
         }
 
         // Wait for the child process to finish and get its exit status
-        let status = child_process
-          .wait()
-          .expect("Failed to wait for child process");
+        let status =match child_process
+          .wait(){
+            Ok(status) => status,
+            Err(e) => return Err(e.to_string())
+          };
 
         // Check if the command was successful
         if status.success() {
           // Read the output from the child process's stdout
           let mut output_data = Vec::new();
           if let Some(mut child_stdout) = child_process.stdout.take() {
-            child_stdout
-              .read_to_end(&mut output_data)
-              .expect("Failed to read from child process stdout");
-
+            match child_stdout
+              .read_to_end(&mut output_data){
+                Ok(_) => (),
+                Err(e) => return Err(e.to_string())
+              };
             // Open the output file for writing (create or truncate)
-            let mut output_file = OpenOptions::new()
+            let mut output_file = match OpenOptions::new()
               .write(true)
               .create(true)
               .truncate(true)
-              .open(&output_path)
-              .expect("Failed to open output file for writing");
+              .open(&output_path){
+                Ok(output_file) => output_file,
+                Err(e) => return Err(e.to_string())
+              };
 
             // Write the output data to the output file
-            output_file
-              .write_all(&output_data)
-              .expect("Failed to write to output file");
-
-            println!(
-              "Command executed successfully, output written to: {}",
-              &output_path
-            );
+            match output_file
+              .write_all(&output_data){
+                Ok(_) => (),
+                Err(e) => return Err(e.to_string())
+              };
           } else {
             eprintln!("Failed to capture child process stdout");
           }
