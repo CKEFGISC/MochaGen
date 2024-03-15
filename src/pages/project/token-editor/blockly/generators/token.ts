@@ -293,8 +293,8 @@ tokenGenerator.forBlock["tree"] = function (block, generator) {
       _tree: {
         vertex_count: vertex_count,
       },
-      weighted_type: {
-        weighted_type: weighted_type.toString(),
+      weighted: {
+        weighted: weighted_type.toString(),
       },
       vertex_weights: {
         left: vertex_weights_range_left,
