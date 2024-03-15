@@ -30,18 +30,18 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
       project_path,
       subtask["generator"].as_str().unwrap_or("")
     );
-    let subtask_name = format!(
-      "{}",
-      subtask["name"].as_str().unwrap_or("")
-    );
+    let subtask_name = format!("{}", subtask["name"].as_str().unwrap_or(""));
     let validator_executable = format!("{}/build/{}_validator", project_path, subtask_name);
-    let cmd = Command::new(cpp_command)
+    match Command::new(cpp_command)
       .arg("-O2")
       .arg(&validator_path)
       .arg("-o")
       .arg(&validator_executable)
-      .output();
-    println!("{:?}", cmd);
+      .output()
+    {
+      Ok(cmd) => cmd,
+      Err(e) => return Err(e.to_string()),
+    };
     for i in 0..testcase_count {
       let input_path = format!(
         "{}/{}_{}.in",
@@ -49,36 +49,47 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
         subtask["name"].as_str().unwrap(),
         i
       );
-      let mut validate_process = Command::new(&validator_executable)
+      let mut validate_process = match Command::new(&validator_executable)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
-        .expect("Failed to start command");
-      let mut input_file = File::open(&input_path).expect("Failed to open input file for reading");
+      {
+        Ok(cmd) => cmd,
+        Err(e) => return Err(e.to_string()),
+      };
+      let mut input_file = match File::open(&input_path){
+        Ok(file) => file,
+        Err(e) => return Err(e.to_string())
+      
+      };
       let mut input_data = Vec::new();
-      input_file
-        .read_to_end(&mut input_data)
-        .expect("Failed to read from input file");
+      match input_file.read_to_end(&mut input_data) {
+        Ok(_) => (),
+        Err(e) => return Err(e.to_string()),
+      };
       if let Some(mut validate_stdin) = validate_process.stdin.take() {
-        validate_stdin
-          .write_all(&input_data)
-          .expect("Failed to write to child process stdin");
+        match validate_stdin.write_all(&input_data) {
+          Ok(_) => (),
+          Err(e) => return Err(e.to_string()),
+        };
       }
 
-      let status = validate_process
-        .wait()
-        .expect("Failed to wait for child process");
+      let status = match validate_process
+        .wait(){
+          Ok(status) => status,
+          Err(e) => return Err(e.to_string())
+        };
       if status.success() {
         // Read the output from the child process's stdout
         let mut output_data = Vec::new();
         if let Some(mut validate_stdout) = validate_process.stdout.take() {
-          validate_stdout
-            .read_to_end(&mut output_data)
-            .expect("Failed to read from child process stdout");
-
+          match validate_stdout
+            .read_to_end(&mut output_data){
+              Ok(_) => (),
+              Err(e) => return Err(e.to_string())
+            };
           // Open the output file for writing (create or truncate)
-          println!("{:?}", output_data[0]);
-          if output_data[0]-48 == 0 {
+          if output_data[0] - 48 == 0 {
             status_code.push_str("0");
           } else {
             status_code.push_str("1");
