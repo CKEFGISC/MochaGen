@@ -31,9 +31,12 @@ const Result: React.FC = () => {
       let currentStatus = status;
       invoke("generate_testdata", { path: getConfigPath(), libPath: resourcePath })
         .then(() => {
+          toast.info("Testdata has been generated!");
+          setLog("Validating testdata and slowly sipping Mocha...");
           subtasks.map((subtask, subtaskID) => {
             invoke("validate_subtask", { path: getConfigPath(), subtaskIndex: subtaskID })
               .then((validateStatus: string) => {
+                console.log("Validation status of " + subtask["name"] + ": " + validateStatus);
                 for (let i = 0; i < subtask["testcase_count"]; ++i) {
                   currentStatus[subtaskID][i] = {
                     generator: "Generated",
@@ -73,16 +76,14 @@ const Result: React.FC = () => {
 
   // Get subtasks from backend
   useEffect(() => {
-    let active = true;
     const load = async () => {
       setLog("Loading your subtasks...");
       toggleLoading();
       await invoke("get_subtasks", { configPath: getConfigPath() })
         .then((result: string) => {
           let currentSubtasks = JSON.parse(result);
-          if (active) setSubtasks(currentSubtasks);
+          setSubtasks(currentSubtasks);
           if (status === null) {
-            console.log(status);
             let currentStatus = [];
             currentSubtasks.map((subtask: any) => {
               let subtaskStatus = [];
@@ -94,7 +95,7 @@ const Result: React.FC = () => {
               }
               currentStatus.push(subtaskStatus);
             });
-            if (active) setStatus(currentStatus);
+            setStatus(currentStatus);
           }
         })
         .catch((e: string) => {
@@ -106,9 +107,6 @@ const Result: React.FC = () => {
         });
     };
     load();
-    return () => {
-      active = false;
-    };
   }, []);
 
   return isLoading ? (
