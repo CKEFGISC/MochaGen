@@ -115,8 +115,11 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
 
       if let Some(tokens_array) = parsed_json["output"].as_array() {
         for token_object in tokens_array {
-          if token_object["class"].to_string() == "printwords".to_string() {
-            code = format!("{}\ncout<<{};", code, token_object["words"].to_string());
+          let token_class= token_object["class"].to_string();
+          let token_class = printable(&token_class);
+          println!("{}", token_class);
+          if token_class == "printwords".to_string() {
+            code = format!("{}\ncout<<{};", code, token_object["words"].to_string().replace("\\\\", "\\"));
           } else {
             code = format!(
               "{}\ncout<<{};",
