@@ -47,7 +47,6 @@ const Result: React.FC = () => {
               })
               .catch((e: string) => {
                 toast.error("Validation failed on " + subtask["name"] + ": " + e);
-                throw e;
               });
           });
           setStatus(newStatus);
@@ -56,7 +55,6 @@ const Result: React.FC = () => {
         })
         .catch((e) => {
           toast.error("Generation failed: " + e);
-          throw e;
         });
     });
   };
@@ -86,7 +84,6 @@ const Result: React.FC = () => {
         })
         .catch((e: string) => {
           console.error("API call failed:", e);
-          throw e;
         });
     };
     load();
