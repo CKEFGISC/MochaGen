@@ -9,8 +9,6 @@ import Navigator from "./Navigator";
 
 // import utils
 import ErrorPage from "./utils/ErrorPage";
-import Loading from "./utils/loading/Loading";
-import LoadContext from "./utils/loading/LoadContext";
 
 // import pages
 import Home from "./pages/home/Home";
@@ -25,7 +23,6 @@ import Settings from "./pages/project/settings/Settings";
 import "./App.css";
 
 const App: React.FC = () => {
-  const { isLoading } = useContext(LoadContext);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -68,7 +65,7 @@ const App: React.FC = () => {
   ]);
 
   const createPage = () => {
-    return isLoading ? <Loading /> : <RouterProvider router={router} />;
+    return <RouterProvider router={router} />;
   };
 
   return <Layout>{createPage()}</Layout>;

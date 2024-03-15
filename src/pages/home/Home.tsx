@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import { Grid, Flex, Text } from "@radix-ui/themes";
 import CreateProjectDialog from "./components/CreateProjectDialog.tsx";
 import OpenProjectDialog from "./components/OpenProjectDialog.tsx";
-
-// TEMPORARY: Navbar
-// import Navbar from "../../utils/navbar/Navbar.tsx";
+import Loading from "../../utils/loading/Loading";
+import LoadContext from "../../utils/loading/LoadContext.tsx";
 
 export default function Home() {
-  return (
+  const { isLoading } = useContext(LoadContext);
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
       <Flex
         display="flex"
