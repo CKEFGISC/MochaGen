@@ -67,9 +67,18 @@ const Result: React.FC = () => {
           toast.error("Generation failed: " + e);
         })
         .finally(() => {
-          setLog("");
-          toggleLoading();
-          setStatus(currentStatus);
+          function update() {
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                setStatus(currentStatus);
+                resolve("Done");
+              }, 2000);
+            });
+          }
+          update().then(() => {
+            setLog("");
+            toggleLoading();
+          });
         });
     });
   };
