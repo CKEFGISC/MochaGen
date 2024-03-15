@@ -48,7 +48,7 @@ jobs:
         run: cmake -S assembler -B assembler/build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
         
       - name: "Build Project" 
-        run: cmake --build build --target install --config Release -- -j4 
+        run: cmake --build assembler/build --target install --config Release -- -j4 
         
       - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
