@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with: 
+        with:
           submodules: recursive
 
       - name: Install dependencies (ubuntu only)
@@ -43,13 +43,13 @@ jobs:
         with:
           node-version: "lts/*"
           cache: "npm" # Set this to npm, yarn or pnpm.
-          
+
       - name: "Create build directory and run CMake"
         run: cmake -S assembler -B assembler/build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
-        
-      - name: "Build Project" 
-        run: cmake --build assembler/build --target install --config Release -- -j4 
-        
+
+      - name: "Build Project"
+        run: cmake --build assembler/build --target install --config Release -- -j4
+
       - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: npm install # Change this to npm, yarn or pnpm.
