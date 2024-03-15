@@ -109,7 +109,7 @@ tokenGenerator.forBlock["integer"] = function (block, generator) {
     category: "number",
     class: "integer",
     attr: {
-      _number:{
+      _number: {
         category: "integer",
       },
       range: {
@@ -119,7 +119,7 @@ tokenGenerator.forBlock["integer"] = function (block, generator) {
       is_odd: {
         is_odd: is_odd,
       },
-      is_even:{
+      is_even: {
         is_even: is_even,
       },
       prime: {
@@ -137,7 +137,7 @@ tokenGenerator.forBlock["float"] = function (block, generator) {
     category: "number",
     class: "float",
     attr: {
-      _number:{
+      _number: {
         category: "float",
       },
       rangef: {
@@ -156,10 +156,10 @@ tokenGenerator.forBlock["array"] = function (block, generator) {
     category: "array",
     class: "array",
     attr: {
-      _array:{
+      _array: {
         length: length,
         element: element,
-      }
+      },
     },
   };
   return [JSON.stringify(code, null, 2), Order.ATOMIC];
@@ -189,7 +189,7 @@ tokenGenerator.forBlock["string"] = function (block, generator) {
     category: "string",
     class: "string",
     attr: {
-      _string:{
+      _string: {
         length: length,
       },
       palindrome: {
@@ -229,12 +229,12 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
     category: "graph",
     class: "graph",
     attr: {
-      _graph:{
+      _graph: {
         vertex_count: vertex_count,
         edge_count: edge_count,
       },
       weighted: {
-        weighted_type: weighted_type.toString(),
+        weighted: weighted_type.toString(),
       },
       vertex_weights: {
         left: vertex_weights_range_left,
@@ -265,9 +265,9 @@ tokenGenerator.forBlock["graph"] = function (block, generator) {
       },
     },
   };
-  if(!is_vertex_weights) delete code.attr.vertex_weights;
-  if(!is_edge_weights) delete code.attr.edge_weights;
-  if(is_bipartite=="FALSE") delete code.attr.bipartite;
+  if (!is_vertex_weights) delete code.attr.vertex_weights;
+  if (!is_edge_weights) delete code.attr.edge_weights;
+  if (is_bipartite == "FALSE") delete code.attr.bipartite;
   return [JSON.stringify(code, null, 2), Order.ATOMIC];
 };
 
@@ -290,7 +290,7 @@ tokenGenerator.forBlock["tree"] = function (block, generator) {
     category: "tree",
     class: "tree",
     attr: {
-      _tree:{
+      _tree: {
         vertex_count: vertex_count,
       },
       weighted_type: {
@@ -309,7 +309,7 @@ tokenGenerator.forBlock["tree"] = function (block, generator) {
       },
     },
   };
-  if(!is_vertex_weights) delete code.attr.vertex_weights;
-  if(!is_edge_weights) delete code.attr.edge_weights;
+  if (!is_vertex_weights) delete code.attr.vertex_weights;
+  if (!is_edge_weights) delete code.attr.edge_weights;
   return [JSON.stringify(code, null, 2), Order.ATOMIC];
 };
