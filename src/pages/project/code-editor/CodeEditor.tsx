@@ -76,6 +76,7 @@ int main(){
         toast.success("validator.cpp loaded!");
         if (res === "") {
           res = defaultValidatorCode;
+          save_validator_with_toast(subtaskIndex, res);
         }
         setValidatorCode(res);
       })

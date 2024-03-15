@@ -41,7 +41,6 @@
 
     "windows": [
       {
-        "fullscreen": true,
         "resizable": true,
         "title": "MochaGen",
         "width": 1000,
