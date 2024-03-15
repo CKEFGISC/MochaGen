@@ -43,10 +43,11 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
     .arg(solution_cpp)
     .arg("-o")
     .arg(solution_executable)
-    .output(){
-      Ok(cmd) => cmd,
-      Err(e) => return Err(e.to_string())
-    };
+    .output()
+  {
+    Ok(cmd) => cmd,
+    Err(e) => return Err(e.to_string()),
+  };
   if let Some(subtasks) = config["subtasks"].as_array() {
     for subtask in subtasks {
       // Construct paths for token, generator, and subtask
@@ -78,10 +79,12 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         .arg(format!("-I{}", format!("{}/../src", lib_path)))
         .arg(format!("-L{}", lib_path))
         .arg("-lassembler")
-        .output(){
-          Ok(cmd) => cmd,
-          Err(e) => return Err(e.to_string())
-        };
+        .arg("-Wno-deptecated-declarations")
+        .output()
+      {
+        Ok(cmd) => cmd,
+        Err(e) => return Err(e.to_string()),
+      };
       println!("{:?}", cmd);
       //mcg example in ../mcg_example.json
       for i in 0..testcase_count {
@@ -100,11 +103,10 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         let executable_2 = format!("{}/{}", build_path, subtask["name"].as_str().unwrap_or(""));
         let _cmd = Command::new("touch").arg(&input_path).output().unwrap();
         let _cmd = Command::new("touch").arg(&output_path).output().unwrap();
-        let cmd = match Command::new(executable_2)
-          .output(){
-            Ok(cmd) => cmd,
-            Err(e) => return Err(e.to_string())
-          };
+        let cmd = match Command::new(executable_2).output() {
+          Ok(cmd) => cmd,
+          Err(e) => return Err(e.to_string()),
+        };
         if cmd.status.success() {
           // Print the output as a string
           let mut file =
@@ -122,10 +124,11 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         let mut child_process = match Command::new(solution_executable)
           .stdin(Stdio::piped())
           .stdout(Stdio::piped())
-          .spawn(){
-            Ok(child_process) => child_process,
-            Err(e) => return Err(e.to_string())
-          };
+          .spawn()
+        {
+          Ok(child_process) => child_process,
+          Err(e) => return Err(e.to_string()),
+        };
         // Specify the file paths for input and output
         #[allow(unused_variables)]
         let input_file_path = "input.txt";
@@ -138,54 +141,50 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
 
         // Read the contents of the input file into a buffer
         let mut input_data = Vec::new();
-        match input_file
-          .read_to_end(&mut input_data){
-            Ok(_) => (),
-            Err(e) => return Err(e.to_string())
-          };
+        match input_file.read_to_end(&mut input_data) {
+          Ok(_) => (),
+          Err(e) => return Err(e.to_string()),
+        };
 
         // Send the input data to the child process's stdin
         if let Some(mut child_stdin) = child_process.stdin.take() {
-          match child_stdin
-            .write_all(&input_data){
-              Ok(_) => (),
-              Err(e) => return Err(e.to_string())
-            };
+          match child_stdin.write_all(&input_data) {
+            Ok(_) => (),
+            Err(e) => return Err(e.to_string()),
+          };
         }
 
         // Wait for the child process to finish and get its exit status
-        let status =match child_process
-          .wait(){
-            Ok(status) => status,
-            Err(e) => return Err(e.to_string())
-          };
+        let status = match child_process.wait() {
+          Ok(status) => status,
+          Err(e) => return Err(e.to_string()),
+        };
 
         // Check if the command was successful
         if status.success() {
           // Read the output from the child process's stdout
           let mut output_data = Vec::new();
           if let Some(mut child_stdout) = child_process.stdout.take() {
-            match child_stdout
-              .read_to_end(&mut output_data){
-                Ok(_) => (),
-                Err(e) => return Err(e.to_string())
-              };
+            match child_stdout.read_to_end(&mut output_data) {
+              Ok(_) => (),
+              Err(e) => return Err(e.to_string()),
+            };
             // Open the output file for writing (create or truncate)
             let mut output_file = match OpenOptions::new()
               .write(true)
               .create(true)
               .truncate(true)
-              .open(&output_path){
-                Ok(output_file) => output_file,
-                Err(e) => return Err(e.to_string())
-              };
+              .open(&output_path)
+            {
+              Ok(output_file) => output_file,
+              Err(e) => return Err(e.to_string()),
+            };
 
             // Write the output data to the output file
-            match output_file
-              .write_all(&output_data){
-                Ok(_) => (),
-                Err(e) => return Err(e.to_string())
-              };
+            match output_file.write_all(&output_data) {
+              Ok(_) => (),
+              Err(e) => return Err(e.to_string()),
+            };
           } else {
             eprintln!("Failed to capture child process stdout");
           }
