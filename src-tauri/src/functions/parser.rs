@@ -57,10 +57,11 @@ pub fn parse_token(token_path: &str, gen_path: &str) -> Result<String, String> {
           let token_params = &token_object["object"];
           let category = printable(&token_object["object"]["category"]);
           let variable_name = printable(&token_object["id"]);
-          let class = printable(&token_params["class"]);
           // 處理array的template
           if category == "array".to_string() {
-            code = format!("{}gen_{}<{}> {}=gen", code, category, class, variable_name);
+            let element = tokens_array.iter().find(|x| x["id"] == token_params["attr"]["_array"]["element"]);
+            let element_class = printable(&element.unwrap()["object"]["class"]);
+            code = format!("{}gen_{}<gen_{}> {}=gen", code, category, element_class, variable_name);
             //code = format!("{}({}, {})", code, printable(token_params["len"]), printable(token_params["content"]));
           } else {
             code = format!("{}gen_{} {}=gen", code, category, variable_name);

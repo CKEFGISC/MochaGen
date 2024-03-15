@@ -16,7 +16,6 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
   let mut status_code: String = "".to_string();
 
   if let Some(subtasks) = config["subtasks"].as_array() {
-    println!("{:?}", subtasks);
     let subtask = &subtasks[subtask_index];
     let testcase_count = subtask["testcase_count"].as_i64().unwrap();
     // Construct paths for token, generator, and subtask
@@ -40,7 +39,7 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
       .output()
     {
       Ok(cmd) => cmd,
-      Err(e) => return Err(e.to_string()),
+      Err(e) => return Err(format!("validator compilation failed, {}",e.to_string())),
     };
     for i in 0..testcase_count {
       let input_path = format!(
@@ -57,10 +56,9 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
         Ok(cmd) => cmd,
         Err(e) => return Err(e.to_string()),
       };
-      let mut input_file = match File::open(&input_path){
+      let mut input_file = match File::open(&input_path) {
         Ok(file) => file,
-        Err(e) => return Err(e.to_string())
-      
+        Err(e) => return Err(e.to_string()),
       };
       let mut input_data = Vec::new();
       match input_file.read_to_end(&mut input_data) {
@@ -74,20 +72,18 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
         };
       }
 
-      let status = match validate_process
-        .wait(){
-          Ok(status) => status,
-          Err(e) => return Err(e.to_string())
-        };
+      let status = match validate_process.wait() {
+        Ok(status) => status,
+        Err(e) => return Err(e.to_string()),
+      };
       if status.success() {
         // Read the output from the child process's stdout
         let mut output_data = Vec::new();
         if let Some(mut validate_stdout) = validate_process.stdout.take() {
-          match validate_stdout
-            .read_to_end(&mut output_data){
-              Ok(_) => (),
-              Err(e) => return Err(e.to_string())
-            };
+          match validate_stdout.read_to_end(&mut output_data) {
+            Ok(_) => (),
+            Err(e) => return Err(e.to_string()),
+          };
           // Open the output file for writing (create or truncate)
           if output_data[0] - 48 == 0 {
             status_code.push_str("0");
@@ -96,13 +92,10 @@ pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, Stri
           }
           // if
         } else {
-          eprintln!("Failed to capture child process stdout");
+          return Err("Failed to read from validation_process's stdout".to_string());
         }
       } else {
-        eprintln!(
-          "Command failed with exit code: {}",
-          status.code().unwrap_or_default()
-        );
+        return Err("Validator process failed".to_string());
       }
     }
   } else {
