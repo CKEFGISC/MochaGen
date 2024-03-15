@@ -79,7 +79,7 @@ pub fn generate_testdata(path: &str, lib_path: &str) -> Result<String, String> {
         .arg(format!("-I{}", format!("{}/../src", lib_path)))
         .arg(format!("-L{}", lib_path))
         .arg("-lassembler")
-        .arg("-Wno-deptecated-declarations")
+        .arg("-Wno-deprecated-declarations")
         .output()
       {
         Ok(cmd) => cmd,
