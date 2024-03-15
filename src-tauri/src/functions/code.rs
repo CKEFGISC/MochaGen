@@ -4,7 +4,7 @@ use std::path::Path;
 use std::fs;
 use crate::functions::parser::run_parser;
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn load_gen_cpp(config_path: &str, subtask_index: usize) -> Result<String, String>{
   let dir_path = &json::get_project_directory_with_config_file(config_path);
   let dir_path = Path::new(&dir_path);
@@ -22,7 +22,7 @@ pub fn load_gen_cpp(config_path: &str, subtask_index: usize) -> Result<String, S
   Ok(gen_cpp)
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn save_gen_cpp(config_path: &str, subtask_index: usize, gen_cpp: &str) -> Result<String, String> {
   let dir_path = &json::get_project_directory_with_config_file(config_path);
   let dir_path = Path::new(&dir_path);
@@ -56,7 +56,7 @@ pub fn save_gen_cpp(config_path: &str, subtask_index: usize, gen_cpp: &str) -> R
   Ok("success".to_string())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn load_validator_cpp(config_path: &str, subtask_index: usize) -> Result<String, String>{
   let dir_path = &json::get_project_directory_with_config_file(config_path);
   let dir_path = Path::new(&dir_path);
@@ -76,7 +76,7 @@ pub fn load_validator_cpp(config_path: &str, subtask_index: usize) -> Result<Str
   Ok(validator_cpp)
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn save_validator_cpp(config_path: &str, subtask_index: usize, validator_cpp: &str) -> Result<String, String> {
   let dir_path = &json::get_project_directory_with_config_file(config_path);
   let dir_path = Path::new(&dir_path);

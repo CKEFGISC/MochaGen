@@ -4,7 +4,7 @@ use serde_json::Value;
 
 use super::json::{get_project_directory_with_config_file, parse, write_json_to_file};
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn save_blockly(
   config_path: &str,
   subtask_content: &str,
@@ -43,7 +43,7 @@ pub fn save_blockly(
   ));
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn load_blockly(config_path: &str, subtask_content: &str) -> Result<String, String> {
   let dir_path = get_project_directory_with_config_file(config_path);
   let config_json = match parse(&config_path) {
@@ -74,7 +74,7 @@ pub fn load_blockly(config_path: &str, subtask_content: &str) -> Result<String, 
   ));
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn save_token(config_path: &str, subtask_content: &str, token: &str) -> Result<String, String> {
   let dir_path = get_project_directory_with_config_file(config_path);
   let config_json = match parse(&config_path) {

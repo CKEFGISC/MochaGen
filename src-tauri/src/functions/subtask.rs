@@ -1,6 +1,6 @@
 use super::json::parse;
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn get_subtasks(config_path: &str) -> Result<String, String> {
   let config_json = match parse(&config_path) {
     Ok(json) => json,

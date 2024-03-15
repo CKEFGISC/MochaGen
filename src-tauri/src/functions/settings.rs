@@ -4,7 +4,7 @@ use serde_json::{self, Value};
 
 use super::json::{get_project_directory_with_config_file, parse, write_json_to_file};
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn load_settings(config_path: &str) -> Result<String, String> {
   let config_json = match parse(&config_path) {
     Ok(json) => json,
@@ -13,7 +13,7 @@ pub fn load_settings(config_path: &str) -> Result<String, String> {
   Ok(config_json.to_string())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn load_solution_cpp(config_path: &str) -> Result<String, String> {
   let dir_path = get_project_directory_with_config_file(config_path);
   let config_json = match parse(&config_path) {
@@ -35,7 +35,7 @@ struct SimpleSubtask {
   testcase_counts: i32,
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn save_settings(
   config_path: &str,
   description: &str,

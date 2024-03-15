@@ -5,7 +5,7 @@ use std::io::{Read, Write};
 use std::process::Command;
 use std::process::Stdio;
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn validate_subtask(path: &str, subtask_index: usize) -> Result<String, String> {
   let project_path = json::get_project_directory_with_config_file(path);
   let config = json::parse(path).unwrap();
