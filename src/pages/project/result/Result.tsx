@@ -55,6 +55,9 @@ const Result: React.FC = () => {
         })
         .catch((e) => {
           toast.error("Generation failed: " + e);
+          setLog("");
+          toggleLoading();
+          throw e;
         });
     });
   };
