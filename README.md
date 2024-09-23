@@ -11,7 +11,7 @@ First, install the [prerequisites](https://tauri.app/v1/guides/getting-started/p
 Then, clone the repository to your computer:
 
 ```sh
-git clone https://github.com/CKEFGISC/MochaGen
+git clone --recurse-submodules https://github.com/CKEFGISC/MochaGen
 cd MochaGen
 ```
 
