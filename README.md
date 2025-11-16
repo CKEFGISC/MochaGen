@@ -2,7 +2,7 @@
 
 [![Release](https://github.com/CKEFGISC/MochaGen/actions/workflows/release.yml/badge.svg)](https://github.com/CKEFGISC/MochaGen/actions/workflows/release.yml)
 
-Auto Testcase Generator for Competitive Program with Natural Language Format Description as Input
+Auto Testcase Generator for Competitive Program
 
 ## Getting-started
 
